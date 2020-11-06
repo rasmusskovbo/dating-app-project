@@ -1,0 +1,52 @@
+#bgVideo {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+.content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.content h1 {
+    font-size: 15vw;
+    font-family: "Brush Script MT", Brush Script Std, cursive;
+    margin: 0;
+    line-height: 2vw;
+}
+
+.content p {
+    font-size: 3vw;
+    font-variant: small-caps;
+    font-family: "Arial Black", Gadget, sans-serif;
+}
+
+.button {
+    background-color: #520404;
+    border: none;
+    padding: 1.5vw;
+    color: white;
+    font-variant: small-caps;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.6vw;
+    margin: 4px 2px;
+    border-radius: 1vw;
+}
+
+.button:hover {
+    background-color: #330404;
+}
+
+.content2 {
+    background-color: white;
+    padding: 2vw;
+    color: black;
+}

@@ -1,0 +1,77 @@
+body {
+    min-height: 220px;
+}
+
+#bgVideo {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: white;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 1vw;
+    font-family: "Arial Black", Gadget, sans-serif;
+}
+
+.content h1 {
+    font-size: 3vw;
+}
+
+.content p {
+    padding-top: 0.2vw;
+    font-size: 1vw;
+    font-family: Arial, sans-serif;
+    color: #353836;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover {
+    color: darkred;
+    text-decoration: underline;
+}
+
+input[type=text], select, textarea, input[type=email] {
+    width: 80%;
+    padding: 1vw;
+    border: 0.1vw solid #ccc;
+    resize: vertical;
+}
+
+.headline {
+    margin-top: 0.5vw;
+    font-size: 1.4vw;
+}
+
+.textbox {
+    margin: 0.5vw 0 0.8vw 0;
+}
+
+.button {
+    background-color: #520404;
+    border: none;
+    padding: 1.2vw;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.3vw;
+    margin: 4px 2px;
+    border-radius: 1vw;
+    font-variant: small-caps;
+}
+
+.button:hover {
+    background-color: #330404;
+}
+

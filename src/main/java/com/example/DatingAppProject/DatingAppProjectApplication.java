@@ -11,7 +11,7 @@ public class DatingAppProjectApplication {
         DBManager dbm = new DBManager();
         dbm.getConnection();
 
-        //SpringApplication.run(DatingAppProjectApplication.class, args);
+        SpringApplication.run(DatingAppProjectApplication.class, args);
     }
 
 }
