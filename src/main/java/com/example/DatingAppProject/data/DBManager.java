@@ -22,7 +22,7 @@ public class DBManager {
             url = properties.getProperty("url");
             user = properties.getProperty("user");
             password = properties.getProperty("password");
-            System.out.println("Succesfully connected to DB");
+            System.out.println("Succesfully connected to DB"); // REMOVE
         } catch (IOException ex) {
             ex.printStackTrace();
         }
