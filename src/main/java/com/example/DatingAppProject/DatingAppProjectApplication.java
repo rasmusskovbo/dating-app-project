@@ -18,7 +18,7 @@ public class DatingAppProjectApplication {
 
             // working connection
             Connection con = dbm.getConnection();
-            String SQL = "INSERT into u571685745_Main.users (email, role) VALUES (?, ?);";
+            String SQL = "INSERT into defaultdb.users (email, role) VALUES (?, ?);";
             PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, "Rasmus");
             ps.setString(2, "User");
@@ -26,7 +26,7 @@ public class DatingAppProjectApplication {
             ResultSet ids = ps.getGeneratedKeys();
             ids.next();
             int id = ids.getInt(1);
-
+            System.out.println("Succesfully inserted and got key: " + id);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
