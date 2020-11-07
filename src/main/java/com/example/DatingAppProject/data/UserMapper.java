@@ -34,17 +34,26 @@ public class UserMapper {
             String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstname, lastname, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement psUserinfo = con.prepareStatement(userInfoSQL);
             psUserinfo.setInt(1, user.getId());
+<<<<<<< HEAD
             /*psUserinfo.setInt(2, user.getPhone());
             psUserinfo.setString(3, user.getFirstName());
             psUserinfo.setString(4, user.getLastName());
             psUserinfo.setDate(5, user.getBirthdate());
             psUserinfo.setString(6, user.getGender());*/
+=======
+            psUserinfo.setInt(2, user.getPhone());
+            psUserinfo.setString(3, user.getFirstName());
+            psUserinfo.setString(4, user.getLastName());
+            psUserinfo.setDate(5, user.getBirthDate());
+            psUserinfo.setString(6, user.getGender());
+>>>>>>> d1e473e3743545b1fd28c6874c7a1f2be3f0c983
             psUserinfo.executeUpdate();
 
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage()); // TODO Fejlmeddelelse skal returneres til site via model og thymeleaf
         }
     }
+
 
     public User login(String email, String password) throws DefaultException {
         try {
@@ -58,7 +67,7 @@ public class UserMapper {
             if (rs.next()) {
                 String role = rs.getString("role");
                 int id = rs.getInt("id");
-                User user = new User(email, password, role);
+                User user = new User(email, password);
                 user.setId(id);
                 return user;
             } else {
