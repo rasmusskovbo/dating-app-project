@@ -1,6 +1,7 @@
 package com.example.DatingAppProject;
 
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
@@ -13,7 +14,7 @@ import com.example.DatingAppProject.data.DBManager;
 public class DatingAppProjectApplication {
 
     public static void main(String[] args) {
-        try {
+      /*  try {
             DBManager dbm = new DBManager();
 
             // working connection
@@ -29,7 +30,7 @@ public class DatingAppProjectApplication {
             System.out.println("Succesfully inserted and got key: " + id);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
+        }*/
 
         SpringApplication.run(DatingAppProjectApplication.class, args);
     }
