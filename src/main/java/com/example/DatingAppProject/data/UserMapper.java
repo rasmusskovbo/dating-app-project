@@ -27,18 +27,18 @@ public class UserMapper {
             String loginInfoSQL = "INSERT INTO logininfo (idusers, password) VALUES (?, ?)";
             PreparedStatement psLogininfo = con.prepareStatement(loginInfoSQL);
             psLogininfo.setInt(1, user.getId());
-            psLogininfo.setString(2, user.getPassword()); // TODO Implement password on user class
+            //psLogininfo.setString(2, user.getPassword()); // TODO Implement password on user class
             psLogininfo.executeUpdate();
 
             // Insert into userinfo table
             String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstname, lastname, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement psUserinfo = con.prepareStatement(userInfoSQL);
             psUserinfo.setInt(1, user.getId());
-            psUserinfo.setInt(2, user.getPhoneNo());
+            /*psUserinfo.setInt(2, user.getPhone());
             psUserinfo.setString(3, user.getFirstName());
             psUserinfo.setString(4, user.getLastName());
             psUserinfo.setDate(5, user.getBirthdate());
-            psUserinfo.setString(6, user.getGender());
+            psUserinfo.setString(6, user.getGender());*/
             psUserinfo.executeUpdate();
 
         } catch (SQLException ex) {

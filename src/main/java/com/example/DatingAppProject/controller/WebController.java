@@ -7,30 +7,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class WebController {
 
-        @GetMapping("/")
-        public String login() {
-            return "welcome";
-        }
-
-        @GetMapping("/homepage")
-        public String homepage(){
-            return "homepage";
-        }
-
-        @GetMapping("/createProfile")
-        public String createProfile() {
-            return "createProfile";
-        }
-
-        @GetMapping("/logIn")
-        public String logIn() {
-            return "login";
-        }
-
-        @GetMapping("/message")
-        public String message() {
-            return "message";
-        }
+    @GetMapping("/")
+    public String login() {
+        return "welcome";
     }
+
+    @GetMapping("/homepage")
+    public String homepage(){
+        return "homepage";
+    }
+
+    @GetMapping("/createProfile")
+    public String createProfile() {
+        return "createProfile";
+    }
+
+    @GetMapping("/logIn")
+    public String logIn() {
+        return "login";
+    }
+
+    @GetMapping("/message")
+    public String message() {
+        return "message";
+    }
+}
 
 
