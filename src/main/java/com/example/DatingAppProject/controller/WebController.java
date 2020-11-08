@@ -64,7 +64,7 @@ public class WebController {
     @PostMapping("/register")
     public String createUser(WebRequest request) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
-        String name = request.getParameter("name");
+        String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String phone = request.getParameter("phone");
         String gender = request.getParameter("gender");
@@ -76,12 +76,13 @@ public class WebController {
         // If passwords match, work + data is delegated to logic controller
         //vi skal have oprettet en user med alle varibaler og evt. chekke format for variabler.
         if (password1.equals(password2)) {
-            User user = loginController.createUser(email, password);
+            User user = loginController.createUser(email, password1, "user", phone, firstName, lastName, gender, birthDate);
             setSessionInfo(request, user);
 
-            // Go to page dependent on role
-            return "userpages/" + user.getRole();
 
+            // Go to page dependent on role
+            //return "userpages/" + user.getRole(); // Skal linkes til WebController + vores "profile page". Her bruges userpages/ til at linke ned i en mappe med specifikke ting pr role. Kan vi også gøre for at skille imellem admin og user
+            return null;
         } else { // If passwords don't match, an exception is thrown
             throw new DefaultException("The two passwords did not match");
         }
