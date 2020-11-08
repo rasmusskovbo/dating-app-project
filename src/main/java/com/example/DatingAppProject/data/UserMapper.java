@@ -38,7 +38,7 @@ public class UserMapper {
             psUserinfo.setInt(2, user.getPhone());
             psUserinfo.setString(3, user.getFirstName());
             psUserinfo.setString(4, user.getLastName());
-            psUserinfo.setDate(5, user.getBirthDate());
+            psUserinfo.setString(5, user.getBirthDate());
             psUserinfo.setString(6, user.getGender());
             psUserinfo.executeUpdate();
 
@@ -47,7 +47,7 @@ public class UserMapper {
         }
     }
 
-
+/*
     public User login(String email, String password) throws DefaultException {
         try {
             Connection con = DBManager.getConnection();
@@ -70,4 +70,6 @@ public class UserMapper {
             throw new DefaultException(ex.getMessage());
         }
     }
+
+ */
 }

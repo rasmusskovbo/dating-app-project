@@ -75,6 +75,7 @@ public class WebController {
 
         // If passwords match, work + data is delegated to logic controller
         //vi skal have oprettet en user med alle varibaler og evt. chekke format for variabler.
+        /*
         if (password1.equals(password2)) {
             User user = loginController.createUser(email, password);
             setSessionInfo(request, user);
@@ -85,6 +86,8 @@ public class WebController {
         } else { // If passwords don't match, an exception is thrown
             throw new DefaultException("The two passwords did not match");
         }
+        */
+        return null;
     }
 
     private void setSessionInfo(WebRequest request, User user) {

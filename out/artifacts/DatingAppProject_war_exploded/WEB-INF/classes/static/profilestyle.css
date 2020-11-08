@@ -1,0 +1,196 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #e2dcd5;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    height: auto;
+    overflow-y: scroll;
+}
+
+.logo{
+    width: 25%;
+    height: 100px;
+    float: left;
+}
+
+nav {
+    float: right;
+    line-height: 100px;
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-size: 1.5vw;
+    color: white;
+}
+/* Style the header */
+.header {
+    grid-area: header;
+    background-color:  #330404;
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    font-family: "Brush Script MT", Brush Script Std, cursive;
+}
+
+/* The grid container */
+.grid-container {
+    display: grid;
+    grid-template-areas:
+            'header header header header header header'
+            'left left middle middle right right'
+            'footer footer footer footer footer footer';
+    overflow-y: scroll;
+    /* grid-column-gap: 10px; - if you want gap between the columns */
+}
+
+.left,
+.middle,
+.right {
+    padding: 30px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Style the left column */
+.left {
+    grid-area: left;
+}
+
+/* Style the middle column */
+.middle {
+    grid-area: middle;
+}
+
+/* Style the right column */
+.right {
+    grid-area: right;
+}
+
+.wrapper {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+/* Style the footer */
+.footer {
+    grid-area: footer;
+    background-color:  #330404;
+    padding: 5px;
+    text-align: center;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+    .grid-container  {
+        grid-template-areas:
+                'header header header header header header'
+                'left left left left left left'
+                'middle middle middle middle middle middle'
+                'right right right right right right'
+                'footer footer footer footer footer footer';
+    }
+}
+#image {
+    background-image: unset;
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    right: 0;
+    bottom: 0;
+
+}
+body {
+    min-height: 220px;
+}
+
+#bgVideo {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: white;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 1vw;
+    font-family: "Arial Black", Gadget, sans-serif;
+}
+
+.content h1 {
+    font-size: 3vw;
+    color: #f5faf7;
+}
+
+.content p {
+    padding-top: 0.2vw;
+    font-size: 1vw;
+    font-family: "Brush Script MT", Brush Script Std, cursive;
+    color: #f5faf7;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover {
+    color: darkred;
+    text-decoration: underline;
+}
+
+input[type=text], select, textarea, input[type=email] {
+    width: 80%;
+    padding: 1vw;
+    border: 0.1vw solid #ccc;
+    resize: vertical;
+}
+
+.headline {
+    margin-top: 0.5vw;
+    font-size: 1.4vw;
+}
+
+.textbox {
+    margin: 0.5vw 0 0.8vw 0;
+}
+
+.banner-area {
+    padding-top:  100px;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 100px;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    margin: auto;
+}
+
+.button {
+    background-color: #520404;
+    border: none;
+    padding: 1.2vw;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.3vw;
+    margin: 4px 2px;
+    border-radius: 1vw;
+    font-variant: small-caps;
+}
+
+.button:hover {
+    background-color: #330404;
+}
+
