@@ -7,14 +7,13 @@ public class User {
     private String email;
     private String password; // Should be hashed and secured
     private String role;
-    private int phone;
+    private String phone;
     private String firstName;
     private String lastName;
     private String gender;
     private String birthDate;
 
-    public User(int id, String email, String password, String role, int phone, String firstName, String lastName, String gender, String birthDate) {
-        this.id = id;
+    public User(String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -57,11 +56,11 @@ public class User {
         this.role = role;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -95,5 +94,20 @@ public class User {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", phone='" + phone + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                '}';
     }
 }

@@ -10,8 +10,9 @@ import com.example.DatingAppProject.data.DBManager;
 public class DatingAppProjectApplication {
 
     public static void main(String[] args) {
+        DBManager dbm = new DBManager();
+        dbm.getConnection();
 
         SpringApplication.run(DatingAppProjectApplication.class, args);
-
     }
 }

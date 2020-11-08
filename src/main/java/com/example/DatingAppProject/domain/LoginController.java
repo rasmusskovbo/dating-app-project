@@ -12,10 +12,12 @@ public class LoginController {
             return facade.login(email, password);
         }
 
-        public User createUser(String email, String password) throws DefaultException {
-            // By default, new users are customers
-            User user = new User(email, password, "Costumer");
-            facade.createUser(user);
+        public User createUser(String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate) throws DefaultException {
+            // By default, new users role are "user"
+            User user = new User(email, password, role, phone, firstName, lastName, gender, birthDate);
+            System.out.println("USER BEFORE FACADE:");
+            System.out.println(user.toString());
+            facade.createUser(user); // creates user in MYSQL
             return user;
         }
 }
