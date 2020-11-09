@@ -6,4 +6,6 @@ public interface DataFacade {
 
     public User createUser(User user) throws DefaultException;
 
+    public User getProfile(int id) throws DefaultException;
+
 }

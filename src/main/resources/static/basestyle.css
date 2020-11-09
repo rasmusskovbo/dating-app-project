@@ -1,0 +1,404 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: auto;
+    overflow-y: scroll;
+}
+
+/*Header content -----------------------------------------------------------------------------------------------------*/
+header{
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("https://eskipaper.com/images/flower-rose-red-petals-1.jpg");
+    width: 100%;
+    height: 7vw;
+    position: fixed;
+    z-index: 99;
+}
+
+header h1{
+    color: white;
+    font-size: 5vw;
+    font-family: "Brush Script MT", Brush Script Std, cursive;
+    text-align: center;
+}
+
+/*Side navigation content -------------------------------------------------------------------------------------------*/
+.left-content{
+    left: 0;
+    position: fixed;
+    width: 17vw;
+    top: 7vw;
+    bottom: 1vw;
+    background: linear-gradient(to bottom right, #000000 0%, #450303 100%);
+    z-index: 95;
+}
+
+.my-profile{
+    height: 15vw;
+    width: 100%;
+    padding-top: 1vw;
+}
+
+.my-picture{
+    height: 8vw;
+    width: 8vw;
+    margin: auto;
+    border:0.2vw solid white;
+    border-radius: 50%;
+}
+
+img{
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.my-profile h1{
+    color: white;
+    font-size: 1.5vw;
+    text-align: center;
+    padding: 0.5vw;
+    background-color: #520404;
+    margin-top: 0.5vw;
+}
+
+
+.sidenav {
+    height: 100%;
+    width: 100%;
+    padding-top: 1vw;
+}
+
+.sidenav a {
+    color: white;
+    text-align: justify;
+    text-decoration: none;
+    font-size: 1.8vw;
+    padding-left:2.5vw;
+    margin-bottom: 2vw;
+    display: block;
+}
+
+.sidenav i {
+    padding-right: 0.5vw;
+}
+
+:root {
+    --mainColor: #8f0606;
+}
+
+.sidenav a:hover {
+    background:
+            linear-gradient(
+                    to right,
+                    var(--mainColor) 0%,
+                    var(--mainColor) 1vw,
+                    transparent
+            );
+}
+
+/*Main content -------------------------------------------------------------------------------------------------------*/
+.main-content{
+    height: auto;
+    top:8vw;
+    position: relative;
+    margin: auto;
+    width: 63%;
+    border-right:0.3vw solid black;
+    border-left:0.3vw solid black;
+}
+
+.container{
+    height: auto;
+    width: 80%;
+    position: relative;
+    margin: auto;
+}
+
+.flex-container{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+.user-content{
+    height: 20vw;
+    width: 15vw;
+    margin: 3vw;
+    padding: 1vw 0 1vw;
+    box-shadow: 5px 10px #888888;
+    border:0.2vw solid black;
+    background: linear-gradient(to bottom, #000000 0%, #450303 100%);
+}
+
+.user-picture{
+    height: 7vw;
+    width: 7vw;
+    border-radius: 50%;
+    margin: auto;
+    border:0.2vw solid white;
+}
+
+.user-content h1 {
+    font-size: 1.2vw;
+    color: black;
+    height: auto;
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5vw;
+    background-color: white;
+    margin-bottom: 2vw;
+}
+
+.user-content h2 {
+    font-size: 1vw;
+    color: white;
+    height: auto;
+    width: 30%;
+    text-align: center;
+    margin: auto;
+    font-variant: small-caps;
+}
+
+.user-tags{
+    text-align: justify;
+    margin: auto;
+    height:auto;
+    max-height: 3.5vw;
+    width:10vw;
+    border:0.2vw solid black;
+    background-color: white;
+    color: black;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding:0.3vw 1vw;
+    font-size: 1vw;
+}
+
+.user-content-bottom{
+    height: 4.2vw;
+    width: 100%;
+    text-align: center;
+}
+
+.user-content-bottom button{
+    background-color: darkred;
+    font-family: "Arial Black", Gadget, sans-serif;
+    border: none;
+    padding: 0.5vw;
+    color: white;
+    text-decoration: none;
+    font-size: 1vw;
+    margin-top: 1vw;
+    border-radius: 1vw;
+    font-variant: small-caps;
+}
+
+.overlay {
+    position: fixed;
+    top: 7vw;
+    bottom: 1vw;
+    left: 18vw;
+    right: 18vw;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup, .popup2, .popup3, .popup4 {
+    top: 7vw;
+    margin: auto;
+    padding: 2vw;
+    border-radius: 5px;
+    width: 25%;
+    height: 20vw;
+    position: relative;
+    transition: all 1s ease-in-out;
+    background-color: white;
+}
+
+.popup h1 {
+    width: 100%;
+    height: auto;
+    font-size: 2vw;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    font-variant: small-caps;
+    border-bottom: 0.2vw solid #520404;
+}
+
+.popup-content{
+    margin: auto;
+    height:auto;
+    max-height: 10vw;
+    width:13vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding:0.3vw 1vw;
+}
+
+.popup-content p {
+    font-size: 1vw;
+    text-align: justify;
+    color: black;
+}
+
+.popup-user-bottom{
+    text-align: center;
+}
+
+.popup .close {
+    position: absolute;
+    top: 0.5vw;
+    right: 1.5vw;
+    transition: all 200ms;
+    font-size: 3vw;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+.popup .close:hover {
+    color: darkred;
+}
+
+/*right side search content ------------------------------------------------------------------------------------------*/
+.right-content{
+    right: 0;
+    position: fixed;
+    width: 17vw;
+    top: 7vw;
+    bottom: 1vw;
+    background: linear-gradient(to bottom left, #000000 0%, #450303 100%);
+    color: white;
+    text-align: center;
+    z-index: 95;
+}
+
+.search-header{
+    height: 8vw;
+    width: 100%;
+    padding-top: 1vw;
+}
+
+.search-header h1{
+    font-size: 1.5vw;
+    background-color: #520404;
+    margin-top: 3vw;
+    font-variant: small-caps;
+    font-family: "Arial Black", Gadget, sans-serif;
+}
+
+.search-box{
+    height: 100%;
+    width: 100%;
+}
+
+h1 {
+    font-size: 1.2vw;
+}
+
+input[type=text], select {
+    width: 70%;
+    box-sizing: border-box;
+    font-size: 0.8vw;
+    padding: 0.3vw;
+    margin-bottom: 1vw;
+    border:0.2vw solid black;
+}
+
+.tag-list{
+    margin: auto;
+    height:10vw;
+    width:10vw;
+    border:0.2vw solid black;
+    background-color: white;
+    color: black;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Customize the label (the container) */
+.container {
+    text-align: justify;
+    display: block;
+    position: relative;
+    padding-left: 2vw;
+    margin-bottom: 1vw;
+    font-size: 1.2vw;
+    top: 1vw;
+    left: 1vw;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+/* custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.2vw;
+    width: 1.2vw;
+    background-color: white;
+    border:0.2vw solid black;
+}
+
+/* On mouse-hover*/
+.container:hover input ~ .checkmark {
+    background-color: grey;
+}
+
+/* When the checkbox is checked, background */
+.container input:checked ~ .checkmark {
+    background-color: black;
+}
+
+.search-box button, .popup-user-bottom button{
+    background-color: #520404;
+    border: none;
+    padding: 1vw;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1vw;
+    margin: 2vw 1vw;
+    border-radius: 1vw;
+    font-variant: small-caps;
+}
+
+.search-box button:hover, .user-content button:hover {
+    border:0.2vw solid black;
+}
+
+/*Footer content -----------------------------------------------------------------------------------------------------*/
+.footer{
+    position: fixed;
+    width: 100%;
+    height: 1vw;
+    bottom: 0;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("https://eskipaper.com/images/flower-rose-red-petals-1.jpg");
+    z-index: 99;
+}
+
+.footer p {
+    color: white;
+    font-size: 0.75vw;
+    text-align: center;
+    letter-spacing: 0.2vw;
+}

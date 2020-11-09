@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="basestyle.css">
+    <script src="https://kit.fontawesome.com/00d69adb96.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+<!-- top content header -->
+<header>
+    <h1>Dating.com</h1>
+</header>
+
+<div class="left-content">
+    <!-- users profile pic and name-->
+    <div class="my-profile">
+        <div class="my-picture">
+            <!--
+            <img src="" alt=" My profile picture" height="100%" width="100%">
+            -->
+        </div>
+        <h1 th:text="${firstName}"></h1>
+        <h1 th:text="${lastName}"></h1>
+
+    </div>
+
+    <!-- page navigation menu-->
+    <div class="sidenav">
+        <a href="/homepage"><i class="fas fa-users"></i></i>Explore</a>
+        <a href="/messages"><i class="fas fa-comments"></i>Messages</a>
+        <a href="/favorites"><i class="fas fa-heart"></i>Favorites</a>
+        <a href="/editProfile"><i class="fas fa-user-edit"></i>Edit profile</a>
+        <a href="/"><i class="fas fa-sign-out-alt"></i></i>Log out</a>
+    </div>
+</div>
+
+<!-- main content middle-->
+<div class="main-content">
+    <div class="container">
+        <div class="flex-container">
+
+            <!-- user profile content 1-->
+            <div class="user-content">
+                <div class="user-picture">
+                    <!--
+                    <img src=""
+                         alt="user-pic1" height="100%" width="100%">
+                         -->
+                </div>
+                <h1>Fornavn Efternavn, 30</h1>
+                <h2>likes</h2>
+                <div class="user-tags">
+                    <p>#Lorem ipsum #dolor sit amet
+                        #consectetur #adipiscing #elit
+                    </p>
+                </div>
+                <div class="user-content-bottom">
+                    <a href="#popup"><button class="button">about me</button></a>
+                </div>
+
+                <!-- popup window userinfo 1-->
+                <div id="popup" class="overlay">
+                    <div class="popup">
+                        <h1>about me</h1>
+                        <a class="close" href="#">&times;</a>
+                        <div class="popup-content">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum</p>
+                        </div>
+                        <div class="popup-user-bottom">
+                            <button class="button"><i class="fas fa-heart"></i></button>
+                            <button class="button"><i class="fas fa-comments"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- user profile content 2-->
+            <div class="user-content">
+                <div class="user-picture">
+                    <!--
+                    <img src=""
+                         alt="user-pic1" height="100%" width="100%">
+                         -->
+                </div>
+                <h1>Fornavn Efternavn, 30</h1>
+                <h2>likes</h2>
+                <div class="user-tags">
+                    <p>#Lorem ipsum #dolor sit amet
+                        #consectetur #adipiscing #elit
+                    </p>
+                </div>
+                <div class="user-content-bottom">
+                    <a href="#popup2"><button class="button">about me</button></a>
+                </div>
+
+                <div id="popup2" class="overlay">
+                    <div class="popup">
+                        <h1>about me</h1>
+                        <a class="close" href="#">&times;</a>
+                        <div class="popup-content">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum</p>
+                        </div>
+                        <div class="popup-user-bottom">
+                            <button class="button"><i class="fas fa-heart"></i></button>
+                            <button class="button"><i class="fas fa-comments"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--user profile content 3-->
+            <div class="user-content">
+                <div class="user-picture">
+                    <!--
+                    <img src=""
+                         alt="user-pic1" height="100%" width="100%">
+                         -->
+                </div>
+                <h1>Fornavn Efternavn, 30</h1>
+                <h2>likes</h2>
+                <div class="user-tags">
+                    <p>#Lorem ipsum #dolor sit amet
+                        #consectetur #adipiscing #elit
+                    </p>
+                </div>
+                <div class="user-content-bottom">
+                    <a href="#popup3"><button class="button">about me</button></a>
+                </div>
+
+                <div id="popup3" class="overlay">
+                    <div class="popup">
+                        <h1>about me</h1>
+                        <a class="close" href="#">&times;</a>
+                        <div class="popup-content">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum</p>
+                        </div>
+                        <div class="popup-user-bottom">
+                            <button class="button"><i class="fas fa-heart"></i></button>
+                            <button class="button"><i class="fas fa-comments"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--user profile content 4-->
+            <div class="user-content">
+                <div class="user-picture">
+                    <!--
+                    <img src=""
+                         alt="user-pic1" height="100%" width="100%">
+                         -->
+                </div>
+                <h1>Fornavn Efternavn, 30</h1>
+                <h2>likes</h2>
+                <div class="user-tags">
+                    <p>#Lorem ipsum #dolor sit amet
+                        #consectetur #adipiscing #elit
+                    </p>
+                </div>
+                <div class="user-content-bottom">
+                    <a href="#popup4"><button class="button">about me</button></a>
+                </div>
+
+                <div id="popup4" class="overlay">
+                    <div class="popup">
+                        <h1>about me</h1>
+                        <a class="close" href="#">&times;</a>
+                        <div class="popup-content">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum</p>
+                        </div>
+                        <div class="popup-user-bottom">
+                            <button class="button"><i class="fas fa-heart"></i></button>
+                            <button class="button"><i class="fas fa-comments"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- search content right side-->
+<div class="right-content">
+    <!-- search header-->
+    <div class="search-header">
+        <h1><i class="fas fa-search"></i>search</h1>
+    </div>
+
+    <!-- search box area -->
+    <div class="search-box">
+        <!-- first name -->
+        <h1><label for="firstname">First name</label></h1>
+        <div class="textbox">
+            <input id="firstname" name="firstname" placeholder="First name...." type="text" value="">
+        </div>
+
+        <!-- last name -->
+        <h1><label for="lastname">Last name</label></h1>
+        <div class="textbox">
+            <input id="lastname" name="lastname" placeholder="Last name...." type="text" value="">
+        </div>
+
+        <!-- age -->
+        <h1><label for="age">Age</label></h1>
+        <select id="age">
+            <option value="none selected">Select age</option>
+            <option value="18-25">18-25 yrs.</option>
+            <option value="25-30">25-30 yrs.</option>
+            <option value="30-35">30-35 yrs.</option>
+            <option value="35-40">35-40 yrs.</option>
+            <option value="40-45">40-45 yrs.</option>
+            <option value="45-50">45-50 yrs.</option>
+            <option value="50+">50+ yrs.</option>
+        </select>
+
+        <!-- tag search -->
+        <h1>Likes</h1>
+        <div class="tag-list">
+            <label class="container">Biking
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">Movies
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">Traveling
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">Sport
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">Gaming
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+
+        <!-- search button -->
+        <button class="button">Search</button>
+
+    </div>
+</div>
+
+
+<!-- footer content-->
+<div class="footer">
+    <p> WWW.DATING.COM • LYGTEN 37, 2400 KØBENHAVN NV• E-MAIL: INFO@DATING.COM • TLF: +45 46 46 07 00 </p>
+</div>
+
+<!--<p th:text="${session.user.firstname}" th:unless="${session == null}">[...]</p>-->
+<!--<p th:text="${session.user.lastname}" th:unless="${session == null}">[...]</p>-->
+<!--<p th:text="${session.user.email}" th:unless="${session == null}">[...]</p>-->
+<!--<p th:text="${session.user.phonenumber}" th:unless="${session == null}">[...]</p>-->
+<!--<p th:text="${session.user.birthday}" th:unless="${session == null}">[...]</p>-->
+<!--<p th:text="${session.user.gender}" th:unless="${session == null}">[...]</p>-->
+<!--<p th:text="${session.user.password}" th:unless="${session == null}">[...]</p>-->
+
+<!--<span th:text="${error}"></span>-->
+
+</body>
+</html>
