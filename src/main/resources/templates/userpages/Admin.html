@@ -2,17 +2,41 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="adminstyle.css">
 </head>
 <body>
+<form name="admin" action="/admin" method="POST">
 <h1>Welcome - you are now signed in as admin</h1>
 
-<td>
-    <p th:text="${session.user.email}" th:unless="${session == null}">[...]</p>
-</td>
-<td> Oops - password is displayed!!!
-    <p th:text="${session.user.password}" th:unless="${session == null}">[...]</p>
-</td>
-<span th:text="${error}"></span>
+<div id="header">
+<center><img src="/images/adminlogo.png" alt="adminlogo"><br>This is Admin Panel, Please procced with caution! </center>
+
+</div>
+
+<div id="sidebar">
+<ul>
+    <li>  Add Data </li>
+    <li>  Delete Data</li>
+    <li>  Update  Data </li>
+</ul>
+
+</div>
+
+<div id="Data"><br>
+    <center><h3>Hello</h3></center>
+    <p>hjfhjvnfv</p>
+    <td>
+        <p th:text="${session.user.email}" th:unless="${session == null}">[...]</p>
+    </td>
+    <td> Oops - password is displayed!!!
+        <p th:text="${session.user.password}" th:unless="${session == null}">[...]</p>
+    </td>
+    <span th:text="${error}"></span>
+
+
+</div>
+
+</form>
 </body>
 </html>
