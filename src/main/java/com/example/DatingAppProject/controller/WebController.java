@@ -40,7 +40,10 @@ public class WebController {
     public String admin() {
         return "userpages/admin";
     }
-
+    @GetMapping("/deleteUser")
+    public String deleteData() {
+        return "userpages/deleteUser";
+    }
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
         User user = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // Gets ID from session object, uses it to fetch profile.

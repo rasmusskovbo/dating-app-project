@@ -16,6 +16,8 @@ html{
     font-size: 10px;
 }
 body{
+    height: auto;
+    overflow-y: scroll;
     display: grid;
     place-items: center;
 }

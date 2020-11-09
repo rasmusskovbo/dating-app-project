@@ -7,34 +7,25 @@
 </head>
 <body>
 <form name="admin" action="/admin" method="POST">
-<h1>Welcome - you are now signed in as admin</h1>
-
-<div id="header">
-<center><img src="/images/adminlogo.png" alt="adminlogo"><br>This is Admin Panel, Please procced with caution! </center>
+<div class="header">
+<div style="text-align: center;"><img src="/images/adminlogo.png" alt="adminlogo">
+    <h1>This is Admin Panel, Please procced with caution!</h1>
+</div>
 
 </div>
 
-<div id="sidebar">
+<div class="sidebar">
 <ul>
-    <li>  Add Data </li>
-    <li>  Delete Data</li>
-    <li>  Update  Data </li>
+    <li><a href="/addUser">Add User</a></li>
+    <li><a href="/deleteUser">Delete User</a></li>
+    <li><a href="/updateUser"> Update User</a></li>
 </ul>
 
 </div>
 
-<div id="Data"><br>
-    <center><h3>Hello</h3></center>
-    <p>hjfhjvnfv</p>
-    <td>
-        <p th:text="${session.user.email}" th:unless="${session == null}">[...]</p>
-    </td>
-    <td> Oops - password is displayed!!!
-        <p th:text="${session.user.password}" th:unless="${session == null}">[...]</p>
-    </td>
-    <span th:text="${error}"></span>
-
-
+<div class="Data">
+    <div style="text-align: center;"> <Br><h1> Text felt.. </h1>
+    </div>
 </div>
 
 </form>
