@@ -33,21 +33,25 @@ public class WebController {
     public String message() {
         return "message";
     }
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin";
+    }
 
    @GetMapping("/homepage")
    public String getHomepage(WebRequest request) {
     // Retrieve user object from web request (session scope)
     User user = (User) request.getAttribute("user",WebRequest.SCOPE_SESSION);
 
-    // If user object is found on session, i.e. user is logged in, she/he can see secretstuff page
+    // If user object is found on session, i.e. user is logged in, she/he can see homepage page
     if (user != null) {
         return "userpages/homepage";
     }
     else
         return "redirect:/createProfile";
 }
-
-/*    @PostMapping("/login")
+/*
+    @PostMapping("/login")
     public String loginUser(WebRequest request) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
         String email = request.getParameter("email");
@@ -60,7 +64,9 @@ public class WebController {
         // Go to to page dependent on role
         return "userpages/" + user.getRole();
     }
-*/
+
+
+ */
     @PostMapping("/register")
     public String createUser(WebRequest request) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
@@ -81,7 +87,7 @@ public class WebController {
 
 
             // Go to page dependent on role
-            //return "userpages/" + user.getRole(); // Skal linkes til WebController + vores "profile page". Her bruges userpages/ til at linke ned i en mappe med specifikke ting pr role. Kan vi også gøre for at skille imellem admin og user
+           // return "userpages/" + user.getRole(); // Skal linkes til WebController + vores "profile page". Her bruges userpages/ til at linke ned i en mappe med specifikke ting pr role. Kan vi også gøre for at skille imellem admin og user
             return null;
         } else { // If passwords don't match, an exception is thrown
             throw new DefaultException("The two passwords did not match");
