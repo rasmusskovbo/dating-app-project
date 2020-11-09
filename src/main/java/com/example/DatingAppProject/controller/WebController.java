@@ -35,46 +35,48 @@ public class WebController {
     public String message() {
         return "message";
     }
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin";
+    }
 
    @GetMapping("/homepage")
    public String getHomepage(WebRequest request) {
     // Retrieve user object from web request (session scope)
     User user = (User) request.getAttribute("user",WebRequest.SCOPE_SESSION);
 
-    // If user object is found on session, i.e. user is logged in, she/he can see secretstuff page
+    // If user object is found on session, i.e. user is logged in, she/he can see homepage page
     if (user != null) {
         return "userpages/homepage";
     }
     else
         return "redirect:/createProfile";
 }
-
     @PostMapping("/loginAction")
     public String loginUser(WebRequest request, Model model) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
         String email = request.getParameter("email");
         String pwd = request.getParameter("password");
 
-        // delegate work + data to login controller
         User user = loginController.login(email, pwd); // UserMapper checks with Database for user.
         setSessionInfo(request, user);
 
         if (user.getRole().equals("user")) {
             setProfile(user, model);
-            return "userpages/profile"; //
-
+            return "userpages/profile";
         } else if (user.getRole().equals("admin")) {
             return "admin";
         } else {
             return "exceptionPage";
         }
-
     }
+
 
     @GetMapping("/test")
     public String testSite() {
         return "test";
     }
+
 
     @PostMapping("/register")
     public String createUser(WebRequest request, Model model) throws DefaultException {
