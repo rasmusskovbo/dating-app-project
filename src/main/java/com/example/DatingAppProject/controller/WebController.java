@@ -31,36 +31,20 @@ public class WebController {
         return "login";
     }
 
-    @GetMapping("/message")
-    public String message() {
-        return "message";
+    @GetMapping("/messages")
+    public String messages() {
+        return "userpages/messages";
     }
+
     @GetMapping("/admin")
     public String admin() {
-        return "admin";
-    }
-
-   @GetMapping("/homepage")
-   public String getHomepage(WebRequest request) {
-    // Retrieve user object from web request (session scope)
-    User user = (User) request.getAttribute("user",WebRequest.SCOPE_SESSION); // hvordan man får User fra WebRequest
-
-    // If user object is found on session, i.e. user is logged in, she/he can see homepage page
-    if (user != null) {
-        return "userpages/homepage";
-    }
-    else
-        return "redirect:/createProfile";
+        return "userpages/admin";
     }
 
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
-        /*
-        User user = (User) request.getAttribute("user",WebRequest.SCOPE_SESSION);
-        int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
-        */
-        User userInfo = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // UserMapper retrieves profile from database to pac
-        loginController.packageUser(userInfo, model);
+        User user = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // Gets ID from session object, uses it to fetch profile.
+        loginController.packageUser(user, model);
         return "userpages/profile";
     }
 
@@ -76,7 +60,7 @@ public class WebController {
         if (user.getRole().equals("user")) {
             return "redirect:/profile";
         } else if (user.getRole().equals("admin")) {
-            return "admin";
+            return "redirect:/admin";
         } else {
             return "exceptionPage";
         }
