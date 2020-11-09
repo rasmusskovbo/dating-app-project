@@ -55,8 +55,11 @@ public class WebController {
 
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
+        /*
         User user = (User) request.getAttribute("user",WebRequest.SCOPE_SESSION);
-        User userInfo = loginController.getProfile(user.getId()); // UserMapper retrieves profile from database to pac
+        int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
+        */
+        User userInfo = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // UserMapper retrieves profile from database to pac
         loginController.packageUser(userInfo, model);
         return "userpages/profile";
     }
@@ -111,13 +114,9 @@ public class WebController {
         // Place user info on session
         request.setAttribute("user", user, WebRequest.SCOPE_SESSION);
         request.setAttribute("role", user.getRole(), WebRequest.SCOPE_SESSION);
+        request.setAttribute("id", user.getId(), WebRequest.SCOPE_SESSION);
     }
 
-    private Model setProfile(User user, Model model) throws DefaultException {
-        User newUser = loginController.getProfile(user.getId()); // UserMapper retrieves profile from database to pack
-        loginController.packageUser(newUser, model); // Packages user into model
-        return model;
-    }
 }
 
 
