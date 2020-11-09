@@ -13,6 +13,7 @@ public class User {
     private String gender;
     private String birthDate;
 
+    // Constructor for registering user
     public User(String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate) {
         this.email = email;
         this.password = password;
@@ -22,6 +23,12 @@ public class User {
         this.lastName = lastName;
         this.gender = gender;
         this.birthDate = birthDate;
+    }
+
+    // Overloaded constructor for session object
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public int getId() {

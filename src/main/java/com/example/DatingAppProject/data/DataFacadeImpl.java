@@ -9,8 +9,7 @@ public class DataFacadeImpl implements DataFacade {
 
 
     public User login(String email, String password) throws DefaultException {
-       // return userMapper.login(email, password);
-        return null;
+        return userMapper.login(email, password);
     }
 
 

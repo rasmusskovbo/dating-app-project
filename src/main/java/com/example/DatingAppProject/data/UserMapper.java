@@ -24,7 +24,7 @@ public class UserMapper {
             user.setId(id);
 
             // Insert into password table
-            String loginInfoSQL = "INSERT INTO logininfo (idusers, password) VALUES (?, ?)";
+            String loginInfoSQL = "INSERT INTO logininfo (idusers, pword) VALUES (?, ?)";
             PreparedStatement psLogininfo = con.prepareStatement(loginInfoSQL);
             psLogininfo.setInt(1, user.getId());
             psLogininfo.setString(2, user.getPassword());
@@ -46,19 +46,20 @@ public class UserMapper {
         }
     }
 
-/*
+    // Loads USER ID into Session object.
     public User login(String email, String password) throws DefaultException {
         try {
             Connection con = DBManager.getConnection();
-            String SQL = "SELECT id, role FROM Users "
-                    + "WHERE email=? AND password=?";
+            String SQL = "SELECT * from users "
+                    + "JOIN logininfo using (idusers) "
+                    + "WHERE email=? AND pword=?";
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 String role = rs.getString("role");
-                int id = rs.getInt("id");
+                int id = rs.getInt("idusers");
                 User user = new User(email, password);
                 user.setId(id);
                 return user;
@@ -70,5 +71,4 @@ public class UserMapper {
         }
     }
 
- */
 }

@@ -8,7 +8,7 @@ public class LoginController {
             this.facade = facade;
         }
 
-        public User login(String email, String password, String role) throws DefaultException {
+        public User login(String email, String password) throws DefaultException {
             return facade.login(email, password);
         }
 
