@@ -50,23 +50,36 @@ public class WebController {
     else
         return "redirect:/createProfile";
 }
+
 /*
     @PostMapping("/login")
+
+
+    @PostMapping("/loginAction")
+
     public String loginUser(WebRequest request) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
         String email = request.getParameter("email");
         String pwd = request.getParameter("password");
 
         // delegate work + data to login controller
-        User user = loginController.login(email, pwd);
+        User user = loginController.login(email, pwd); // UserMapper checks with Database for user.
         setSessionInfo(request, user);
 
         // Go to to page dependent on role
-        return "userpages/" + user.getRole();
+        return "test"; // Profile Page or admin page depending on user.getRole(); if statement should do it
     }
 
 
  */
+
+
+    @GetMapping("/test")
+    public String testSite() {
+        return "test";
+    }
+
+
     @PostMapping("/register")
     public String createUser(WebRequest request) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
@@ -88,6 +101,10 @@ public class WebController {
 
             // Go to page dependent on role
            // return "userpages/" + user.getRole(); // Skal linkes til WebController + vores "profile page". Her bruges userpages/ til at linke ned i en mappe med specifikke ting pr role. Kan vi også gøre for at skille imellem admin og user
+
+            // Should direct to profile page/homepage
+            //return "userpages/" + user.getRole(); // Skal linkes til WebController + vores "profile page". Her bruges userpages/ til at linke ned i en mappe med specifikke ting pr role. Kan vi også gøre for at skille imellem admin og user
+
             return null;
         } else { // If passwords don't match, an exception is thrown
             throw new DefaultException("The two passwords did not match");
