@@ -78,10 +78,10 @@ public class WebController {
         //Retrieve values from HTML form via WebRequest
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String gender = request.getParameter("gender");
         String birthDate = request.getParameter("birthDate");
-        String email = request.getParameter("email");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
 
