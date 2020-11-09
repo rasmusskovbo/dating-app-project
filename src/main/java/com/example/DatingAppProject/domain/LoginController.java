@@ -1,5 +1,7 @@
 package com.example.DatingAppProject.domain;
 
+import org.springframework.ui.Model;
+
 public class LoginController {
         // facade to datasource layer
         private DataFacade facade = null;
@@ -20,6 +22,21 @@ public class LoginController {
             facade.createUser(user); // creates user in MYSQL
             return user;
         }
+
+        public User getProfile(int id) throws DefaultException {
+            return facade.getProfile(id);
+        }
+
+        public Model packageUser(User user, Model model) {
+            model.addAttribute("email", user.getEmail());
+            model.addAttribute("firstName", user.getFirstName());
+            model.addAttribute("lastName", user.getLastName());
+            model.addAttribute("phone", user.getPhone());
+            model.addAttribute("gender", user.getGender());
+            model.addAttribute("birthDate", user.getBirthDate()); // evt lave udregning af alder her inden pakning
+            return model;
+        }
+
 }
 
 

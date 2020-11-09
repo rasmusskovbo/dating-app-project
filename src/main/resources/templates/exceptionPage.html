@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" href="welcomestyle.css">
+    <link rel="stylesheet" href="errorstyle.css">
+</head>
+<body>
+
+<video autoplay muted loop id="bgVideo">
+    <source src="https://static.videezy.com/system/resources/previews/000/039/619/original/light_hearts.mp4"
+            type="video/mp4">
+</video>
+
+<div class ="error-msg">
+    <h1>an error occured!</h1>
+    <p><span th:text="${message}"></span></p>
+</div>
+
+</body>
+</html>

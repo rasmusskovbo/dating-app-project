@@ -1,12 +1,27 @@
-#bgVideo {
-    position: fixed;
+/* background layout*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.bg{
     min-width: 100%;
     min-height: 100%;
+    position: fixed;
+    background-color: black;
+}
+
+#bgVideo {
+    position: fixed;
+    height: 100%;
+    width: 100%;
     right: 0;
     bottom: 0;
 }
 
-.content {
+
+/* main content layout*/
+.content-welcome {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -15,17 +30,26 @@
     color: white;
 }
 
-.content h1 {
+.content-welcome h1 {
+    color: black;
     font-size: 15vw;
     font-family: "Brush Script MT", Brush Script Std, cursive;
     margin: 0;
     line-height: 2vw;
+    color: white;
 }
 
-.content p {
+.content-welcome p {
+    margin-top: 3vw;
+    color: black;
     font-size: 3vw;
     font-variant: small-caps;
     font-family: "Arial Black", Gadget, sans-serif;
+    color: white;
+}
+
+.content-welcome a, .content-login a {
+    text-decoration: none;
 }
 
 .button {
@@ -33,20 +57,104 @@
     border: none;
     padding: 1.5vw;
     color: white;
-    font-variant: small-caps;
     text-decoration: none;
     display: inline-block;
-    font-size: 1.6vw;
-    margin: 4px 2px;
+    font-size: 1.2vw;
+    margin: 2vw 1vw;
     border-radius: 1vw;
+    font-variant: small-caps;
 }
 
 .button:hover {
-    background-color: #330404;
+    border:0.2vw solid black;
 }
 
-.content2 {
-    background-color: white;
-    padding: 2vw;
-    color: black;
+.content-login{
+    top: 50%;
+    left: 50%;
+    width: 25vw;
+    height: auto;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+    background: linear-gradient(to bottom right, #000000 0%, #450303 100%);
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 1vw;
+    font-family: "Arial Black", Gadget, sans-serif;
 }
+
+.content-login h1{
+    color: white;
+    font-size: 4vw;
+    font-family: "Brush Script MT", Brush Script Std, cursive;
+}
+
+.content-login h2{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1vw;
+    color: white;
+}
+
+.content-login p {
+    padding-top: 0.2vw;
+    font-size: 1vw;
+    font-family: Arial, sans-serif;
+    color: darkgrey;
+}
+
+.content-login a:hover{
+    color: red;
+    text-decoration: underline;
+}
+
+input[type=text], input[type=password], select, textarea, input[type=email], input[type=date], input[type=number]{
+    width: 80%;
+    padding: 0.5vw;
+    border: 0.1vw solid black;
+    font-size: 1vw;
+    text-align-last: center;
+}
+
+.no-arrow{
+    -moz-appearance: textfield;
+}
+
+.no-arrow::-webkit-inner-spin-button {
+    display: none;
+}
+
+.flex-container{
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    width: 100%;
+    height: 75%;
+}
+
+.input-halfwidth{
+    height: 4vw;
+    width: 50%;
+}
+
+.input-fullwidth{
+    height: auto;
+    width: 100%;
+}
+
+.input-quarterwidth {
+    height:auto;
+    width: 25%;
+}
+
+.input-threequarterwidth {
+    height: auto;
+    width: 75%;
+}
+
+.non-content-area{
+    height: 2vw;
+    width: 100%;
+}
+
+

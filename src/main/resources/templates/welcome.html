@@ -2,26 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login site</title>
+    <title>Welcome</title>
     <link rel="stylesheet" href="welcomestyle.css">
 </head>
 <body>
 
+<div class="bg">
+
 <!-- Background video -->
 <video autoplay muted loop id="bgVideo">
-    <source src="/videos/red_roses.mp4" type="video/mp4">
+    <source src="https://static.videezy.com/system/resources/previews/000/043/636/original/200206ValentineHM08.mp4" type="video/mp4">
 </video>
 
 <!-- Login functions -->
-<div class ="content">
+<div class ="content-welcome">
     <h1>Dating</h1>
     <p>made easier</p>
-    <a href="/createProfile">
-        <button class="button">create profile</button>
+    <form name="login" action="/createProfile" method="get">
+        <input class="button" type="submit" value="CREATE PROFILE">
+    </form>
+    <form name="login" action="/logIn" method="get">
+        <input class="button" type="submit" value="Log in">
+    </form>
     </a>
-    <a href="/logIn">
-        <button class="button">log in</button>
-    </a>
+</div>
+
 </div>
 
 </body>

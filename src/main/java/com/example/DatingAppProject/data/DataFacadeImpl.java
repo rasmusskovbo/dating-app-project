@@ -19,4 +19,8 @@ public class DataFacadeImpl implements DataFacade {
         userMapper.createUser(user);
         return user;
     }
+
+    public User getProfile(int id)  throws DefaultException {
+        return userMapper.getProfile(id);
+    }
 }
