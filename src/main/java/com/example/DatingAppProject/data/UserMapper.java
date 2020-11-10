@@ -2,9 +2,15 @@ package com.example.DatingAppProject.data;
 
 import com.example.DatingAppProject.domain.DefaultException;
 import com.example.DatingAppProject.domain.User;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.transform.Result;
+import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Base64;
 
 // Snakker med databasen, ift user queries
 public class UserMapper {
@@ -72,6 +78,32 @@ public class UserMapper {
         }
     }
 
+    public ArrayList<User> getUsers() throws DefaultException { // Evt skal søge parametre ind her
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "SELECT * FROM users " +
+                    "JOIN userinfo USING (idusers) " + //evt flere linjer for at trække billede med også. pt ingen billede
+                    ";";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User(
+                        rs.getString("role"),
+                        rs.getString("phone"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("gender"),
+                        rs.getString("birthDate")
+                );
+                users.add(user);
+            }
+            return users;
+        }   catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
     public User getProfile(int id) throws DefaultException {
         try {
             Connection con = DBManager.getConnection();
@@ -84,8 +116,6 @@ public class UserMapper {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 User user = new User(
-                        rs.getString("email"),
-                        rs.getString("pword"),
                         rs.getString("role"),
                         rs.getString("phone"),
                         rs.getString("firstName"),
@@ -95,20 +125,21 @@ public class UserMapper {
                 );
 
                 // Check for pictures separately:
-                String SQLurl = "SELECT idusers, url from users join pictures using (idusers) where idusers = ?";
-                PreparedStatement psstdp = con.prepareStatement(SQLurl);
-                psstdp.setInt(1, id);
+                String SQLurl = "SELECT idusers, description from users join pictures using (idusers) where idusers = ?";
+                PreparedStatement psDefaultPicture = con.prepareStatement(SQLurl);
+                psDefaultPicture.setInt(1, id);
                 ResultSet rsUserPictures= ps.executeQuery();
-                rsUserPictures.next(); // skips to 2nd row
+
+                rsUserPictures.next(); // skips to 2nd row as first row holds labels.
                 if (rsUserPictures.next()) {
                     // insert user pictures here
                 } else {
-                    String SQLpic = "SELECT idpictures, url FROM pictures " +
-                            "WHERE idpictures = 2;";
+                    String SQLpic = "SELECT idpictures, description FROM pictures " +
+                            "WHERE idpictures = 2;"; // Selects URL for standard picture
                     PreparedStatement psp = con.prepareStatement(SQLpic);
                     ResultSet rsURL = psp.executeQuery();
                     if (rsURL.next()) {
-                        user.setProfilePictureURL(rsURL.getString("url")); // sets profilepicture to default.
+                        user.setProfilePictureURL(rsURL.getString("description")); // sets profilepicture to default.
                     } else {
                         throw new DefaultException("Default picture not found.");
                     }
@@ -121,5 +152,48 @@ public class UserMapper {
         }  catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
         }
+    }
+
+    public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        InputStream inputStream = multipartFile.getInputStream();
+
+        Connection con = DBManager.getConnection();
+        String SQL = "INSERT INTO pictures (description, data) VALUES (?, ?)";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setString(1, fileName);
+        ps.setBlob(2, inputStream);
+        ps.executeQuery(); //exeucute update
+    }
+
+    public Blob getPicture(int id) throws SQLException, IOException {
+        Connection con = DBManager.getConnection();
+        MultipartFile multipartFile = null;
+        Blob blob = null;
+
+        String SQL = "SELECT * FROM pictures WHERE idpictures = ?";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            blob = rs.getBlob("data");
+        }
+        return blob;
+    }
+
+
+    // test
+    private User getUser(ResultSet rs) throws SQLException {
+        User user = new User(
+                rs.getString("email"),
+                rs.getString("pword"), //bør måske ikke være med her
+                rs.getString("role"),
+                rs.getString("phone"),
+                rs.getString("firstName"),
+                rs.getString("lastName"),
+                rs.getString("gender"),
+                rs.getString("birthDate")
+        );
+        return user;
     }
 }

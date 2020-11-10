@@ -4,13 +4,17 @@ import com.example.DatingAppProject.data.DataFacadeImpl;
 import com.example.DatingAppProject.domain.DefaultException;
 import com.example.DatingAppProject.domain.LoginController;
 import com.example.DatingAppProject.domain.User;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 @Controller
 public class WebController {
@@ -46,11 +50,19 @@ public class WebController {
     public String deletUser() {
         return "userpages/deleteUser";
     }
+
     @GetMapping("/userDeleted")
     public String userDeleted() {
         return "userpages/userDeleted";
     }
-/*
+
+
+    
+    @GetMapping("/test")
+    public String tester() {
+        return "test";
+    }
+    /*
     @PostMapping("/userDeleted")
     public String userDeleted(WebRequest request, Model model) throws DefaultException {
             //Retrieve values from HTML form via WebRequest
@@ -72,8 +84,6 @@ public class WebController {
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
         User user = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // Gets ID from session object, uses it to fetch profile.
-        System.out.println(user.getBirthDate());
-        System.out.println(user.getProfilePictureURL());
         loginController.packageUser(user, model);
         return "userpages/profile";
     }
@@ -96,13 +106,6 @@ public class WebController {
         }
     }
 
-
-    @GetMapping("/test")
-    public String testSite() {
-        return "test";
-    }
-
-
     @PostMapping("/register")
     public String createUser(WebRequest request, Model model) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
@@ -124,12 +127,25 @@ public class WebController {
         }
     }
 
+    @PostMapping("/testUpload")
+    public String getPicture(@RequestParam("file")MultipartFile multipartFile) throws SQLException, IOException {
+        loginController.uploadPicture(multipartFile);
+        return "welcome";
+    }
+
+    @GetMapping("/testshow")
+    public String showPicture(Model model) throws IOException, SQLException {
+        Blob blob = loginController.getPicture();
+        return "testshow";
+    }
+
     private void setSessionInfo(WebRequest request, User user) {
         // Place user info on session
         request.setAttribute("user", user, WebRequest.SCOPE_SESSION);
         request.setAttribute("role", user.getRole(), WebRequest.SCOPE_SESSION);
         request.setAttribute("id", user.getId(), WebRequest.SCOPE_SESSION);
     }
+
 
 }
 

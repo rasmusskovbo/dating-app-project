@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="https://www.thymeleaf.org">
 <body>
-<h1>Homepage</h1>
-<p>Welcome - You are now signed in!</p>
-<p th:text="${session.user}" th:unless="${session == null}">[...]</p>
-<p th:text="${user.email}" th:unless="${user == null}">[...]</p>
-<p th:text="${user.firstName}" th:unless="${user == null}">[...]</p>
+
+<form id="uploadbanner" enctype="multipart/form-data" method="post" action="/testUpload">
+    <input id="fileupload" name="file" type="file" />
+    <input type="submit" value="submit" id="submit" />
+</form>
+
 </body>
 </html>

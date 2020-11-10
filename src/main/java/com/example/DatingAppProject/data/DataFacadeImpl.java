@@ -3,6 +3,11 @@ package com.example.DatingAppProject.data;
 import com.example.DatingAppProject.domain.DefaultException;
 import com.example.DatingAppProject.domain.DataFacade;
 import com.example.DatingAppProject.domain.User;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 public class DataFacadeImpl implements DataFacade {
     private UserMapper userMapper = new UserMapper();
@@ -23,4 +28,14 @@ public class DataFacadeImpl implements DataFacade {
     public User getProfile(int id)  throws DefaultException {
         return userMapper.getProfile(id);
     }
+
+    public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
+        userMapper.uploadPicture(multipartFile);
+    }
+
+    public Blob getPicture(int id) throws SQLException, IOException {
+        return userMapper.getPicture(id);
+    }
+
+
 }

@@ -33,6 +33,16 @@ public class User {
         this.role = role;
     }
 
+    // Overloaded constructor for retrieving userinfo
+    public User(String role, String phone, String firstName, String lastName, String gender, String birthDate) {
+        this.role = role;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthDate = birthDate;
+    }
+
     public int getId() {
         return id;
     }
