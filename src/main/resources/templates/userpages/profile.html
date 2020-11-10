@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="basestyle.css">
+    <link rel="stylesheet" href="primarystyle.css">
     <script src="https://kit.fontawesome.com/00d69adb96.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -19,9 +19,9 @@
     <!-- users profile pic and name-->
     <div class="my-profile">
         <div class="my-picture">
-            <!--
-            <img src="" alt=" My profile picture" height="100%" width="100%">
-            -->
+
+            <img th:src="${profilePictureURL}" alt=" My profile picture" height="100%" width="100%">
+
         </div>
         <h1 th:text="${firstName}"></h1>
         <h1 th:text="${lastName}"></h1>
