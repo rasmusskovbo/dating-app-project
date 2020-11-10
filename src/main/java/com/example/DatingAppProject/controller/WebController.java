@@ -46,7 +46,11 @@ public class WebController {
     public String deletUser() {
         return "userpages/deleteUser";
     }
-
+    @GetMapping("/userDeleted")
+    public String userDeleted() {
+        return "userpages/userDeleted";
+    }
+/*
     @PostMapping("/userDeleted")
     public String userDeleted(WebRequest request, Model model) throws DefaultException {
             //Retrieve values from HTML form via WebRequest
@@ -62,6 +66,8 @@ public class WebController {
                 return "exceptionPage";
             }
     }
+
+ */
 
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
