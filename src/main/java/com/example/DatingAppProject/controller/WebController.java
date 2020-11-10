@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
@@ -41,9 +42,26 @@ public class WebController {
         return "userpages/admin";
     }
     @GetMapping("/deleteUser")
-    public String deleteData() {
+    public String deletUser() {
         return "userpages/deleteUser";
     }
+
+    @PostMapping("/userDeleted")
+    public String userDeleted(WebRequest request, Model model) throws DefaultException {
+            //Retrieve values from HTML form via WebRequest
+            String email = request.getParameter("email");
+            String firstName = request.getParameter("firstName");
+
+            User user = loginController.login(email, firstName); // UserMapper checks with Database for user.
+            setSessionInfo(request, user);
+
+            if (user.getRole().equals("user")) {
+                return "redirect:/userDeleted";
+            } else {
+                return "exceptionPage";
+            }
+    }
+
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
         User user = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // Gets ID from session object, uses it to fetch profile.
@@ -81,10 +99,10 @@ public class WebController {
         //Retrieve values from HTML form via WebRequest
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String gender = request.getParameter("gender");
         String birthDate = request.getParameter("birthDate");
+        String email = request.getParameter("email");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
 
