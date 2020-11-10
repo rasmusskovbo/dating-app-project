@@ -40,7 +40,10 @@ public class WebController {
     public String admin() {
         return "userpages/admin";
     }
-
+    @GetMapping("/deleteUser")
+    public String deleteData() {
+        return "userpages/deleteUser";
+    }
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
         User user = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // Gets ID from session object, uses it to fetch profile.
@@ -78,10 +81,10 @@ public class WebController {
         //Retrieve values from HTML form via WebRequest
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String gender = request.getParameter("gender");
         String birthDate = request.getParameter("birthDate");
-        String email = request.getParameter("email");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
 

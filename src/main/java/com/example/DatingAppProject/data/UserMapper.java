@@ -32,7 +32,7 @@ public class UserMapper {
             psLogininfo.executeUpdate();
 
             // Insert into userinfo table
-            String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstname, lastname, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
+            String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstName, lastName, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement psUserinfo = con.prepareStatement(userInfoSQL);
             psUserinfo.setInt(1, user.getId());
             psUserinfo.setString(2, user.getPhone());
