@@ -47,7 +47,7 @@ public class WebController {
     }
 
     @GetMapping("/deleteUser")
-    public String deleteData() {
+    public String deletUser() {
         return "userpages/deleteUser";
     }
 
@@ -56,11 +56,25 @@ public class WebController {
         return "test";
     }
 
+    @PostMapping("/userDeleted")
+    public String userDeleted(WebRequest request, Model model) throws DefaultException {
+            //Retrieve values from HTML form via WebRequest
+            String email = request.getParameter("email");
+            String firstName = request.getParameter("firstName");
+
+            User user = loginController.login(email, firstName); // UserMapper checks with Database for user.
+            setSessionInfo(request, user);
+
+            if (user.getRole().equals("user")) {
+                return "redirect:/userDeleted";
+            } else {
+                return "exceptionPage";
+            }
+    }
+
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
         User user = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // Gets ID from session object, uses it to fetch profile.
-        System.out.println(user.getBirthDate());
-        System.out.println(user.getProfilePictureURL());
         loginController.packageUser(user, model);
         return "userpages/profile";
     }

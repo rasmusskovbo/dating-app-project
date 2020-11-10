@@ -6,13 +6,42 @@
     <link rel="stylesheet" href="adminstyle.css">
 </head>
 <body>
-
+<form name="deleteUser" action="/userDeleted" method="POST">
     <div class="header">
-        <div style="text-align: center;"><img src="/images/adminlogo.png" alt="adminlogo">
             <h1>This is Admin Panel, Please procced with caution!</h1>
         </div>
-
     </div>
 
+    <div class="sidebar">
+        <ul>
+            <li><a href="/admin">Return to Admin page</a></li>
+            <li><a href="/deleteUser">Delete User</a></li>
+        </ul>
+    </div>
+
+    <div class="data">
+        <div style="text-align: center;"> <Br><h>  ugkjb  </h>
+    <div class="tekstboks">
+        <textarea id="delete" name="deleteUser" placeholder="Insert user ID..." style="max-height:70px; max-width: 30%; min-width: 30%"></textarea>
+    </div>
+    <input type="submit" onclick="window.close()" value="Annuller">
+    <input type="submit" onclick="return confirm('Delete user?') " value="Delete" >
+        </div>
+        </div>
+
+    <script>
+        function myFunktion() {
+            window.open("/userDeleted", width=550, height=170, left=150, top=200, toolbar=0, status=0);
+        }
+    </script>
+
+
+
+    <!-- footer content-->
+    <div class="footer">
+        <p> WWW.DATING.COM • LYGTEN 37, 2400 KØBENHAVN NV• E-MAIL: INFO@DATING.COM • TLF: +45 46 46 07 00 </p>
+    </div>
+
+</form>
 </body>
 </html>

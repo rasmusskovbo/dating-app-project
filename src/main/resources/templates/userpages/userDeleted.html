@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User Deleted</title>
+    <link rel="stylesheet" href="adminstyle.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>This is Admin Panel, Please procced with caution!</h1>
+</div>
+<div class="sidebar">
+    <ul>
+        <li><a href="/admin">Return to Admin page</a></li>
+    </ul>
+</div>
+
+<div class="data">
+<div class="row">
+    <h1>sletning udført</h1>
+    <p style="color: mediumseagreen">You have now deletet user with følgende info:</p>
+    <div>
+        <div class="row">
+            <h2>Name<br></h2> <a th:text="${name}"></a>
+        </div>
+        <div class="row">
+            <h2>Last name<br></h2><a th:text="${lastName}"></a>
+        </div>
+        <div class="row">
+            <h2>E-mail<br></h2><a th:text="${email}"></a>
+        </div>
+        <div class="row">
+            <h2>Phone </h2><a th:text="${phone}"></a>
+        </div>
+        <div class="row">
+            <input type="submit" onclick="window.close()" value="Afslut">
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
