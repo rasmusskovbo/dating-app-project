@@ -34,6 +34,7 @@ public class LoginController {
             model.addAttribute("phone", user.getPhone());
             model.addAttribute("gender", user.getGender());
             model.addAttribute("birthDate", user.getBirthDate()); // evt lave udregning af alder her inden pakning
+            model.addAttribute("profilePictureURL", user.getProfilePictureURL());
             return model;
         }
 

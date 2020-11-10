@@ -93,6 +93,26 @@ public class UserMapper {
                         rs.getString("gender"),
                         rs.getString("birthDate")
                 );
+
+                // Check for pictures separately:
+                String SQLurl = "SELECT idusers, url from users join pictures using (idusers) where idusers = ?";
+                PreparedStatement psstdp = con.prepareStatement(SQLurl);
+                psstdp.setInt(1, id);
+                ResultSet rsUserPictures= ps.executeQuery();
+                rsUserPictures.next(); // skips to 2nd row
+                if (rsUserPictures.next()) {
+                    // insert user pictures here
+                } else {
+                    String SQLpic = "SELECT idpictures, url FROM pictures " +
+                            "WHERE idpictures = 2;";
+                    PreparedStatement psp = con.prepareStatement(SQLpic);
+                    ResultSet rsURL = psp.executeQuery();
+                    if (rsURL.next()) {
+                        user.setProfilePictureURL(rsURL.getString("url")); // sets profilepicture to default.
+                    } else {
+                        throw new DefaultException("Default picture not found.");
+                    }
+                }
                 user.setId(id);
                 return user;
             } else {

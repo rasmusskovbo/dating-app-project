@@ -12,6 +12,7 @@ public class User {
     private String lastName;
     private String gender;
     private String birthDate;
+    private String profilePictureURL;
 
     // Constructor for registering user
     public User(String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate) {
@@ -102,6 +103,14 @@ public class User {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getProfilePictureURL() {
+        return profilePictureURL;
+    }
+
+    public void setProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
     }
 
     @Override
