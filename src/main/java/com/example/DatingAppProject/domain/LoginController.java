@@ -1,6 +1,16 @@
 package com.example.DatingAppProject.domain;
 
+import com.example.DatingAppProject.data.DBManager;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class LoginController {
         // facade to datasource layer
@@ -36,6 +46,15 @@ public class LoginController {
             model.addAttribute("birthDate", user.getBirthDate()); // evt lave udregning af alder her inden pakning
             model.addAttribute("profilePictureURL", user.getProfilePictureURL());
             return model;
+        }
+
+        // test
+        public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
+            facade.uploadPicture(multipartFile);
+        }
+
+        public Blob getPicture() throws SQLException, IOException {
+            return facade.getPicture(3);
         }
 
 }
