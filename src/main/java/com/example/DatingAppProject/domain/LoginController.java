@@ -11,6 +11,7 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class LoginController {
         // facade to datasource layer
@@ -47,6 +48,12 @@ public class LoginController {
             model.addAttribute("profilePictureURL", user.getProfilePictureURL());
             return model;
         }
+
+        public Model getUsers(Model model) throws DefaultException {
+            model.addAttribute("users", facade.getUsers());
+            return model;
+        }
+
 
         // test
         public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {

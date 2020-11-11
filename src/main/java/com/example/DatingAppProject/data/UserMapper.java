@@ -82,6 +82,7 @@ public class UserMapper {
         try {
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
+                    "JOIN logininfo using (idusers)" +
                     "JOIN userinfo USING (idusers) " + //evt flere linjer for at trække billede med også. pt ingen billede
                     ";";
             PreparedStatement ps = con.prepareStatement(SQL);
@@ -89,6 +90,8 @@ public class UserMapper {
             ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User(
+                        rs.getString("email"),
+                        rs.getString("pword"),
                         rs.getString("role"),
                         rs.getString("phone"),
                         rs.getString("firstName"),
@@ -166,6 +169,7 @@ public class UserMapper {
         ps.executeQuery(); //exeucute update
     }
 
+    // Virker ikke
     public Blob getPicture(int id) throws SQLException, IOException {
         Connection con = DBManager.getConnection();
         MultipartFile multipartFile = null;

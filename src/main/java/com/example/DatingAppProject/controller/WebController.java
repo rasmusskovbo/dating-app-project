@@ -42,7 +42,8 @@ public class WebController {
     }
 
     @GetMapping("/admin")
-    public String admin() {
+    public String admin(Model model) throws DefaultException {
+        loginController.getUsers(model);
         return "userpages/admin";
     }
 
@@ -50,7 +51,7 @@ public class WebController {
     public String deletUser() {
         return "userpages/deleteUser";
     }
-    
+
     @GetMapping("/userDeleted")
     public String userDeleted() {
         return "userpages/userDeleted";
