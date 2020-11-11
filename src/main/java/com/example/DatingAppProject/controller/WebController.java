@@ -50,7 +50,7 @@ public class WebController {
     public String deletUser() {
         return "userpages/deleteUser";
     }
-    
+
     @GetMapping("/test")
     public String tester() {
         return "test";
