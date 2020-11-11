@@ -236,6 +236,65 @@ public class UserMapper {
         }
     }
 
+    public void editProfile(User user) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+
+            // USER BASE DATA
+            String usersSQL = "UPDATE users " +
+                    "SET email = ? " +
+                    "WHERE idusers = ?;";
+
+            PreparedStatement usersPS = con.prepareStatement(usersSQL);
+            usersPS.setString(1, user.getEmail());
+            usersPS.setInt(2, user.getId());
+            usersPS.executeUpdate();
+            usersPS.executeUpdate();
+
+            // USER INFO
+            String userInfoSQL = "UPDATE userinfo " +
+                    "SET phone = ?, firstname = ?, lastname = ?, birthdate = ?, gender = ? " +
+                    "WHERE idusers = ?;";
+            PreparedStatement userInfoPS = con.prepareStatement(userInfoSQL);
+            userInfoPS.setString(1, user.getPhone());
+            userInfoPS.setString(2, user.getFirstName());
+            userInfoPS.setString(3, user.getLastName());
+            userInfoPS.setString(4, user.getBirthDate());
+            userInfoPS.setString(5, user.getGender());
+            userInfoPS.setInt(6, user.getId());
+            userInfoPS.executeUpdate();
+
+            // LOGIN - Do not change if user left fields blank.
+            if (!user.getPassword().equals("")) {
+                String loginInfoSQL = "UPDATE logininfo " +
+                        "SET pword = ? " +
+                        "WHERE idusers = ?;";
+                PreparedStatement loginInfoPS = con.prepareStatement(loginInfoSQL);
+                loginInfoPS.setString(1, user.getPassword());
+                loginInfoPS.setInt(2, user.getId());
+                loginInfoPS.executeUpdate();
+            }
+
+
+            String descriptionSQL = "UPDATE descriptions " +
+                    "SET aboutme = ? " +
+                    "WHERE idusers = ?;";
+            PreparedStatement descriptionPS = con.prepareStatement(descriptionSQL);
+            descriptionPS.setString(1, user.getAboutme());
+            descriptionPS.setInt(2, user.getId());
+            descriptionPS.executeUpdate();
+
+            // mangler ændring af tags
+
+
+
+
+
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
     public ArrayList<String> getTags() throws DefaultException {
         try {
             Connection con = DBManager.getConnection();

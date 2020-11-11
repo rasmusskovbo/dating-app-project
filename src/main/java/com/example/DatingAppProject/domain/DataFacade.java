@@ -15,6 +15,8 @@ public interface DataFacade {
 
     public User getProfile(int id) throws DefaultException;
 
+    public void editProfile(User user) throws DefaultException;
+
     public ArrayList<User> getUsers() throws DefaultException;
 
     public ArrayList<User> getUsers(int id) throws DefaultException;

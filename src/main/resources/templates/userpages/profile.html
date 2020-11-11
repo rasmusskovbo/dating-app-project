@@ -98,79 +98,81 @@
         <h1>Edit profile</h1>
         <a class="close" href="#">&times;</a>
         <div class="popup-content">
-            <div class="flex-container">
-                <div class="input-halfwidth">
-                    <h2><label for="firstName">First Name</label></h2>
-                    <input type="text" id="firstName" name="firstName" th:value="${firstName}" readonly>
-                </div>
+            <form name="editProfile" action="/editProfile" method="POST">
+                <div class="flex-container">
+                    <div class="input-halfwidth">
+                        <h2><label for="firstName">First Name</label></h2>
+                        <input type="text" id="firstName" name="firstName" th:value="${firstName}" readonly>
+                    </div>
 
-                <!-- last name input -->
-                <div class="input-halfwidth">
-                    <h2><label for="lastName">Last name</label></h2>
-                    <input type="text" id="lastName" name="lastName" th:value="${lastName}" readonly>
-                </div>
+                    <!-- last name input -->
+                    <div class="input-halfwidth">
+                        <h2><label for="lastName">Last name</label></h2>
+                        <input type="text" id="lastName" name="lastName" th:value="${lastName}" readonly>
+                    </div>
 
-                <!-- email input -->
-                <div class="input-fullwidth">
-                    <h2><label for="email">E-mail</label></h2>
-                    <input type="text" id="email" name="email" th:value="${email}">
-                </div>
+                    <!-- email input -->
+                    <div class="input-fullwidth">
+                        <h2><label for="email">E-mail</label></h2>
+                        <input type="text" id="email" name="email" th:value="${email}">
+                    </div>
 
-                <div class="input-fullwidth">
-                    <h2><label for="phone">Phone Number </label></h2>
-                    <input type="number" id="phone" name="phone" class="no-arrow" th:value="${phone}">
-                </div>
+                    <div class="input-fullwidth">
+                        <h2><label for="phone">Phone Number </label></h2>
+                        <input type="number" id="phone" name="phone" class="no-arrow" th:value="${phone}">
+                    </div>
 
-                <!-- choose gender -->
-                <div class="input-fullwidth">
-                    <h2><label for="gender">Gender</label></h2>
-                    <input type="text" id="gender" name="fender" th:value="${gender}" readonly>
-                </div>
+                    <!-- choose gender -->
+                    <div class="input-fullwidth">
+                        <h2><label for="gender">Gender</label></h2>
+                        <input type="text" id="gender" name="gender" th:value="${gender}" readonly>
+                    </div>
 
-                <!-- choose date of birth-->
-                <div class="input-fullwidth">
-                    <h2><label for="birthDate">Birthday</label></h2>
-                    <input type="date" id="birthDate" name="birthDate" th:value="${birthDate}" readonly>
-                </div>
+                    <!-- choose date of birth-->
+                    <div class="input-fullwidth">
+                        <h2><label for="birthDate">Birthday</label></h2>
+                        <input type="date" id="birthDate" name="birthDate" th:value="${birthDate}" readonly>
+                    </div>
 
-                <!-- user description/about me -->
-                <div class="input-fullwidth">
-                    <h2><label for="aboutme">About You</label></h2>
-                    <textarea id="aboutme" name="aboutme" th:value="${aboutme}"></textarea>
-                </div>
+                    <!-- user description/about me -->
+                    <div class="input-fullwidth">
+                        <h2><label for="aboutme">About You</label></h2>
+                        <textarea id="aboutme" name="aboutme" th:text="${aboutme}"></textarea>
+                    </div>
 
-                <!-- choose tag -->
-                <div class="input-fullwidth">
-                    <h2><label for="tag">Pick one subject you really like</label></h2>
-                    <select id="tag" name="tag">
-                        <option value="Sport">Sport</option>
-                        <option value="Traveling">Traveling</option>
-                        <option value="Cooking">Cooking</option>
-                        <option value="Music">Music</option>
-                        <option value="Gaming">Gaming</option>
-                        <option value="Dancing">Dancing</option>
-                        <option value="Reading">Reading</option>
-                        <option value="Movies/Series">Movies/Series</option>
-                    </select>
-                </div>
+                    <!-- choose tag -->
+                    <div class="input-fullwidth">
+                        <h2><label for="tag">Pick one subject you really like</label></h2>
+                        <select id="tag" name="tag">
+                            <option value="Sport">Sport</option>
+                            <option value="Traveling">Traveling</option>
+                            <option value="Cooking">Cooking</option>
+                            <option value="Music">Music</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="Dancing">Dancing</option>
+                            <option value="Reading">Reading</option>
+                            <option value="Movies/Series">Movies/Series</option>
+                        </select>
+                    </div>
 
-                <!-- password input -->
-                <div class="input-halfwidth">
-                    <h2><label for="password1">New Password</label></h2>
-                    <input type="password" id="password1" name="password1">
-                </div>
-                <!-- repeat password-->
-                <div class="input-halfwidth">
-                    <h2><label for="password2">Retype Password</label></h2>
-                    <input type="password" id="password2" name="password2">
-                </div>
+                    <!-- password input -->
+                    <div class="input-halfwidth">
+                        <h2><label for="password1">New Password</label></h2>
+                        <input type="password" id="password1" name="password1">
+                    </div>
+                    <!-- repeat password-->
+                    <div class="input-halfwidth">
+                        <h2><label for="password2">Retype Password</label></h2>
+                        <input type="password" id="password2" name="password2">
+                    </div>
 
-                <!-- create profile button-->
-                <div class="input-fullwidth">
-                    <input type="submit" class="button" onclick="return confirm('Submit information?')" value="save change">
-                </div>
+                    <!-- create profile button-->
+                    <div class="input-fullwidth">
+                        <input type="submit" class="button" onclick="return confirm('Submit information?')" value="save change">
+                    </div>
 
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

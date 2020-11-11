@@ -28,14 +28,16 @@ public class LoginController {
         public User createUser(String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate, String aboutme, String tag) throws DefaultException {
             // By default, new users role are "user"
             User user = new User(email, password, role, phone, firstName, lastName, gender, birthDate, aboutme, tag);
-            System.out.println("USER BEFORE FACADE:");
-            System.out.println(user.toString());
             facade.createUser(user); // creates user in MYSQL
             return user;
         }
 
         public User getProfile(int id) throws DefaultException {
             return facade.getProfile(id);
+        }
+
+        public void editProfile(User user) throws DefaultException {
+            facade.editProfile(user);
         }
 
         public Model packageUser(User user, Model model) throws DefaultException {
@@ -46,6 +48,8 @@ public class LoginController {
             model.addAttribute("gender", user.getGender());
             model.addAttribute("birthDate", user.getBirthDate()); // evt lave udregning af alder her inden pakning
             model.addAttribute("profilePictureURL", user.getProfilePictureURL());
+            System.out.println(user.getAboutme());
+            model.addAttribute("aboutme", user.getAboutme());
             model.addAttribute("userslist", user.getId()); //Get list of all users to show on homepage table list
             model.addAttribute("tags", getTags()); //Get list of all tags being used to show on search drop down list
             return model;

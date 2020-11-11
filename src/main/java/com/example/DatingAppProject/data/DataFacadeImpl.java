@@ -48,5 +48,9 @@ public class DataFacadeImpl implements DataFacade {
         return userMapper.getTags();
     }
 
+    public void editProfile(User user) throws DefaultException {
+        userMapper.editProfile(user);
+    }
+
 
 }
