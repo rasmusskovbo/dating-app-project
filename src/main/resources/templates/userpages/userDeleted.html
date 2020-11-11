@@ -17,27 +17,36 @@
 </div>
 
 <div class="data">
-<div class="row">
-    <h1>sletning udført</h1>
-    <p style="color: mediumseagreen">You have now deletet user with følgende info:</p>
-    <div>
-        <div class="row">
-            <h2>Name<br></h2> <a th:text="${name}"></a>
+    <div style="text-align: center;"> <Br><h3>  You have now deleted user with the following info: </h3>
+
+        <div class="tekstboks">
+            <h5>Name<br></h5> <a th:text="${name}"></a>
         </div>
-        <div class="row">
-            <h2>Last name<br></h2><a th:text="${lastName}"></a>
+        <div class="tekstboks">
+            <h5>Last name<br></h5><a th:text="${lastName}"></a>
         </div>
-        <div class="row">
-            <h2>E-mail<br></h2><a th:text="${email}"></a>
+        <div class="tekstboks">
+            <h5>E-mail<br></h5><a th:text="${email}"></a>
         </div>
-        <div class="row">
-            <h2>Phone </h2><a th:text="${phone}"></a>
+        <div class="tekstboks">
+            <h5>Phone </h5><a th:text="${phone}"></a>
         </div>
-        <div class="row">
-            <input type="submit" onclick="window.close()" value="Afslut">
+        <div class="tekstboks">
+            <input type="submit" onclick="myFunktion()" value="Afslut">
         </div>
+
+
     </div>
 </div>
+<script>
+    function myFunktion() {
+        window.open("/admin");
+    }
+</script>
+<!-- footer content-->
+<div class="footer">
+    <p> WWW.DATING.COM • LYGTEN 37, 2400 KØBENHAVN NV• E-MAIL: INFO@DATING.COM • TLF: +45 46 46 07 00 </p>
 </div>
+
 </body>
 </html>
