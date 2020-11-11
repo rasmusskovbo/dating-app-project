@@ -42,5 +42,9 @@ public class DataFacadeImpl implements DataFacade {
         return userMapper.getUsers();
     }
 
+    public ArrayList<User> getUsers(int id) throws DefaultException {
+        return userMapper.getUsers(id);
+    }
+
 
 }

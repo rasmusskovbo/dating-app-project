@@ -17,6 +17,8 @@ public interface DataFacade {
 
     public ArrayList<User> getUsers() throws DefaultException;
 
+    public ArrayList<User> getUsers(int id) throws DefaultException;
+
     public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException;
 
     public Blob getPicture(int id) throws SQLException, IOException;

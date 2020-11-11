@@ -82,8 +82,17 @@ public class WebController {
 
     @GetMapping("/profile")
     public String getProfile(WebRequest request, Model model) throws DefaultException {
-        User user = loginController.getProfile((int) request.getAttribute("id", WebRequest.SCOPE_SESSION)); // Gets ID from session object, uses it to fetch profile.
+        //Being used to remove session user from homepage table list
+        int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
+
+        User user = loginController.getProfile(id); // Gets ID from session object, uses it to fetch profile.
         loginController.packageUser(user, model);
+
+        //Get list of all users to show on homepage table list
+        model.addAttribute("userslist", loginController.getUsers(id));
+        //Get list of all tags being used to show on search drop down list
+        model.addAttribute("tags", loginController.getTags());
+
         return "userpages/profile";
     }
 
@@ -110,15 +119,17 @@ public class WebController {
         //Retrieve values from HTML form via WebRequest
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String gender = request.getParameter("gender");
         String birthDate = request.getParameter("birthDate");
-        String email = request.getParameter("email");
+        String aboutme = request.getParameter("aboutme");
+        String tag = request.getParameter("tag");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
 
         if (password1.equals(password2)) {
-            User user = loginController.createUser(email, password1, "user", phone, firstName, lastName, gender, birthDate);
+            User user = loginController.createUser(email, password1, "user", phone, firstName, lastName, gender, birthDate, aboutme, tag);
             setSessionInfo(request, user);
             return "redirect:/profile";
         } else { // If passwords don't match, an exception is thrown

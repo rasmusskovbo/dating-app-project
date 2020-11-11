@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Create Profile</title>
     <link rel="stylesheet" href="welcomestyle.css">
+    <link rel="stylesheet" href="inputstyle.css">
 </head>
 <body>
 
@@ -56,6 +57,27 @@
                 <div class="input-fullwidth">
                     <h2><label for="birthDate">Birthday</label></h2>
                     <input type="date" id="birthDate" name="birthDate"   value="" required>
+                </div>
+
+                <!-- user description/about me -->
+                <div class="input-fullwidth">
+                    <h2><label for="aboutme">Tell us something about you</label></h2>
+                    <textarea id="aboutme" name="aboutme" placeholder="..." value="" required></textarea>
+                </div>
+
+                <!-- choose tag -->
+                <div class="input-fullwidth">
+                    <h2><label for="tag">Pick one subject you really like</label></h2>
+                    <select id="tag" name="tag">
+                        <option value="Sport">Sport</option>
+                        <option value="Traveling">Traveling</option>
+                        <option value="Cooking">Cooking</option>
+                        <option value="Music">Music</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Dancing">Dancing</option>
+                        <option value="Reading">Reading</option>
+                        <option value="Movies/Series">Movies/Series</option>
+                    </select>
                 </div>
 
                 <!-- password input -->

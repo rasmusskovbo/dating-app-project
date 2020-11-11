@@ -48,6 +48,20 @@ public class UserMapper {
             psUserinfo.setString(6, user.getGender());
             psUserinfo.executeUpdate();
 
+            //Insert into description table
+            String describSQL = "INSERT INTO descriptions (idusers, aboutme) VALUES (?, ?)";
+            PreparedStatement psDescrib = con.prepareStatement(describSQL);
+            psDescrib.setInt(1, user.getId());
+            psDescrib.setString(2, user.getAboutme());
+            psDescrib.executeUpdate();
+
+            //Insert into hashtags table
+            String tagSQL = "INSERT INTO hashtags (idusers, tag) VALUES (?, ?)";
+            PreparedStatement psTag = con.prepareStatement(tagSQL);
+            psTag.setInt(1, user.getId());
+            psTag.setString(2, user.getTag());
+            psTag.executeUpdate();
+
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage()); // TODO Fejlmeddelelse skal returneres til site via model og thymeleaf
         }
@@ -107,24 +121,66 @@ public class UserMapper {
         }
     }
 
-    public User getProfile(int id) throws DefaultException {
+    public ArrayList<User> getUsers(int id) throws DefaultException { // Evt skal søge parametre ind her
         try {
+
+            User sessionUser = getProfile(id);
+            int sessionUserId = sessionUser.getId();
+
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
-                    "JOIN logininfo using (idusers) " +
-                    "JOIN userinfo using (idusers) " +
-                    "WHERE idusers = ?";
+                    "JOIN userinfo USING (idusers) JOIN descriptions USING (idusers) JOIN hashtags USING (idusers)" + //evt flere linjer for at trække billede med også. pt ingen billede
+                    ";";
             PreparedStatement ps = con.prepareStatement(SQL);
-            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            ArrayList<User> users = new ArrayList<>();
+            while (rs.next()) {
+                int idUserDB = rs.getInt("idusers");
                 User user = new User(
                         rs.getString("role"),
                         rs.getString("phone"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
                         rs.getString("gender"),
-                        rs.getString("birthDate")
+                        rs.getString("birthDate"),
+                        rs.getString("aboutme"),
+                        rs.getString("tag")
+                );
+
+                if (sessionUserId != idUserDB) {
+                    users.add(user);
+                }
+            }
+            return users;
+        }   catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    public User getProfile(int id) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = ""SELECT * FROM users " +
+            "JOIN logininfo using (idusers) " +
+                    "JOIN userinfo using (idusers) " +
+                    "JOIN hashtags using (idusers)" +
+                    "JOIN descriptions using (idusers)" +
+                    "WHERE idusers = ?";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User(
+                        rs.getString("email"),
+                        rs.getString("pword"),
+                        rs.getString("role"),
+                        rs.getString("phone"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("gender"),
+                        rs.getString("birthDate"),
+                        rs.getString("aboutme"),
+                        rs.getString("tag")
                 );
 
                 // Check for pictures separately:
@@ -153,6 +209,25 @@ public class UserMapper {
                 throw new DefaultException("Could not validate user");
             }
         }  catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    public ArrayList<String> getTags() throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "SELECT tag FROM hashtags";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<String> tags = new ArrayList<>();
+            while (rs.next()) {
+                String tag = rs.getString("tag");
+                if (!tags.contains(tag)) {
+                    tags.add(tag);
+                }
+            }
+            return tags;
+        } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
         }
     }

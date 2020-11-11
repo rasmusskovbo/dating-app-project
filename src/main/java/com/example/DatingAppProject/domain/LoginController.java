@@ -64,6 +64,14 @@ public class LoginController {
             return facade.getPicture(3);
         }
 
+    public ArrayList<User> getUsers(int id) throws DefaultException {
+        return facade.getUsers(id);
+    }
+
+    public ArrayList<String> getTags() throws DefaultException{
+        return facade.getTags();
+    }
+
 }
 
 
