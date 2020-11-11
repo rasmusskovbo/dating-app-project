@@ -23,4 +23,6 @@ public interface DataFacade {
 
     public Blob getPicture(int id) throws SQLException, IOException;
 
+    public ArrayList<String> getTags() throws DefaultException;
+
 }

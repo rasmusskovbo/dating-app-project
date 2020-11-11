@@ -55,12 +55,33 @@ public class UserMapper {
             psDescrib.setString(2, user.getAboutme());
             psDescrib.executeUpdate();
 
-            //Insert into hashtags table
-            String tagSQL = "INSERT INTO hashtags (idusers, tag) VALUES (?, ?)";
+            //Check if hashtag exists in the system:
+            String tagSQL = "SELECT * FROM hashtags;";
             PreparedStatement psTag = con.prepareStatement(tagSQL);
-            psTag.setInt(1, user.getId());
-            psTag.setString(2, user.getTag());
-            psTag.executeUpdate();
+            ResultSet rsHashtags = psTag.executeQuery();
+            boolean hasHashtag = false;
+            int hashtagID = 0;
+            while (rsHashtags.next()) {
+                if (rsHashtags.getString("tag").equals(user.getTag())) {
+                    hasHashtag = true;
+                    hashtagID = rsHashtags.getInt("idhashtags");
+                }
+            }
+            String insertTagSQL = "";
+            if (!hasHashtag) { // If hashtag isnt present, create hashtag
+                insertTagSQL = "INSERT INTO hashtags (tag) VALUE (?)";
+                PreparedStatement psInsertTag = con.prepareStatement(insertTagSQL, Statement.RETURN_GENERATED_KEYS);
+                psInsertTag.setString(1, user.getTag());
+                psInsertTag.executeUpdate();
+                ResultSet tagID = psInsertTag.getGeneratedKeys();
+                tagID.next();
+                hashtagID = tagID.getInt(1);
+            }            // establish connection
+            insertTagSQL = "INSERT INTO useshashtags (idusers, idhashtags) VALUE (?, ?)";
+            PreparedStatement psAppendTag = con.prepareStatement(insertTagSQL);
+            psAppendTag.setInt(1, id);
+            psAppendTag.setInt(2, hashtagID);
+            psAppendTag.executeUpdate();
 
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage()); // TODO Fejlmeddelelse skal returneres til site via model og thymeleaf
@@ -129,8 +150,9 @@ public class UserMapper {
 
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
-                    "JOIN userinfo USING (idusers) JOIN descriptions USING (idusers) JOIN hashtags USING (idusers)" + //evt flere linjer for at trække billede med også. pt ingen billede
-                    ";";
+                    "JOIN userinfo USING (idusers) " +
+                    "JOIN descriptions USING (idusers) " +
+                    "JOIN useshashtags USING (idusers);"; //evt flere linjer for at trække billede med også. pt ingen billede
             PreparedStatement ps = con.prepareStatement(SQL);
             ResultSet rs = ps.executeQuery();
             ArrayList<User> users = new ArrayList<>();
@@ -160,11 +182,12 @@ public class UserMapper {
     public User getProfile(int id) throws DefaultException {
         try {
             Connection con = DBManager.getConnection();
-            String SQL = ""SELECT * FROM users " +
-            "JOIN logininfo using (idusers) " +
+            String SQL = "SELECT * FROM users " +
+                    "JOIN logininfo using (idusers) " +
                     "JOIN userinfo using (idusers) " +
-                    "JOIN hashtags using (idusers)" +
-                    "JOIN descriptions using (idusers)" +
+                    "JOIN useshashtags using (idusers) " +
+                    "JOIN descriptions using (idusers) " +
+                    "JOIN hashtags using (idhashtags) " +
                     "WHERE idusers = ?";
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setInt(1, id);

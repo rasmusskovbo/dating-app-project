@@ -20,8 +20,6 @@ public class DataFacadeImpl implements DataFacade {
 
 
     public User createUser(User user) throws DefaultException  {
-        System.out.println("USER BEFORE SQL:");
-        System.out.println(user.toString());
         userMapper.createUser(user);
         return user;
     }
@@ -44,6 +42,10 @@ public class DataFacadeImpl implements DataFacade {
 
     public ArrayList<User> getUsers(int id) throws DefaultException {
         return userMapper.getUsers(id);
+    }
+
+    public ArrayList<String> getTags() throws DefaultException{
+        return userMapper.getTags();
     }
 
 

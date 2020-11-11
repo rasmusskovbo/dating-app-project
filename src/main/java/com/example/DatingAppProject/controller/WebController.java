@@ -88,10 +88,8 @@ public class WebController {
         User user = loginController.getProfile(id); // Gets ID from session object, uses it to fetch profile.
         loginController.packageUser(user, model);
 
-        //Get list of all users to show on homepage table list
-        model.addAttribute("userslist", loginController.getUsers(id));
-        //Get list of all tags being used to show on search drop down list
-        model.addAttribute("tags", loginController.getTags());
+
+        System.out.println(user.toString());
 
         return "userpages/profile";
     }

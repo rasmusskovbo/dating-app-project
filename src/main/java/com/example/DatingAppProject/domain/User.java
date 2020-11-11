@@ -48,7 +48,7 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    //For userList
+    // Overloaded constructor for user list
     public User(String role, String phone, String firstName, String lastName, String gender, String birthDate, String aboutme, String tag) {
         this.role = role;
         this.phone = phone;
@@ -156,14 +156,6 @@ public class User {
         this.tag = tag;
     }
 
-    public String getProfilePictureURL() {
-        return profilePictureURL;
-    }
-
-    public void setProfilePictureURL(String profilePictureURL) {
-        this.profilePictureURL = profilePictureURL;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -176,6 +168,9 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", birthDate='" + birthDate + '\'' +
+                ", profilePictureURL='" + profilePictureURL + '\'' +
+                ", aboutme='" + aboutme + '\'' +
+                ", tag='" + tag + '\'' +
                 '}';
     }
 }
