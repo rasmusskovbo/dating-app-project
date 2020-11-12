@@ -110,7 +110,7 @@ public class UserMapper {
         }
     }
 
-    // Segmen
+    // Segment
     public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
         if (segment.equals("searchTag")) {
             try {
@@ -221,82 +221,6 @@ public class UserMapper {
             throw new DefaultException("No segment chosen");
         }
     }
-
-    // OLD GET USER FUNCTIONS
-    /*
-    public ArrayList<User> getUsers(String searchTag, int id) throws DefaultException {
-        try {
-            Connection con = DBManager.getConnection();
-            String SQL = "SELECT * FROM users " +
-            "JOIN userinfo USING (idusers) " +
-            "JOIN logininfo USING (idusers) " +
-            "JOIN descriptions USING (idusers) " +
-            "JOIN useshashtags USING (idusers) " +
-            "JOIN hashtags USING (idhashtags) " +
-            "WHERE tag = ? AND idusers != ?;";
-            PreparedStatement ps = con.prepareStatement(SQL);
-            ps.setString(1, searchTag);
-            ps.setInt(2, id);
-            ResultSet rs = ps.executeQuery();
-            ArrayList<User> users = new ArrayList<>();
-            while (rs.next()) {
-                User user = new User(
-                        rs.getString("role"),
-                        rs.getString("phone"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("gender"),
-                        rs.getString("birthDate"),
-                        rs.getString("aboutme"),
-                        rs.getString("tag")
-                );
-                users.add(user);
-            }
-            return users;
-        }   catch (SQLException ex) {
-            throw new DefaultException(ex.getMessage());
-        }
-    }
-
-    // Segments users based on ID
-    public ArrayList<User> getUsers(int id) throws DefaultException {
-        try {
-
-            int sessionUserId = id;
-
-            Connection con = DBManager.getConnection();
-            String SQL = "SELECT * FROM users " +
-                    "JOIN userinfo USING (idusers) " +
-                    "JOIN descriptions USING (idusers) " +
-                    "JOIN useshashtags USING (idusers) " +
-                    "JOIN hashtags USING (idhashtags);"; //evt flere linjer for at trække billede med også. pt ingen billede
-            PreparedStatement ps = con.prepareStatement(SQL);
-            ResultSet rs = ps.executeQuery();
-            ArrayList<User> users = new ArrayList<>();
-            while (rs.next()) {
-                int idUserDB = rs.getInt("idusers");
-                User user = new User(
-                        rs.getString("role"),
-                        rs.getString("phone"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("gender"),
-                        rs.getString("birthDate"),
-                        rs.getString("aboutme"),
-                        rs.getString("tag")
-                );
-
-                if (sessionUserId != idUserDB) {
-                    users.add(user);
-                }
-            }
-            return users;
-        }   catch (SQLException ex) {
-            throw new DefaultException(ex.getMessage());
-        }
-    }
-
-     */
 
     public User getProfile(int id) throws DefaultException {
         try {
