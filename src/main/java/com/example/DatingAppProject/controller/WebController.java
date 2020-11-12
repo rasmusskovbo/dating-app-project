@@ -81,6 +81,13 @@ public class WebController {
 
  */
 
+    @PostMapping("searchUsers")
+    public String searchUsers(WebRequest request) throws DefaultException {
+        String searchTag = request.getParameter("searchTag");
+        // TODO Reload profile og kun returnere arraylist med users der matcher tags.
+        return "";
+    }
+
     @PostMapping("editProfile")
     public String editProfile(WebRequest request) throws DefaultException {
         String firstName = request.getParameter("firstName");
@@ -114,7 +121,6 @@ public class WebController {
 
         User user = loginController.getProfile(id); // Gets ID from session object, uses it to fetch profile.
         loginController.packageUser(user, model);
-        System.out.println(user.toString());
 
         return "userpages/profile";
     }
@@ -143,6 +149,12 @@ public class WebController {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
+        boolean isCorrect = loginController.stringValidation(email, "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
+        if (!isCorrect) {
+            model.addAttribute("errorMsg", "Please enter a valid e-mail");
+            isCorrect = false;
+            return "createProfile";
+        }
         String phone = request.getParameter("phone");
         String gender = request.getParameter("gender");
         String birthDate = request.getParameter("birthDate");
@@ -159,6 +171,8 @@ public class WebController {
             throw new DefaultException("The two passwords did not match");
         }
     }
+
+    // Exception handler
 
     @PostMapping("/testUpload")
     public String getPicture(@RequestParam("file")MultipartFile multipartFile) throws SQLException, IOException {
