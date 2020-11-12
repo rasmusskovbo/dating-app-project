@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Message</title>
@@ -11,10 +11,35 @@
 <div class="chat-container">
     <div class="search-container">
         <input type="text" placeholder="search"/>
-
     </div>
+
     <div class=" conversation-list">
         <div class="conversation active">
+            <img src="images/rose.jpg" alt="Profile name"/>
+            <div class="title-text">
+                <h2 th:text="${getUser.firstName}"></h2>
+                <h2 th:text="${getUser.lastName}"></h2>
+            </div>
+            <div class="created-date">
+                Apr 16
+            </div>
+            <div class="conversation-message">
+                This is a message
+            </div>
+        </div>
+        <div class="conversation">
+            <img src="images/rose.jpg" alt="Profile name"/>
+            <div class="title-text">
+                Profile Name
+            </div>
+            <div class="created-date">
+                Apr 16
+            </div>
+            <div class="conversation-message">
+                This is a message
+            </div>
+        </div>
+        <div class="conversation">
             <img src="images/rose.jpg" alt="Profile name"/>
             <div class="title-text">
                 Profile Name
@@ -24,23 +49,167 @@
             </div>
 
             <div class="conversation-message">
+                yes.. its fine..
+            </div>
+        </div>
+        <div class="conversation">
+            <img src="images/rose.jpg" alt="Profile name"/>
+            <div class="title-text">
+               Hi long time..
+            </div>
+            <div class="created-date">
+                Apr 16
+            </div>
+            <div class="conversation-message">
                 This is a message
+            </div>
+        </div>
+        <div class="conversation">
+            <img src="images/rose.jpg" alt="Profile name"/>
+            <div class="title-text">
+                Katrine Hansen
+            </div>
+            <div class="created-date">
+                Apr 16
+            </div>
+            <div class="conversation-message">
+                see you..
+            </div>
+        </div>
+        <div class="conversation">
+            <img src="images/rose.jpg" alt="Profile name"/>
+            <div class="title-text">
+              kasper
+            </div>
+            <div class="created-date">
+                Apr 16
+            </div>
+            <div class="conversation-message">
+                This is a message
+            </div>
+        </div>
+        <div class="conversation">
+            <img src="images/rose.jpg" alt="Profile name"/>
+            <div class="title-text">
+                Trine jakobsen
+            </div>
+            <div class="created-date">
+                Apr 16
+            </div>
+            <div class="conversation-message">
+                ok .. thats fine.
             </div>
         </div>
     </div>
 
+
     <div class="new-message-container">
         <a href="#">+</a>
-
     </div>
     <div class="chat-title">
         <span>Profile Name</span>
-
         <img src="images/trash-logo.png" alt="Delete Conversation"/>
 
     </div>
     <div class=" chat-message-list">
-
+        <div class="message-row you-message">
+            <div class="message-content">
+             <div class="message-text">ok then</div>
+             <div class="message-time">Apr 16</div>
+           </div>
+        </div>
+        <div class="message-row other-message">
+            <div class="message-content">
+               <img src="images/rose.jpg" alt="Profile name"/>
+               <div class="message-text">jeg skriver lige en masse tekst for at
+                teste størrelsen, så håber det fungere som det skal.</div>
+               <div class="message-time">Apr 16</div>
+           </div>
+        </div>
+        <div class="message-row you-message">
+            <div class="message-content">
+                <div class="message-text">ok then</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row other-message">
+            <div class="message-content">
+                <img src="images/rose.jpg" alt="Profile name"/>
+                <div class="message-text">jeg skriver lige en masse tekst for at
+                    teste størrelsen, så håber det fungere som det skal.</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row you-message">
+            <div class="message-content">
+                <div class="message-text">ok then</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row other-message">
+            <div class="message-content">
+                <img src="images/rose.jpg" alt="Profile name"/>
+                <div class="message-text">jeg skriver lige en masse tekst for at
+                    teste størrelsen, så håber det fungere som det skal.</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row you-message">
+            <div class="message-content">
+                <div class="message-text">ok then</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row other-message">
+            <div class="message-content">
+                <img src="images/rose.jpg" alt="Profile name"/>
+                <div class="message-text">jeg skriver lige en masse tekst for at
+                    teste størrelsen, så håber det fungere som det skal.</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row you-message">
+            <div class="message-content">
+                <div class="message-text">ok then</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row other-message">
+            <div class="message-content">
+                <img src="images/rose.jpg" alt="Profile name"/>
+                <div class="message-text">jeg skriver lige en masse tekst for at
+                    teste størrelsen, så håber det fungere som det skal.</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row you-message">
+            <div class="message-content">
+                <div class="message-text">ok then</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row other-message">
+            <div class="message-content">
+                <img src="images/rose.jpg" alt="Profile name"/>
+                <div class="message-text">jeg skriver lige en masse tekst for at
+                    teste størrelsen, så håber det fungere som det skal.</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row you-message">
+            <div class="message-content">
+                <div class="message-text">ok then</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
+        <div class="message-row other-message">
+            <div class="message-content">
+                <img src="images/rose.jpg" alt="Profile name"/>
+                <div class="message-text">jeg skriver lige en masse tekst for at
+                    teste størrelsen, så håber det fungere som det skal.</div>
+                <div class="message-time">Apr 16</div>
+            </div>
+        </div>
     </div>
     <div class="chat-form">
         <img src="images/attachment-logo.jpg" alt="Add Attachment"/>
