@@ -48,7 +48,7 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    // Overloaded constructor for user list
+    // Overloaded constructor for user lists
     public User(String role, String phone, String firstName, String lastName, String gender, String birthDate, String aboutme, String tag) {
         this.role = role;
         this.phone = phone;

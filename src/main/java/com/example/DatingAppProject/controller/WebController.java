@@ -47,8 +47,11 @@ public class WebController {
     }
 
     @GetMapping("/admin")
-    public String admin(Model model) throws DefaultException {
-        loginController.getUsers(model);
+    public String admin(WebRequest request, Model model) throws DefaultException {
+        // Gets admin id and shows all other users except admin
+        int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
+        model.addAttribute("userlist", loginController.getUsers(id));
+
         return "userpages/admin";
     }
 
@@ -87,10 +90,19 @@ public class WebController {
  */
 
     @PostMapping("searchUsers")
-    public String searchUsers(WebRequest request) throws DefaultException {
+    public String searchUsers(WebRequest request, Model model) throws DefaultException {
         String searchTag = request.getParameter("searchTag");
-        // TODO Reload profile og kun returnere arraylist med users der matcher tags.
-        return "";
+        System.out.println("SEARCH TAG IN WEBC: "+searchTag);
+
+        // Gets active user and packages
+        int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
+        User user = loginController.getProfile(id); // Gets ID from session object, uses it to fetch profile.
+        loginController.packageUser(user, model);
+
+        // Packages all other users except for active one.
+        model.addAttribute("userlist", loginController.getUsers(searchTag)); // Only lists users with tags (currently could be yourself as well
+
+        return "userpages/profile";
     }
 
     @PostMapping("editProfile")
@@ -141,6 +153,9 @@ public class WebController {
 
         User user = loginController.getProfile(id); // Gets ID from session object, uses it to fetch profile.
         loginController.packageUser(user, model);
+
+        // Packages all other users except for active one.
+        model.addAttribute("userlist", loginController.getUsers(user.getId()));
 
         return "userpages/profile";
     }
@@ -198,8 +213,6 @@ public class WebController {
             }
         }
     }
-
-    // Exception handler
 
     @PostMapping("/testUpload")
     public String getPicture(@RequestParam("file")MultipartFile multipartFile) throws SQLException, IOException {

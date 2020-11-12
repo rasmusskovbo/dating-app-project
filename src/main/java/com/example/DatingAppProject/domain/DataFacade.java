@@ -17,7 +17,7 @@ public interface DataFacade {
 
     public void editProfile(User user) throws DefaultException;
 
-    public ArrayList<User> getUsers() throws DefaultException;
+    public ArrayList<User> getUsers(String searchTag) throws DefaultException;
 
     public ArrayList<User> getUsers(int id) throws DefaultException;
 

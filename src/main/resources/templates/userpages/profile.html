@@ -194,11 +194,13 @@
     <!-- search drop down option-->
     <div class="search-box">
         <h1>Likes</h1>
-        <select>
-            <option th:each="tag : ${tags}" th:value="${tag}"><p th:text="${tag}"></p></option>
-        </select>
-        <input type="submit" class="button" value="submit">
-    </div>
+        <form method="POST" action="/searchUsers" name="search">
+            <select id="searchTag" name="searchTag">
+                <option th:each="tag : ${tags}" th:value="${tag}"><p th:text="${tag}"></p></option>
+            </select>
+            <input type="submit" class="button" value="submit">
+        </form>
+        </div>
 </div>
 </div>
 

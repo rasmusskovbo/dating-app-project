@@ -113,26 +113,33 @@ public class UserMapper {
         }
     }
 
-    public ArrayList<User> getUsers() throws DefaultException { // Evt skal søge parametre ind her
+    // TODO merge the two identical functions with dynamic input selection
+    // Segments user based on hashtag
+    public ArrayList<User> getUsers(String searchTag) throws DefaultException {
         try {
+            System.out.println("THIS IS THE SEARCH TAG: "+ searchTag);
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
-                    "JOIN logininfo using (idusers)" +
-                    "JOIN userinfo USING (idusers) " + //evt flere linjer for at trække billede med også. pt ingen billede
-                    ";";
+            "JOIN userinfo USING (idusers) " +
+            "JOIN logininfo USING (idusers) " +
+            "JOIN descriptions USING (idusers) " +
+            "JOIN useshashtags USING (idusers) " +
+            "JOIN hashtags USING (idhashtags) " +
+            "WHERE tag = ?;";
             PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, searchTag);
             ResultSet rs = ps.executeQuery();
             ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User(
-                        rs.getString("email"),
-                        rs.getString("pword"),
                         rs.getString("role"),
                         rs.getString("phone"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
                         rs.getString("gender"),
-                        rs.getString("birthDate")
+                        rs.getString("birthDate"),
+                        rs.getString("aboutme"),
+                        rs.getString("tag")
                 );
                 users.add(user);
             }
@@ -142,12 +149,11 @@ public class UserMapper {
         }
     }
 
-
-    public ArrayList<User> getUsers(int id) throws DefaultException { // Evt skal søge parametre ind her
+    // Segments users based on ID
+    public ArrayList<User> getUsers(int id) throws DefaultException {
         try {
 
-            User sessionUser = getProfile(id);
-            int sessionUserId = sessionUser.getId();
+            int sessionUserId = id;
 
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
