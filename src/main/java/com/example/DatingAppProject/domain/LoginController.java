@@ -30,6 +30,10 @@ public class LoginController {
             return user;
         }
 
+    public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
+        return facade.getUsers(searchTag, id, segment);
+    }
+
         public User getProfile(int id) throws DefaultException {
             return facade.getProfile(id);
         }
@@ -61,13 +65,7 @@ public class LoginController {
             return facade.getPicture(3);
         }
 
-        public ArrayList<User> getUsers(int id) throws DefaultException {
-            return facade.getUsers(id);
-        }
 
-        public ArrayList<User> getUsers(String searchTag, int id) throws DefaultException {
-                return facade.getUsers(searchTag, id);
-        }
 
         public ArrayList<String> getTags() throws DefaultException{
             return facade.getTags();

@@ -50,7 +50,7 @@ public class WebController {
     public String admin(WebRequest request, Model model) throws DefaultException {
         // Gets admin id and shows all other users except admin
         int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
-        model.addAttribute("userlist", loginController.getUsers(id));
+        model.addAttribute("userlist", loginController.getUsers("", id, "admin"));
 
         return "userpages/admin";
     }
@@ -99,7 +99,7 @@ public class WebController {
         loginController.packageUser(user, model);
 
         // Packages all other users except for active one.
-        model.addAttribute("userlist", loginController.getUsers(searchTag, id)); //lists all users with chosen tag excluding active user
+        model.addAttribute("userlist", loginController.getUsers(searchTag, id, "searchTag")); //lists all users with chosen tag excluding active user
 
         return "userpages/profile";
     }
@@ -154,7 +154,7 @@ public class WebController {
         loginController.packageUser(user, model);
 
         // Packages all other users except for active one.
-        model.addAttribute("userlist", loginController.getUsers(user.getId()));
+        model.addAttribute("userlist", loginController.getUsers("", user.getId(), "profile"));
 
         return "userpages/profile";
     }

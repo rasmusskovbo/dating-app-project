@@ -3,14 +3,11 @@ package com.example.DatingAppProject.data;
 import com.example.DatingAppProject.domain.DefaultException;
 import com.example.DatingAppProject.domain.User;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.transform.Result;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Base64;
 
 // Snakker med databasen, ift user queries
 public class UserMapper {
@@ -113,11 +110,122 @@ public class UserMapper {
         }
     }
 
-    // TODO merge the two identical functions with dynamic input selection
-    // Segments user based on hashtag
+    // Segmen
+    public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
+        if (segment.equals("searchTag")) {
+            try {
+                Connection con = DBManager.getConnection();
+
+                String SQL = "SELECT * FROM users " +
+                        "JOIN userinfo USING (idusers) " +
+                        "JOIN logininfo USING (idusers) " +
+                        "JOIN descriptions USING (idusers) " +
+                        "JOIN useshashtags USING (idusers) " +
+                        "JOIN hashtags USING (idhashtags) " +
+                        "WHERE tag = ? AND idusers != ?;";
+                PreparedStatement ps = con.prepareStatement(SQL);
+                ps.setString(1, searchTag);
+                ps.setInt(2, id);
+                ResultSet rs = ps.executeQuery();
+
+                return unpackResultSet(rs, "userView");
+            }   catch (SQLException ex) {
+                throw new DefaultException(ex.getMessage());
+            }
+        } else if (segment.equals("profile")) {
+            try {
+                Connection con = DBManager.getConnection();
+
+                String SQL = "SELECT * FROM users " +
+                        "JOIN userinfo USING (idusers) " +
+                        "JOIN descriptions USING (idusers) " +
+                        "JOIN useshashtags USING (idusers) " +
+                        "JOIN hashtags USING (idhashtags) " +
+                        "WHERE idusers != ?;";
+                PreparedStatement ps = con.prepareStatement(SQL);
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+
+                return unpackResultSet(rs, "userView");
+
+            }   catch (SQLException ex) {
+                throw new DefaultException(ex.getMessage());
+            }
+        } else if (segment.equals("admin")) {
+            try {
+                Connection con = DBManager.getConnection();
+
+                String SQL = "SELECT * FROM users " +
+                        "JOIN userinfo USING (idusers) " +
+                        "JOIN descriptions USING (idusers) " +
+                        "JOIN logininfo USING (idusers) " +
+                        "JOIN useshashtags USING (idusers) " +
+                        "JOIN hashtags USING (idhashtags) " +
+                        "JOIN pictures USING (idusers) " +
+                        "WHERE idusers != ?;";
+                PreparedStatement ps = con.prepareStatement(SQL);
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+
+                return unpackResultSet(rs, "adminView");
+
+            } catch (SQLException e) {
+                throw new DefaultException(e.getMessage());
+            }
+        } else {
+            throw new DefaultException("No segment chosen");
+        }
+    }
+
+    private ArrayList<User> unpackResultSet(ResultSet rs, String segment) throws SQLException, DefaultException {
+        ArrayList<User> users = new ArrayList<>();
+        if (segment.equals("userView")) {
+
+            while (rs.next()) {
+                int idUserDB = rs.getInt("idusers");
+                User user = new User(
+                        rs.getString("role"),
+                        rs.getString("phone"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("gender"),
+                        rs.getString("birthDate"),
+                        rs.getString("aboutme"),
+                        rs.getString("tag")
+                );
+                users.add(user);
+            }
+            return users;
+        } else if (segment.equals("adminView")) {
+
+            while (rs.next()) {
+                int idUserDB = rs.getInt("idusers");
+                User user = new User(
+                        rs.getInt("idusers"),
+                        rs.getString("email"),
+                        rs.getString("pword"),
+                        rs.getString("role"),
+                        rs.getString("phone"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("gender"),
+                        rs.getString("birthDate"),
+                        rs.getString("profilePictureURL"),
+                        rs.getString("aboutme"),
+                        rs.getString("tag")
+                );
+                users.add(user);
+            }
+            return users;
+        } else {
+            throw new DefaultException("No segment chosen");
+        }
+    }
+
+    // OLD GET USER FUNCTIONS
+    /*
     public ArrayList<User> getUsers(String searchTag, int id) throws DefaultException {
         try {
-            System.out.println("THIS IS THE SEARCH TAG: "+ searchTag);
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
             "JOIN userinfo USING (idusers) " +
@@ -187,6 +295,8 @@ public class UserMapper {
             throw new DefaultException(ex.getMessage());
         }
     }
+
+     */
 
     public User getProfile(int id) throws DefaultException {
         try {

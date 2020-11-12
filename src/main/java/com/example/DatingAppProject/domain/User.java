@@ -38,14 +38,19 @@ public class User {
         this.role = role;
     }
 
-    // Overloaded constructor for retrieving userinfo
-    public User(String role, String phone, String firstName, String lastName, String gender, String birthDate) {
+    public User(int id, String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate, String profilePictureURL, String aboutme, String tag) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
         this.role = role;
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.birthDate = birthDate;
+        this.profilePictureURL = profilePictureURL;
+        this.aboutme = aboutme;
+        this.tag = tag;
     }
 
     // Overloaded constructor for user lists
