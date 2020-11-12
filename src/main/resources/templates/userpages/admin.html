@@ -20,8 +20,10 @@
     </div>
 
 <div class="data">
-    <div style="text-align: center;"> <Br><h1> Text felt.. </h1>
-
+    <div style="text-align: center">
+        <ul th:each="user : ${users}">
+            <li><h1  th:text="${user.email}"></h1><h2 th:text="${user.firstName}"></h2><h2 th:text="${user.lastName}"></h2></li>
+        </ul>
     </div>
 </div>
 <div class="footer">

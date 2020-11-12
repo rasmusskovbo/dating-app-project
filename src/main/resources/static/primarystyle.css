@@ -57,6 +57,7 @@ img{
 .my-profile h1{
     color: white;
     font-size: 1.5vw;
+    text-transform: capitalize ;
     text-align: center;
     padding: 0.5vw;
     background-color: #520404;
@@ -100,99 +101,92 @@ img{
 
 /*Main content -------------------------------------------------------------------------------------------------------*/
 .main-content{
-    height: auto;
-    top:8vw;
+    height: auto;  /*AUTO*/
+    top:7vw;
     position: relative;
     margin: auto;
+    width: 100%;
+}
+
+.table-content {
     width: 63%;
+    height: auto;
+    margin: auto;
     border-right:0.3vw solid black;
     border-left:0.3vw solid black;
 }
 
-.container{
+.table-content table {
+    table-layout: fixed;
+    width: 100%;
     height: auto;
-    width: 80%;
-    position: relative;
-    margin: auto;
-}
-
-.flex-container{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-evenly;
-}
-
-.user-content{
-    height: 20vw;
-    width: 15vw;
-    margin: 3vw;
-    padding: 1vw 0 1vw;
-    box-shadow: 5px 10px #888888;
-    border:0.2vw solid black;
+    border-spacing: 2vw;
+    border-collapse: separate;
     background: linear-gradient(to bottom, #000000 0%, #450303 100%);
 }
 
+
+
+.table-content thead, .table-content tfoot {
+    width: auto;
+    height: 3vw;
+    font-size: 1.5vw;
+    font-variant: small-caps;
+    color: black;
+    empty-cells: hide;
+}
+
+
+.table-content tbody {
+    width: auto;
+    height: auto;
+    color: white;
+}
+
+.table-content h1 {
+    font-size: 2vw;
+    color: white;
+    border-bottom: 0.2vw solid #520404;
+}
+
+.table-content h2 {
+    font-size: 1.5vw;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.table-content h3 {
+    font-size: 1vw;
+    text-align: center;
+    background-color: lightgray;
+    width: 100%;
+    height: auto;
+    color: black;
+    padding: 0.3vw;
+    border-radius: 50%;
+}
+
 .user-picture{
-    height: 7vw;
-    width: 7vw;
+    height: 8vw;
+    width: 8vw;
     border-radius: 50%;
     margin: auto;
     border:0.2vw solid white;
 }
 
-.user-content h1 {
-    font-size: 1.2vw;
-    color: black;
-    height: auto;
-    width: 100%;
-    text-align: center;
-    margin-top: 0.5vw;
-    background-color: white;
-    margin-bottom: 2vw;
-}
-
-.user-content h2 {
-    font-size: 1vw;
-    color: white;
-    height: auto;
-    width: 30%;
-    text-align: center;
+.user-describtion{
     margin: auto;
-    font-variant: small-caps;
-}
-
-.user-tags{
-    text-align: justify;
-    margin: auto;
-    height:auto;
-    max-height: 3.5vw;
-    width:10vw;
-    border:0.2vw solid black;
+    height:8vw;
+    width:100%;
     background-color: white;
     color: black;
     overflow-y: auto;
-    overflow-x: hidden;
-    padding:0.3vw 1vw;
-    font-size: 1vw;
 }
 
-.user-content-bottom{
-    height: 4.2vw;
-    width: 100%;
-    text-align: center;
-}
-
-.user-content-bottom button{
-    background-color: darkred;
-    font-family: "Arial Black", Gadget, sans-serif;
-    border: none;
-    padding: 0.5vw;
-    color: white;
-    text-decoration: none;
+.user-describtion p {
     font-size: 1vw;
-    margin-top: 1vw;
-    border-radius: 1vw;
-    font-variant: small-caps;
+    word-wrap: break-word;
+    margin: 1vw;
 }
 
 .overlay {
@@ -212,46 +206,41 @@ img{
     opacity: 1;
 }
 
-.popup, .popup2, .popup3, .popup4 {
-    top: 7vw;
+.popup {
+    top: 3vw;
     margin: auto;
     padding: 2vw;
     border-radius: 5px;
-    width: 25%;
-    height: 20vw;
+    width: 35%;
+    height: 30vw;
     position: relative;
     transition: all 1s ease-in-out;
     background-color: white;
+    overflow-x: hidden;
 }
 
 .popup h1 {
     width: 100%;
     height: auto;
-    font-size: 2vw;
+    font-size: 1.5vw;
     margin-top: 1vw;
     margin-bottom: 1vw;
     font-variant: small-caps;
     border-bottom: 0.2vw solid #520404;
+    text-align: center;
 }
 
 .popup-content{
-    margin: auto;
-    height:auto;
-    max-height: 10vw;
-    width:13vw;
+    text-align: center;
     overflow-y: auto;
     overflow-x: hidden;
-    padding:0.3vw 1vw;
+    padding:0.3vw;
 }
 
 .popup-content p {
     font-size: 1vw;
     text-align: justify;
     color: black;
-}
-
-.popup-user-bottom{
-    text-align: center;
 }
 
 .popup .close {
@@ -267,6 +256,10 @@ img{
 
 .popup .close:hover {
     color: darkred;
+}
+
+.button:hover {
+    background-color: #525453;
 }
 
 /*right side search content ------------------------------------------------------------------------------------------*/
@@ -301,7 +294,7 @@ img{
     width: 100%;
 }
 
-h1 {
+.search-box h1 {
     font-size: 1.2vw;
 }
 
@@ -314,76 +307,16 @@ input[type=text], select {
     border:0.2vw solid black;
 }
 
-.tag-list{
-    margin: auto;
-    height:10vw;
-    width:10vw;
-    border:0.2vw solid black;
-    background-color: white;
-    color: black;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-/* Customize the label (the container) */
-.container {
-    text-align: justify;
-    display: block;
-    position: relative;
-    padding-left: 2vw;
-    margin-bottom: 1vw;
-    font-size: 1.2vw;
-    top: 1vw;
-    left: 1vw;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-/* Hide the browser's default checkbox */
-.container input {
-    position: absolute;
-    opacity: 0;
-    height: 0;
-    width: 0;
-}
-
-/* custom checkbox */
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 1.2vw;
-    width: 1.2vw;
-    background-color: white;
-    border:0.2vw solid black;
-}
-
-/* On mouse-hover*/
-.container:hover input ~ .checkmark {
-    background-color: grey;
-}
-
-/* When the checkbox is checked, background */
-.container input:checked ~ .checkmark {
-    background-color: black;
-}
-
-.search-box button, .popup-user-bottom button{
+.table-content button{
     background-color: #520404;
     border: none;
-    padding: 1vw;
+    padding: 0.8vw;
     color: white;
     text-decoration: none;
-    display: inline-block;
     font-size: 1vw;
-    margin: 2vw 1vw;
     border-radius: 1vw;
     font-variant: small-caps;
-}
-
-.search-box button:hover, .user-content button:hover {
-    border:0.2vw solid black;
+    margin-top: 0.5vw;
 }
 
 /*Footer content -----------------------------------------------------------------------------------------------------*/

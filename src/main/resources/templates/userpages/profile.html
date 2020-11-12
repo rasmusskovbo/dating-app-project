@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="primarystyle.css">
+    <link rel="stylesheet" href="inputstyle.css">
     <script src="https://kit.fontawesome.com/00d69adb96.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -19,9 +20,9 @@
     <!-- users profile pic and name-->
     <div class="my-profile">
         <div class="my-picture">
-
-            <img th:src="${profilePictureURL}" alt=" My profile picture" height="100%" width="100%">
-
+            <!--
+            <img src="" alt=" My profile picture" height="100%" width="100%">
+            -->
         </div>
         <h1 th:text="${firstName}"></h1>
         <h1 th:text="${lastName}"></h1>
@@ -30,180 +31,153 @@
 
     <!-- page navigation menu-->
     <div class="sidenav">
-        <a href="/homepage"><i class="fas fa-users"></i></i>Explore</a>
+        <a href="/profile"><i class="fas fa-users"></i></i>Explore</a>
         <a href="/messages"><i class="fas fa-comments"></i>Messages</a>
         <a href="/favorites"><i class="fas fa-heart"></i>Favorites</a>
-        <a href="/editProfile"><i class="fas fa-user-edit"></i>Edit profile</a>
+        <a href="#popup"><i class="fas fa-user-edit"></i>Edit profile</a>
         <a href="/"><i class="fas fa-sign-out-alt"></i></i>Log out</a>
     </div>
 </div>
 
 <!-- main content middle-->
 <div class="main-content">
-    <div class="container">
-        <div class="flex-container">
-
-            <!-- user profile content 1-->
-            <div class="user-content">
-                <div class="user-picture">
-                    <!--
-                    <img src=""
-                         alt="user-pic1" height="100%" width="100%">
-                         -->
-                </div>
-                <h1>Fornavn Efternavn, 30</h1>
-                <h2>likes</h2>
-                <div class="user-tags">
-                    <p>#Lorem ipsum #dolor sit amet
-                        #consectetur #adipiscing #elit
-                    </p>
-                </div>
-                <div class="user-content-bottom">
-                    <a href="#popup"><button class="button">about me</button></a>
-                </div>
-
-                <!-- popup window userinfo 1-->
-                <div id="popup" class="overlay">
-                    <div class="popup">
-                        <h1>about me</h1>
-                        <a class="close" href="#">&times;</a>
-                        <div class="popup-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum</p>
-                        </div>
-                        <div class="popup-user-bottom">
-                            <button class="button"><i class="fas fa-heart"></i></button>
-                            <button class="button"><i class="fas fa-comments"></i></button>
-                        </div>
+    <div class="table-content">
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 8vw"></th>
+                <th colspan="2" style="width: 15vw">
+                    <h1>name</h1>
+                </th>
+                <th style="width: 6vw">
+                    <h1>age</h1>
+                </th>
+                <th style="width: 6vw">
+                    <h1>likes</h1>
+                </th>
+                <th>
+                    <h1>about me</h1>
+                </th>
+                <th style="width: 3vw" colspan="2"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${userlist}">
+                <td class="user-picture">
+                    <img src="https://freesvg.org/img/abstract-user-flat-4.png" width="100%" height="100%">
+                    <!-- Get img from database instead-->
+                </td>
+                <td colspan="2">
+                    <h2 th:text="${user.firstName}"></h2>
+                    <h2 th:text="${user.lastName}"></h2>
+                </td>
+                <td>
+                    <h2 th:text="${user.birthDate}"></h2>
+                </td>
+                <td>
+                    <h3 th:text="${user.tag}"></h3>
+                </td>
+                <td>
+                    <div class="user-describtion">
+                        <p th:text="${user.aboutme}"></p>
                     </div>
-                </div>
-            </div>
+                </td>
+                <td colspan="2">
+                    <button class="button"><i class="fas fa-heart"></i></button>
+                    <button class="button"><i class="fas fa-comments"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-
-            <!-- user profile content 2-->
-            <div class="user-content">
-                <div class="user-picture">
-                    <!--
-                    <img src=""
-                         alt="user-pic1" height="100%" width="100%">
-                         -->
-                </div>
-                <h1>Fornavn Efternavn, 30</h1>
-                <h2>likes</h2>
-                <div class="user-tags">
-                    <p>#Lorem ipsum #dolor sit amet
-                        #consectetur #adipiscing #elit
-                    </p>
-                </div>
-                <div class="user-content-bottom">
-                    <a href="#popup2"><button class="button">about me</button></a>
-                </div>
-
-                <div id="popup2" class="overlay">
-                    <div class="popup">
-                        <h1>about me</h1>
-                        <a class="close" href="#">&times;</a>
-                        <div class="popup-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum</p>
-                        </div>
-                        <div class="popup-user-bottom">
-                            <button class="button"><i class="fas fa-heart"></i></button>
-                            <button class="button"><i class="fas fa-comments"></i></button>
-                        </div>
+<!-- edit profile modal window-->
+<div id="popup" class="overlay">
+    <div class="popup">
+        <h1>Edit profile</h1>
+        <a class="close" href="#">&times;</a>
+        <div class="popup-content">
+            <form name="editProfile" action="/editProfile" method="POST">
+                <div class="flex-container">
+                    <div class="input-halfwidth">
+                        <h2><label for="firstName">First Name</label></h2>
+                        <input type="text" id="firstName" name="firstName" th:value="${firstName}" readonly>
                     </div>
-                </div>
-            </div>
 
-            <!--user profile content 3-->
-            <div class="user-content">
-                <div class="user-picture">
-                    <!--
-                    <img src=""
-                         alt="user-pic1" height="100%" width="100%">
-                         -->
-                </div>
-                <h1>Fornavn Efternavn, 30</h1>
-                <h2>likes</h2>
-                <div class="user-tags">
-                    <p>#Lorem ipsum #dolor sit amet
-                        #consectetur #adipiscing #elit
-                    </p>
-                </div>
-                <div class="user-content-bottom">
-                    <a href="#popup3"><button class="button">about me</button></a>
-                </div>
-
-                <div id="popup3" class="overlay">
-                    <div class="popup">
-                        <h1>about me</h1>
-                        <a class="close" href="#">&times;</a>
-                        <div class="popup-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum</p>
-                        </div>
-                        <div class="popup-user-bottom">
-                            <button class="button"><i class="fas fa-heart"></i></button>
-                            <button class="button"><i class="fas fa-comments"></i></button>
-                        </div>
+                    <!-- last name input -->
+                    <div class="input-halfwidth">
+                        <h2><label for="lastName">Last name</label></h2>
+                        <input type="text" id="lastName" name="lastName" th:value="${lastName}" readonly>
                     </div>
-                </div>
-            </div>
 
-            <!--user profile content 4-->
-            <div class="user-content">
-                <div class="user-picture">
-                    <!--
-                    <img src=""
-                         alt="user-pic1" height="100%" width="100%">
-                         -->
-                </div>
-                <h1>Fornavn Efternavn, 30</h1>
-                <h2>likes</h2>
-                <div class="user-tags">
-                    <p>#Lorem ipsum #dolor sit amet
-                        #consectetur #adipiscing #elit
-                    </p>
-                </div>
-                <div class="user-content-bottom">
-                    <a href="#popup4"><button class="button">about me</button></a>
-                </div>
-
-                <div id="popup4" class="overlay">
-                    <div class="popup">
-                        <h1>about me</h1>
-                        <a class="close" href="#">&times;</a>
-                        <div class="popup-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum</p>
-                        </div>
-                        <div class="popup-user-bottom">
-                            <button class="button"><i class="fas fa-heart"></i></button>
-                            <button class="button"><i class="fas fa-comments"></i></button>
-                        </div>
+                    <!-- email input -->
+                    <div class="input-fullwidth">
+                        <h2><label for="email">E-mail</label></h2>
+                        <input type="text" id="email" name="email" th:value="${email}">
                     </div>
+
+                    <div class="input-fullwidth">
+                        <h2><label for="phone">Phone Number </label></h2>
+                        <input type="number" id="phone" name="phone" class="no-arrow" th:value="${phone}">
+                    </div>
+
+                    <!-- choose gender -->
+                    <div class="input-fullwidth">
+                        <h2><label for="gender">Gender</label></h2>
+                        <input type="text" id="gender" name="gender" th:value="${gender}" readonly>
+                    </div>
+
+                    <!-- choose date of birth-->
+                    <div class="input-fullwidth">
+                        <h2><label for="birthDate">Birthday</label></h2>
+                        <input type="date" id="birthDate" name="birthDate" th:value="${birthDate}" readonly>
+                    </div>
+
+                    <!-- user description/about me -->
+                    <div class="input-fullwidth">
+                        <h2><label for="aboutme">About You</label></h2>
+                        <textarea id="aboutme" name="aboutme" th:text="${aboutme}"></textarea>
+                    </div>
+
+                    <!-- choose tag -->
+                    <div class="input-fullwidth">
+                        <h2><label for="tag">Pick one subject you really like</label></h2>
+                        <select id="tag" name="tag">
+                            <option value="Sport">Sport</option>
+                            <option value="Traveling">Traveling</option>
+                            <option value="Cooking">Cooking</option>
+                            <option value="Music">Music</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="Dancing">Dancing</option>
+                            <option value="Reading">Reading</option>
+                            <option value="Movies/Series">Movies/Series</option>
+                        </select>
+                    </div>
+
+                    <!-- password input -->
+                    <div class="input-halfwidth">
+                        <h2><label for="password1">New Password</label></h2>
+                        <input type="password" id="password1" name="password1">
+                    </div>
+                    <!-- repeat password-->
+                    <div class="input-halfwidth">
+                        <h2><label for="password2">Retype Password</label></h2>
+                        <input type="password" id="password2" name="password2">
+                    </div>
+
+                    <!-- create profile button-->
+                    <div class="input-fullwidth">
+                        <input type="submit" class="button" onclick="return confirm('Submit information?')" value="save change">
+                    </div>
+
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-
 </div>
+</div>
+
 
 <!-- search content right side-->
 <div class="right-content">
@@ -212,62 +186,15 @@
         <h1><i class="fas fa-search"></i>search</h1>
     </div>
 
-    <!-- search box area -->
+    <!-- search drop down option-->
     <div class="search-box">
-        <!-- first name -->
-        <h1><label for="firstname">First name</label></h1>
-        <div class="textbox">
-            <input id="firstname" name="firstname" placeholder="First name...." type="text" value="">
-        </div>
-
-        <!-- last name -->
-        <h1><label for="lastname">Last name</label></h1>
-        <div class="textbox">
-            <input id="lastname" name="lastname" placeholder="Last name...." type="text" value="">
-        </div>
-
-        <!-- age -->
-        <h1><label for="age">Age</label></h1>
-        <select id="age">
-            <option value="none selected">Select age</option>
-            <option value="18-25">18-25 yrs.</option>
-            <option value="25-30">25-30 yrs.</option>
-            <option value="30-35">30-35 yrs.</option>
-            <option value="35-40">35-40 yrs.</option>
-            <option value="40-45">40-45 yrs.</option>
-            <option value="45-50">45-50 yrs.</option>
-            <option value="50+">50+ yrs.</option>
-        </select>
-
-        <!-- tag search -->
         <h1>Likes</h1>
-        <div class="tag-list">
-            <label class="container">Biking
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <label class="container">Movies
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <label class="container">Traveling
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <label class="container">Sport
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <label class="container">Gaming
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-        </div>
-
-        <!-- search button -->
-        <button class="button">Search</button>
-
+        <select>
+            <option th:each="tag : ${tags}" th:value="${tag}"><p th:text="${tag}"></p></option>
+        </select>
+        <input type="submit" class="button" value="submit">
     </div>
+</div>
 </div>
 
 
@@ -276,15 +203,6 @@
     <p> WWW.DATING.COM • LYGTEN 37, 2400 KØBENHAVN NV• E-MAIL: INFO@DATING.COM • TLF: +45 46 46 07 00 </p>
 </div>
 
-<!--<p th:text="${session.user.firstname}" th:unless="${session == null}">[...]</p>-->
-<!--<p th:text="${session.user.lastname}" th:unless="${session == null}">[...]</p>-->
-<!--<p th:text="${session.user.email}" th:unless="${session == null}">[...]</p>-->
-<!--<p th:text="${session.user.phonenumber}" th:unless="${session == null}">[...]</p>-->
-<!--<p th:text="${session.user.birthday}" th:unless="${session == null}">[...]</p>-->
-<!--<p th:text="${session.user.gender}" th:unless="${session == null}">[...]</p>-->
-<!--<p th:text="${session.user.password}" th:unless="${session == null}">[...]</p>-->
-
-<!--<span th:text="${error}"></span>-->
 
 </body>
 </html>

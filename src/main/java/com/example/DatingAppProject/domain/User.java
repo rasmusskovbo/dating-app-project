@@ -14,8 +14,11 @@ public class User {
     private String birthDate;
     private String profilePictureURL;
 
+    private String aboutme;
+    private String tag;
+
     // Constructor for registering user
-    public User(String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate) {
+    public User(String email, String password, String role, String phone, String firstName, String lastName, String gender, String birthDate, String aboutme, String tag) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -24,6 +27,8 @@ public class User {
         this.lastName = lastName;
         this.gender = gender;
         this.birthDate = birthDate;
+        this.aboutme = aboutme;
+        this.tag = tag;
     }
 
     // Overloaded constructor for session object
@@ -41,6 +46,18 @@ public class User {
         this.lastName = lastName;
         this.gender = gender;
         this.birthDate = birthDate;
+    }
+
+    // Overloaded constructor for user list
+    public User(String role, String phone, String firstName, String lastName, String gender, String birthDate, String aboutme, String tag) {
+        this.role = role;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.aboutme = aboutme;
+        this.tag = tag;
     }
 
     public int getId() {
@@ -123,6 +140,22 @@ public class User {
         this.profilePictureURL = profilePictureURL;
     }
 
+    public String getAboutme() {
+        return aboutme;
+    }
+
+    public void setAboutme(String aboutme) {
+        this.aboutme = aboutme;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -135,6 +168,9 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", birthDate='" + birthDate + '\'' +
+                ", profilePictureURL='" + profilePictureURL + '\'' +
+                ", aboutme='" + aboutme + '\'' +
+                ", tag='" + tag + '\'' +
                 '}';
     }
 }

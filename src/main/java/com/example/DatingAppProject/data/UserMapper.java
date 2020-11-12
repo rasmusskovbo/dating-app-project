@@ -48,6 +48,41 @@ public class UserMapper {
             psUserinfo.setString(6, user.getGender());
             psUserinfo.executeUpdate();
 
+            //Insert into description table
+            String describSQL = "INSERT INTO descriptions (idusers, aboutme) VALUES (?, ?)";
+            PreparedStatement psDescrib = con.prepareStatement(describSQL);
+            psDescrib.setInt(1, user.getId());
+            psDescrib.setString(2, user.getAboutme());
+            psDescrib.executeUpdate();
+
+            //Check if hashtag exists in the system:
+            String tagSQL = "SELECT * FROM hashtags;";
+            PreparedStatement psTag = con.prepareStatement(tagSQL);
+            ResultSet rsHashtags = psTag.executeQuery();
+            boolean hasHashtag = false;
+            int hashtagID = 0;
+            while (rsHashtags.next()) {
+                if (rsHashtags.getString("tag").equals(user.getTag())) {
+                    hasHashtag = true;
+                    hashtagID = rsHashtags.getInt("idhashtags");
+                }
+            }
+            String insertTagSQL = "";
+            if (!hasHashtag) { // If hashtag isnt present, create hashtag
+                insertTagSQL = "INSERT INTO hashtags (tag) VALUE (?)";
+                PreparedStatement psInsertTag = con.prepareStatement(insertTagSQL, Statement.RETURN_GENERATED_KEYS);
+                psInsertTag.setString(1, user.getTag());
+                psInsertTag.executeUpdate();
+                ResultSet tagID = psInsertTag.getGeneratedKeys();
+                tagID.next();
+                hashtagID = tagID.getInt(1);
+            }            // establish connection
+            insertTagSQL = "INSERT INTO useshashtags (idusers, idhashtags) VALUE (?, ?)";
+            PreparedStatement psAppendTag = con.prepareStatement(insertTagSQL);
+            psAppendTag.setInt(1, id);
+            psAppendTag.setInt(2, hashtagID);
+            psAppendTag.executeUpdate();
+
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage()); // TODO Fejlmeddelelse skal returneres til site via model og thymeleaf
         }
@@ -82,6 +117,7 @@ public class UserMapper {
         try {
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
+                    "JOIN logininfo using (idusers)" +
                     "JOIN userinfo USING (idusers) " + //evt flere linjer for at trække billede med også. pt ingen billede
                     ";";
             PreparedStatement ps = con.prepareStatement(SQL);
@@ -89,6 +125,8 @@ public class UserMapper {
             ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User(
+                        rs.getString("email"),
+                        rs.getString("pword"),
                         rs.getString("role"),
                         rs.getString("phone"),
                         rs.getString("firstName"),
@@ -104,24 +142,68 @@ public class UserMapper {
         }
     }
 
-    public User getProfile(int id) throws DefaultException {
+    public ArrayList<User> getUsers(int id) throws DefaultException { // Evt skal søge parametre ind her
         try {
+
+            User sessionUser = getProfile(id);
+            int sessionUserId = sessionUser.getId();
+
             Connection con = DBManager.getConnection();
             String SQL = "SELECT * FROM users " +
-                    "JOIN logininfo using (idusers) " +
-                    "JOIN userinfo using (idusers) " +
-                    "WHERE idusers = ?";
+                    "JOIN userinfo USING (idusers) " +
+                    "JOIN descriptions USING (idusers) " +
+                    "JOIN useshashtags USING (idusers);"; //evt flere linjer for at trække billede med også. pt ingen billede
             PreparedStatement ps = con.prepareStatement(SQL);
-            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            ArrayList<User> users = new ArrayList<>();
+            while (rs.next()) {
+                int idUserDB = rs.getInt("idusers");
                 User user = new User(
                         rs.getString("role"),
                         rs.getString("phone"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
                         rs.getString("gender"),
-                        rs.getString("birthDate")
+                        rs.getString("birthDate"),
+                        rs.getString("aboutme"),
+                        rs.getString("tag")
+                );
+
+                if (sessionUserId != idUserDB) {
+                    users.add(user);
+                }
+            }
+            return users;
+        }   catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    public User getProfile(int id) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "SELECT * FROM users " +
+                    "JOIN logininfo using (idusers) " +
+                    "JOIN userinfo using (idusers) " +
+                    "JOIN useshashtags using (idusers) " +
+                    "JOIN descriptions using (idusers) " +
+                    "JOIN hashtags using (idhashtags) " +
+                    "WHERE idusers = ?";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User(
+                        rs.getString("email"),
+                        rs.getString("pword"),
+                        rs.getString("role"),
+                        rs.getString("phone"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("gender"),
+                        rs.getString("birthDate"),
+                        rs.getString("aboutme"),
+                        rs.getString("tag")
                 );
 
                 // Check for pictures separately:
@@ -154,6 +236,84 @@ public class UserMapper {
         }
     }
 
+    public void editProfile(User user) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+
+            // USER BASE DATA
+            String usersSQL = "UPDATE users " +
+                    "SET email = ? " +
+                    "WHERE idusers = ?;";
+
+            PreparedStatement usersPS = con.prepareStatement(usersSQL);
+            usersPS.setString(1, user.getEmail());
+            usersPS.setInt(2, user.getId());
+            usersPS.executeUpdate();
+            usersPS.executeUpdate();
+
+            // USER INFO
+            String userInfoSQL = "UPDATE userinfo " +
+                    "SET phone = ?, firstname = ?, lastname = ?, birthdate = ?, gender = ? " +
+                    "WHERE idusers = ?;";
+            PreparedStatement userInfoPS = con.prepareStatement(userInfoSQL);
+            userInfoPS.setString(1, user.getPhone());
+            userInfoPS.setString(2, user.getFirstName());
+            userInfoPS.setString(3, user.getLastName());
+            userInfoPS.setString(4, user.getBirthDate());
+            userInfoPS.setString(5, user.getGender());
+            userInfoPS.setInt(6, user.getId());
+            userInfoPS.executeUpdate();
+
+            // LOGIN - Do not change if user left fields blank.
+            if (!user.getPassword().equals("")) {
+                String loginInfoSQL = "UPDATE logininfo " +
+                        "SET pword = ? " +
+                        "WHERE idusers = ?;";
+                PreparedStatement loginInfoPS = con.prepareStatement(loginInfoSQL);
+                loginInfoPS.setString(1, user.getPassword());
+                loginInfoPS.setInt(2, user.getId());
+                loginInfoPS.executeUpdate();
+            }
+
+
+            String descriptionSQL = "UPDATE descriptions " +
+                    "SET aboutme = ? " +
+                    "WHERE idusers = ?;";
+            PreparedStatement descriptionPS = con.prepareStatement(descriptionSQL);
+            descriptionPS.setString(1, user.getAboutme());
+            descriptionPS.setInt(2, user.getId());
+            descriptionPS.executeUpdate();
+
+            // mangler ændring af tags
+
+
+
+
+
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    public ArrayList<String> getTags() throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "SELECT tag FROM hashtags";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<String> tags = new ArrayList<>();
+            while (rs.next()) {
+                String tag = rs.getString("tag");
+                if (!tags.contains(tag)) {
+                    tags.add(tag);
+                }
+            }
+            return tags;
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
     public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         InputStream inputStream = multipartFile.getInputStream();
@@ -166,6 +326,7 @@ public class UserMapper {
         ps.executeQuery(); //exeucute update
     }
 
+    // Virker ikke
     public Blob getPicture(int id) throws SQLException, IOException {
         Connection con = DBManager.getConnection();
         MultipartFile multipartFile = null;
