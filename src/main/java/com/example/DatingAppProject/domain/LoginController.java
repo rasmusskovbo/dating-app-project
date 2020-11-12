@@ -1,17 +1,15 @@
 package com.example.DatingAppProject.domain;
 
-import com.example.DatingAppProject.data.DBManager;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class LoginController {
         // facade to datasource layer
@@ -48,9 +46,9 @@ public class LoginController {
             model.addAttribute("gender", user.getGender());
             model.addAttribute("birthDate", user.getBirthDate()); // evt lave udregning af alder her inden pakning
             model.addAttribute("profilePictureURL", user.getProfilePictureURL());
-            System.out.println(user.getAboutme());
             model.addAttribute("aboutme", user.getAboutme());
-            model.addAttribute("userslist", user.getId()); //Get list of all users to show on homepage table list
+
+            model.addAttribute("userlist", getUsers(user.getId())); //Get list of all users to show on homepage table list TODO skal give en arraylist med, med alle users
             model.addAttribute("tags", getTags()); //Get list of all tags being used to show on search drop down list
             return model;
         }
@@ -70,15 +68,23 @@ public class LoginController {
             return facade.getPicture(3);
         }
 
-    public ArrayList<User> getUsers(int id) throws DefaultException {
-        return facade.getUsers(id);
-    }
+        public ArrayList<User> getUsers(int id) throws DefaultException {
+            return facade.getUsers(id);
+        }
 
 
-    public ArrayList<String> getTags() throws DefaultException{
-        return facade.getTags();
-    }
+        public ArrayList<String> getTags() throws DefaultException{
+            return facade.getTags();
+        }
 
+        public boolean stringValidation(String input, String pattern) {
+            boolean flag = input.matches(pattern);
+            if (!flag) {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
 
 }

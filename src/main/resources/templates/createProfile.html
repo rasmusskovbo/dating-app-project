@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Create Profile</title>
@@ -89,6 +89,11 @@
                 <div class="input-halfwidth">
                     <h2><label for="password2">Retype Password</label></h2>
                     <input type="password" id="password2" name="password2" value="" required>
+                </div>
+
+                <!-- Error output test -->
+                <div class="input-halfwidth">
+                    <h2 style="text-align: center" th:text="${errorMsg}"></h2>
                 </div>
 
                 <!-- create profile button-->

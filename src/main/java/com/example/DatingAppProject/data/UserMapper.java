@@ -142,6 +142,7 @@ public class UserMapper {
         }
     }
 
+
     public ArrayList<User> getUsers(int id) throws DefaultException { // Evt skal søge parametre ind her
         try {
 
@@ -152,7 +153,8 @@ public class UserMapper {
             String SQL = "SELECT * FROM users " +
                     "JOIN userinfo USING (idusers) " +
                     "JOIN descriptions USING (idusers) " +
-                    "JOIN useshashtags USING (idusers);"; //evt flere linjer for at trække billede med også. pt ingen billede
+                    "JOIN useshashtags USING (idusers) " +
+                    "JOIN hashtags USING (idhashtags);"; //evt flere linjer for at trække billede med også. pt ingen billede
             PreparedStatement ps = con.prepareStatement(SQL);
             ResultSet rs = ps.executeQuery();
             ArrayList<User> users = new ArrayList<>();

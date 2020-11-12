@@ -25,7 +25,6 @@ public class DBManager {
         }
         try {
             connection = DriverManager.getConnection(url,user,password);
-            System.out.println("Succesfully connected to DB"); // REMOVE
             String setDB = "USE datingapp;";
             PreparedStatement ps = connection.prepareStatement(setDB);
             ps.executeUpdate();
