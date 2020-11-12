@@ -17,9 +17,8 @@ public interface DataFacade {
 
     public void editProfile(User user) throws DefaultException;
 
-    public ArrayList<User> getUsers() throws DefaultException;
+    public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException;
 
-    public ArrayList<User> getUsers(int id) throws DefaultException;
 
     public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException;
 

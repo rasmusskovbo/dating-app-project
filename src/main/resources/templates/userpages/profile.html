@@ -143,7 +143,7 @@
                     <!-- choose tag -->
                     <div class="input-fullwidth">
                         <h2><label for="tag">Pick one subject you really like</label></h2>
-                        <select id="tag" name="tag">
+                        <select id="tag" name="tag"> <!-- implement dynamic hashtags -->
                             <option value="Sport">Sport</option>
                             <option value="Traveling">Traveling</option>
                             <option value="Cooking">Cooking</option>
@@ -166,7 +166,12 @@
                         <input type="password" id="password2" name="password2">
                     </div>
 
-                    <!-- create profile button-->
+                    <!-- Error output test -->
+                    <div class="input-fullwidth">
+                        <h2 style="text-align: center" th:text="${errorMsg}"></h2>
+                    </div>
+
+                    <!-- Save changes -->
                     <div class="input-fullwidth">
                         <input type="submit" class="button" onclick="return confirm('Submit information?')" value="save change">
                     </div>
@@ -189,11 +194,13 @@
     <!-- search drop down option-->
     <div class="search-box">
         <h1>Likes</h1>
-        <select>
-            <option th:each="tag : ${tags}" th:value="${tag}"><p th:text="${tag}"></p></option>
-        </select>
-        <input type="submit" class="button" value="submit">
-    </div>
+        <form method="POST" action="/searchUsers" name="search">
+            <select id="searchTag" name="searchTag">
+                <option th:each="tag : ${tags}" th:value="${tag}"><p th:text="${tag}"></p></option>
+            </select>
+            <input type="submit" class="button" value="submit">
+        </form>
+        </div>
 </div>
 </div>
 

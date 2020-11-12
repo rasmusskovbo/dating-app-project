@@ -30,6 +30,10 @@ public class LoginController {
             return user;
         }
 
+    public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
+        return facade.getUsers(searchTag, id, segment);
+    }
+
         public User getProfile(int id) throws DefaultException {
             return facade.getProfile(id);
         }
@@ -47,45 +51,25 @@ public class LoginController {
             model.addAttribute("birthDate", user.getBirthDate()); // evt lave udregning af alder her inden pakning
             model.addAttribute("profilePictureURL", user.getProfilePictureURL());
             model.addAttribute("aboutme", user.getAboutme());
-
-            model.addAttribute("userlist", getUsers(user.getId())); //Get list of all users to show on homepage table list TODO skal give en arraylist med, med alle users
             model.addAttribute("tags", getTags()); //Get list of all tags being used to show on search drop down list
             return model;
         }
 
-        public Model getUsers(Model model) throws DefaultException {
-            model.addAttribute("users", facade.getUsers());
-            return model;
-        }
-
-
-        // test
+        // Works
         public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
             facade.uploadPicture(multipartFile);
         }
 
+        // Does not work
         public Blob getPicture() throws SQLException, IOException {
             return facade.getPicture(3);
         }
 
-        public ArrayList<User> getUsers(int id) throws DefaultException {
-            return facade.getUsers(id);
-        }
 
 
         public ArrayList<String> getTags() throws DefaultException{
             return facade.getTags();
         }
-
-        public boolean stringValidation(String input, String pattern) {
-            boolean flag = input.matches(pattern);
-            if (!flag) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
 
 }
 

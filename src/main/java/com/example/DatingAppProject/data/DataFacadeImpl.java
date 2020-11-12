@@ -36,12 +36,8 @@ public class DataFacadeImpl implements DataFacade {
         return userMapper.getPicture(id);
     }
 
-    public ArrayList<User> getUsers() throws DefaultException {
-        return userMapper.getUsers();
-    }
-
-    public ArrayList<User> getUsers(int id) throws DefaultException {
-        return userMapper.getUsers(id);
+    public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
+        return userMapper.getUsers(searchTag, id, segment);
     }
 
     public ArrayList<String> getTags() throws DefaultException{
