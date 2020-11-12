@@ -115,7 +115,7 @@ public class UserMapper {
 
     // TODO merge the two identical functions with dynamic input selection
     // Segments user based on hashtag
-    public ArrayList<User> getUsers(String searchTag) throws DefaultException {
+    public ArrayList<User> getUsers(String searchTag, int id) throws DefaultException {
         try {
             System.out.println("THIS IS THE SEARCH TAG: "+ searchTag);
             Connection con = DBManager.getConnection();
@@ -125,9 +125,10 @@ public class UserMapper {
             "JOIN descriptions USING (idusers) " +
             "JOIN useshashtags USING (idusers) " +
             "JOIN hashtags USING (idhashtags) " +
-            "WHERE tag = ?;";
+            "WHERE tag = ? AND idusers != ?;";
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, searchTag);
+            ps.setInt(2, id);
             ResultSet rs = ps.executeQuery();
             ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {

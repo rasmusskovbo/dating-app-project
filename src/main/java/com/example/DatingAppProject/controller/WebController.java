@@ -92,7 +92,6 @@ public class WebController {
     @PostMapping("searchUsers")
     public String searchUsers(WebRequest request, Model model) throws DefaultException {
         String searchTag = request.getParameter("searchTag");
-        System.out.println("SEARCH TAG IN WEBC: "+searchTag);
 
         // Gets active user and packages
         int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
@@ -100,7 +99,7 @@ public class WebController {
         loginController.packageUser(user, model);
 
         // Packages all other users except for active one.
-        model.addAttribute("userlist", loginController.getUsers(searchTag)); // Only lists users with tags (currently could be yourself as well
+        model.addAttribute("userlist", loginController.getUsers(searchTag, id)); //lists all users with chosen tag excluding active user
 
         return "userpages/profile";
     }

@@ -65,8 +65,8 @@ public class LoginController {
             return facade.getUsers(id);
         }
 
-        public ArrayList<User> getUsers(String searchTag) throws DefaultException {
-                return facade.getUsers(searchTag);
+        public ArrayList<User> getUsers(String searchTag, int id) throws DefaultException {
+                return facade.getUsers(searchTag, id);
         }
 
         public ArrayList<String> getTags() throws DefaultException{
