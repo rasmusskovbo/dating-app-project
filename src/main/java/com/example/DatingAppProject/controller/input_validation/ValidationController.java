@@ -1,6 +1,4 @@
-package com.example.DatingAppProject.controller.InputValidation;
-
-import java.util.regex.Pattern;
+package com.example.DatingAppProject.controller.input_validation;
 
 public class ValidationController {
 

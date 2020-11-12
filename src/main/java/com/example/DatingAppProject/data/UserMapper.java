@@ -5,6 +5,7 @@ import com.example.DatingAppProject.domain.User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.transform.Result;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -112,9 +113,12 @@ public class UserMapper {
 
     // Segment
     public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
-        if (segment.equals("searchTag")) {
-            try {
-                Connection con = DBManager.getConnection();
+        try {
+            Connection con = DBManager.getConnection();
+
+            if (segment.equals("searchTag")) {
+
+
 
                 String SQL = "SELECT * FROM users " +
                         "JOIN userinfo USING (idusers) " +
@@ -129,12 +133,48 @@ public class UserMapper {
                 ResultSet rs = ps.executeQuery();
 
                 return unpackResultSet(rs, "userView");
-            }   catch (SQLException ex) {
-                throw new DefaultException(ex.getMessage());
-            }
-        } else if (segment.equals("profile")) {
-            try {
-                Connection con = DBManager.getConnection();
+
+            } else if (segment.equals("favorites")) {
+                // TODO Implement error function if user has not favorites
+                // Check if user has favorites first
+                String SQL = "SELECT * FROM favorites " +
+                        "WHERE idusers = ?;";
+                PreparedStatement ps = con.prepareStatement(SQL);
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+
+                ArrayList<User> users = new ArrayList<>();
+                while (rs.next()) {
+                    int foreignUser = rs.getInt("idforeignuser");
+
+                    String favoritesSQL = "select * from users " +
+                            "join userinfo using (idusers) " +
+                            "join logininfo using (idusers) " +
+                            "join descriptions using (idusers) " +
+                            "join useshashtags using (idusers) " +
+                            "join hashtags using (idhashtags) " +
+                            "where idusers = ?;";
+                    PreparedStatement favoritesPS = con.prepareStatement(favoritesSQL);
+                    favoritesPS.setInt(1, foreignUser);
+                    ResultSet favoritesRS = favoritesPS.executeQuery();
+                    while (favoritesRS.next()) {
+                        User user = new User(
+                                favoritesRS.getInt("idusers"),
+                                favoritesRS.getString("role"),
+                                favoritesRS.getString("phone"),
+                                favoritesRS.getString("firstName"),
+                                favoritesRS.getString("lastName"),
+                                favoritesRS.getString("gender"),
+                                favoritesRS.getString("birthDate"),
+                                favoritesRS.getString("aboutme"),
+                                favoritesRS.getString("tag")
+                        );
+                        users.add(user);
+                    }
+                }
+                return users;
+
+            } else if (segment.equals("profile")) {
 
                 String SQL = "SELECT * FROM users " +
                         "JOIN userinfo USING (idusers) " +
@@ -148,12 +188,7 @@ public class UserMapper {
 
                 return unpackResultSet(rs, "userView");
 
-            }   catch (SQLException ex) {
-                throw new DefaultException(ex.getMessage());
-            }
-        } else if (segment.equals("admin")) {
-            try {
-                Connection con = DBManager.getConnection();
+            } else if (segment.equals("admin")) {
 
                 String SQL = "SELECT * FROM users " +
                         "JOIN userinfo USING (idusers) " +
@@ -167,22 +202,20 @@ public class UserMapper {
                 ResultSet rs = ps.executeQuery();
 
                 return unpackResultSet(rs, "adminView");
-
-            } catch (SQLException e) {
-                throw new DefaultException(e.getMessage());
             }
-        } else {
-            throw new DefaultException("No segment chosen");
+        } catch (SQLException ex) {
+                throw new DefaultException(ex.getMessage());
         }
+        throw new DefaultException("Unable to pack identify segment");
     }
 
     private ArrayList<User> unpackResultSet(ResultSet rs, String segment) throws SQLException, DefaultException {
         ArrayList<User> users = new ArrayList<>();
-        if (segment.equals("userView")) {
 
+        if (segment.equals("userView")) {
             while (rs.next()) {
-                int idUserDB = rs.getInt("idusers");
                 User user = new User(
+                        rs.getInt("idusers"),
                         rs.getString("role"),
                         rs.getString("phone"),
                         rs.getString("firstName"),
@@ -195,10 +228,15 @@ public class UserMapper {
                 users.add(user);
             }
             return users;
-        } else if (segment.equals("adminView")) {
-
+        }
+        else if (segment.equals("favoritesView")) {
+            // Makes a list based off all favorites idforeignuser = idusers
             while (rs.next()) {
-                int idUserDB = rs.getInt("idusers");
+
+            }
+        }
+        else if (segment.equals("adminView")) {
+            while (rs.next()) {
                 User user = new User(
                         rs.getInt("idusers"),
                         rs.getString("email"),
@@ -216,9 +254,11 @@ public class UserMapper {
                 users.add(user);
             }
             return users;
-        } else {
+        }
+        else {
             throw new DefaultException("No segment chosen");
         }
+        return null;
     }
 
     public User getProfile(int id) throws DefaultException {
@@ -275,6 +315,22 @@ public class UserMapper {
             }
         }  catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    // TODO Check if user already added this user to favorites. IF then dont add.
+    public void addFavorite(int id, int favorite) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+
+            String SQL = "INSERT INTO favorites (idusers, idforeignuser) VALUES (?, ?);";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setInt(1, id);
+            ps.setInt(2, favorite);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DefaultException(e.getMessage());
         }
     }
 
@@ -384,19 +440,4 @@ public class UserMapper {
         return blob;
     }
 
-
-    // test
-    private User getUser(ResultSet rs) throws SQLException {
-        User user = new User(
-                rs.getString("email"),
-                rs.getString("pword"), //bør måske ikke være med her
-                rs.getString("role"),
-                rs.getString("phone"),
-                rs.getString("firstName"),
-                rs.getString("lastName"),
-                rs.getString("gender"),
-                rs.getString("birthDate")
-        );
-        return user;
-    }
 }

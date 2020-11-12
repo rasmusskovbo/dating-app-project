@@ -1,12 +1,13 @@
 package com.example.DatingAppProject.controller;
 
-import com.example.DatingAppProject.controller.InputValidation.RegistrationData;
-import com.example.DatingAppProject.controller.InputValidation.RegistrationResponse;
-import com.example.DatingAppProject.controller.InputValidation.ValidationController;
+import com.example.DatingAppProject.controller.input_validation.RegistrationData;
+import com.example.DatingAppProject.controller.input_validation.RegistrationResponse;
+import com.example.DatingAppProject.controller.input_validation.ValidationController;
 import com.example.DatingAppProject.data.DataFacadeImpl;
 import com.example.DatingAppProject.domain.DefaultException;
 import com.example.DatingAppProject.domain.LoginController;
 import com.example.DatingAppProject.domain.User;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 @Controller
@@ -72,25 +72,6 @@ public class WebController {
     public String tester() {
         return "test";
     }
-
-    /*
-    @PostMapping("/userDeleted")
-    public String userDeleted(WebRequest request, Model model) throws DefaultException {
-            //Retrieve values from HTML form via WebRequest
-            String email = request.getParameter("email");
-            String firstName = request.getParameter("firstName");
-
-            User user = loginController.login(email, firstName); // UserMapper checks with Database for user.
-            setSessionInfo(request, user);
-
-            if (user.getRole().equals("user")) {
-                return "redirect:/userDeleted";
-            } else {
-                return "exceptionPage";
-            }
-    }
-
- */
 
     @PostMapping("searchUsers")
     public String searchUsers(WebRequest request, Model model) throws DefaultException {
@@ -163,7 +144,7 @@ public class WebController {
     }
 
     @PostMapping("/loginAction")
-    public String loginUser(WebRequest request, Model model) throws DefaultException {
+    public String loginUser(WebRequest request) throws DefaultException {
         //Retrieve values from HTML form via WebRequest
         String email = request.getParameter("email");
         String pwd = request.getParameter("password");
@@ -216,6 +197,29 @@ public class WebController {
         }
     }
 
+    @PostMapping("/addFavorite")
+    public String addFavorite(WebRequest request, Model model) throws DefaultException {
+        int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
+        int favorite = Integer.parseInt(request.getParameter("favorite"));
+        loginController.addFavorite(id, favorite);
+
+        return "redirect:/favorites";
+    }
+
+    @GetMapping("/favorites")
+    public String viewFavorites(WebRequest request, Model model) throws DefaultException {
+        // Gets active user and packages
+        int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
+        User user = loginController.getProfile(id); // Gets ID from session object, uses it to fetch profile.
+        loginController.packageUser(user, model);
+
+        // Packages all other users except for active one.
+        model.addAttribute("userlist", loginController.getUsers("", id, "favorites")); //lists all users with chosen tag excluding active user
+
+        return "userpages/profile";
+    }
+
+    // Image upload
     @PostMapping("/testUpload")
     public String getPicture(@RequestParam("file")MultipartFile multipartFile) throws SQLException, IOException {
         loginController.uploadPicture(multipartFile);

@@ -1,4 +1,4 @@
-package com.example.DatingAppProject.controller.InputValidation;
+package com.example.DatingAppProject.controller.input_validation;
 
 public class RegistrationResponse {
     private boolean firstName;

@@ -30,9 +30,9 @@ public class LoginController {
             return user;
         }
 
-    public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
-        return facade.getUsers(searchTag, id, segment);
-    }
+        public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
+            return facade.getUsers(searchTag, id, segment);
+        }
 
         public User getProfile(int id) throws DefaultException {
             return facade.getProfile(id);
@@ -40,6 +40,10 @@ public class LoginController {
 
         public void editProfile(User user) throws DefaultException {
             facade.editProfile(user);
+        }
+
+        public void addFavorite(int id, int favorite) throws DefaultException {
+            facade.addFavorite(id, favorite);
         }
 
         public Model packageUser(User user, Model model) throws DefaultException {
