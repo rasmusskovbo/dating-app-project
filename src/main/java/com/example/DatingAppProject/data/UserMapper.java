@@ -161,7 +161,6 @@ public class UserMapper {
                         "JOIN logininfo USING (idusers) " +
                         "JOIN useshashtags USING (idusers) " +
                         "JOIN hashtags USING (idhashtags) " +
-                        "JOIN pictures USING (idusers) " +
                         "WHERE idusers != ?;";
                 PreparedStatement ps = con.prepareStatement(SQL);
                 ps.setInt(1, id);
@@ -210,7 +209,7 @@ public class UserMapper {
                         rs.getString("lastName"),
                         rs.getString("gender"),
                         rs.getString("birthDate"),
-                        rs.getString("profilePictureURL"),
+                        "N/A",
                         rs.getString("aboutme"),
                         rs.getString("tag")
                 );

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 @Controller
@@ -50,6 +51,8 @@ public class WebController {
     public String admin(WebRequest request, Model model) throws DefaultException {
         // Gets admin id and shows all other users except admin
         int id = (int) request.getAttribute("id", WebRequest.SCOPE_SESSION);
+        ArrayList<User> users = loginController.getUsers("", id, "admin");
+        System.out.println(users.size());
         model.addAttribute("userlist", loginController.getUsers("", id, "admin"));
 
         return "userpages/admin";
