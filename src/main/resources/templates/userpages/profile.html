@@ -166,7 +166,12 @@
                         <input type="password" id="password2" name="password2">
                     </div>
 
-                    <!-- create profile button-->
+                    <!-- Error output test -->
+                    <div class="input-fullwidth">
+                        <h2 style="text-align: center" th:text="${errorMsg}"></h2>
+                    </div>
+
+                    <!-- Save changes -->
                     <div class="input-fullwidth">
                         <input type="submit" class="button" onclick="return confirm('Submit information?')" value="save change">
                     </div>

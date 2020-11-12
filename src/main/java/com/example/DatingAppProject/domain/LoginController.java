@@ -77,16 +77,6 @@ public class LoginController {
             return facade.getTags();
         }
 
-        public boolean stringValidation(String input, String pattern) {
-            boolean flag = input.matches(pattern);
-            if (!flag) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-
 }
 
 

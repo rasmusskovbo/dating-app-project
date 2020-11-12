@@ -1,5 +1,8 @@
 package com.example.DatingAppProject.controller;
 
+import com.example.DatingAppProject.controller.InputValidation.RegistrationData;
+import com.example.DatingAppProject.controller.InputValidation.RegistrationResponse;
+import com.example.DatingAppProject.controller.InputValidation.ValidationController;
 import com.example.DatingAppProject.data.DataFacadeImpl;
 import com.example.DatingAppProject.domain.DefaultException;
 import com.example.DatingAppProject.domain.LoginController;
@@ -15,11 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @Controller
 public class WebController {
     //use case controller (GRASP Controller) - injects concrete facade instance into controller
     private LoginController loginController = new LoginController(new DataFacadeImpl());
+    private ValidationController validationController = new ValidationController();
 
     @GetMapping("/")
     public String login() {
@@ -89,7 +94,8 @@ public class WebController {
     }
 
     @PostMapping("editProfile")
-    public String editProfile(WebRequest request) throws DefaultException {
+    public String editProfile(WebRequest request, Model model) throws DefaultException {
+        //Retrieve values from HTML form via WebRequest
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
@@ -100,6 +106,20 @@ public class WebController {
         String tag = request.getParameter("tag");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
+
+        // Create class with data
+        RegistrationData regData = new RegistrationData(firstName, lastName, email, phone, gender, birthDate, aboutme, tag, password1, password2);
+        // Puts data into controller
+        validationController.setRegData(regData);
+        // Validates data and returns response set
+        RegistrationResponse response = validationController.validate();
+        // Checks if all inputs are validated. If not, packages error message from response and refreshes site.
+
+        if (!response.isInputOK()) {
+            model.addAttribute("errorMsg", response.getError());
+            return "userpages/profile#popup"; // TODO FIX LINK
+        }
+
         User user = null;
         if (password1.equals(password2)) {
             user = new User(email, password1, "user", phone, firstName, lastName, gender, birthDate, aboutme, tag);
@@ -149,12 +169,6 @@ public class WebController {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
-        boolean isCorrect = loginController.stringValidation(email, "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
-        if (!isCorrect) {
-            model.addAttribute("errorMsg", "Please enter a valid e-mail");
-            isCorrect = false;
-            return "createProfile";
-        }
         String phone = request.getParameter("phone");
         String gender = request.getParameter("gender");
         String birthDate = request.getParameter("birthDate");
@@ -163,12 +177,25 @@ public class WebController {
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
 
-        if (password1.equals(password2)) {
-            User user = loginController.createUser(email, password1, "user", phone, firstName, lastName, gender, birthDate, aboutme, tag);
-            setSessionInfo(request, user);
-            return "redirect:/profile";
-        } else { // If passwords don't match, an exception is thrown
-            throw new DefaultException("The two passwords did not match");
+        // Create class with data
+        RegistrationData regData = new RegistrationData(firstName, lastName, email, phone, gender, birthDate, aboutme, tag, password1, password2);
+        // Puts data into controller
+        validationController.setRegData(regData);
+        // Validates data and returns response set
+        RegistrationResponse response = validationController.validate();
+        // Checks if all inputs are validated. If not, packages error message from response and refreshes site.
+
+        if (!response.isInputOK()) {
+            model.addAttribute("errorMsg", response.getError());
+            return "createProfile";
+        } else {
+            if (password1.equals(password2)) {
+                User user = loginController.createUser(email, password1, "user", phone, firstName, lastName, gender, birthDate, aboutme, tag);
+                setSessionInfo(request, user);
+                return "redirect:/profile";
+            } else { // If passwords don't match, an exception is thrown
+                throw new DefaultException("The two passwords did not match");
+            }
         }
     }
 
