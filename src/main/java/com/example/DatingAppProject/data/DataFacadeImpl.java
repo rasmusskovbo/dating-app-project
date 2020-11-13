@@ -52,5 +52,13 @@ public class DataFacadeImpl implements DataFacade {
         userMapper.editProfile(user);
     }
 
+    public void removeUser(String removeUserId) throws DefaultException{
+        userMapper.removeUser(removeUserId);
+    }
+
+    public void removeFavorite(String removeUserId) throws DefaultException {
+        userMapper.removeFavorite(removeUserId);
+    }
+
 
 }

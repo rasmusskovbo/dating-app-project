@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 // Snakker med databasen, ift user queries
 public class UserMapper {
-
     public void createUser(User user) throws DefaultException {
         try {
             Connection con = DBManager.getConnection();
@@ -116,147 +115,141 @@ public class UserMapper {
         try {
             Connection con = DBManager.getConnection();
 
-            if (segment.equals("searchTag")) {
+            switch (segment) {
+                case "searchTag": {
 
 
+                    String SQL = "SELECT * FROM users " +
+                            "JOIN userinfo USING (idusers) " +
+                            "JOIN logininfo USING (idusers) " +
+                            "JOIN descriptions USING (idusers) " +
+                            "JOIN useshashtags USING (idusers) " +
+                            "JOIN hashtags USING (idhashtags) " +
+                            "WHERE tag = ? AND idusers != ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setString(1, searchTag);
+                    ps.setInt(2, id);
+                    ResultSet rs = ps.executeQuery();
 
-                String SQL = "SELECT * FROM users " +
-                        "JOIN userinfo USING (idusers) " +
-                        "JOIN logininfo USING (idusers) " +
-                        "JOIN descriptions USING (idusers) " +
-                        "JOIN useshashtags USING (idusers) " +
-                        "JOIN hashtags USING (idhashtags) " +
-                        "WHERE tag = ? AND idusers != ?;";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.setString(1, searchTag);
-                ps.setInt(2, id);
-                ResultSet rs = ps.executeQuery();
+                    return unpackResultSet(rs, "userView");
 
-                return unpackResultSet(rs, "userView");
-
-            } else if (segment.equals("favorites")) {
-                // TODO Implement error function if user has not favorites
-                // Check if user has favorites first
-                String SQL = "SELECT * FROM favorites " +
-                        "WHERE idusers = ?;";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.setInt(1, id);
-                ResultSet rs = ps.executeQuery();
-
-                ArrayList<User> users = new ArrayList<>();
-                while (rs.next()) {
-                    int foreignUser = rs.getInt("idforeignuser");
-
-                    String favoritesSQL = "select * from users " +
-                            "join userinfo using (idusers) " +
-                            "join logininfo using (idusers) " +
-                            "join descriptions using (idusers) " +
-                            "join useshashtags using (idusers) " +
-                            "join hashtags using (idhashtags) " +
-                            "where idusers = ?;";
-                    PreparedStatement favoritesPS = con.prepareStatement(favoritesSQL);
-                    favoritesPS.setInt(1, foreignUser);
-                    ResultSet favoritesRS = favoritesPS.executeQuery();
-                    while (favoritesRS.next()) {
-                        User user = new User(
-                                favoritesRS.getInt("idusers"),
-                                favoritesRS.getString("role"),
-                                favoritesRS.getString("phone"),
-                                favoritesRS.getString("firstName"),
-                                favoritesRS.getString("lastName"),
-                                favoritesRS.getString("gender"),
-                                favoritesRS.getString("birthDate"),
-                                favoritesRS.getString("aboutme"),
-                                favoritesRS.getString("tag")
-                        );
-                        users.add(user);
-                    }
                 }
-                return users;
+                case "favorites": {
+                    // TODO Implement error function if user has not favorites
+                    // Check if user has favorites first
+                    String SQL = "SELECT * FROM favorites " +
+                            "WHERE idusers = ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
 
-            } else if (segment.equals("profile")) {
+                    ArrayList<User> users = new ArrayList<>();
+                    while (rs.next()) {
+                        int foreignUser = rs.getInt("idforeignuser");
 
-                String SQL = "SELECT * FROM users " +
-                        "JOIN userinfo USING (idusers) " +
-                        "JOIN descriptions USING (idusers) " +
-                        "JOIN useshashtags USING (idusers) " +
-                        "JOIN hashtags USING (idhashtags) " +
-                        "WHERE idusers != ?;";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.setInt(1, id);
-                ResultSet rs = ps.executeQuery();
+                        String favoritesSQL = "select * from users " +
+                                "join userinfo using (idusers) " +
+                                "join logininfo using (idusers) " +
+                                "join descriptions using (idusers) " +
+                                "join useshashtags using (idusers) " +
+                                "join hashtags using (idhashtags) " +
+                                "where idusers = ?;";
+                        PreparedStatement favoritesPS = con.prepareStatement(favoritesSQL);
+                        favoritesPS.setInt(1, foreignUser);
+                        ResultSet favoritesRS = favoritesPS.executeQuery();
+                        userList(users, favoritesRS);
+                    }
+                    return users;
 
-                return unpackResultSet(rs, "userView");
+                }
+                case "profile": {
 
-            } else if (segment.equals("admin")) {
+                    String SQL = "SELECT * FROM users " +
+                            "JOIN userinfo USING (idusers) " +
+                            "JOIN descriptions USING (idusers) " +
+                            "JOIN useshashtags USING (idusers) " +
+                            "JOIN hashtags USING (idhashtags) " +
+                            "WHERE idusers != ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
 
-                String SQL = "SELECT * FROM users " +
-                        "JOIN userinfo USING (idusers) " +
-                        "JOIN descriptions USING (idusers) " +
-                        "JOIN logininfo USING (idusers) " +
-                        "JOIN useshashtags USING (idusers) " +
-                        "JOIN hashtags USING (idhashtags) " +
-                        "WHERE idusers != ?;";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.setInt(1, id);
-                ResultSet rs = ps.executeQuery();
+                    return unpackResultSet(rs, "userView");
 
-                return unpackResultSet(rs, "adminView");
+                }
+                case "admin": {
+
+                    String SQL = "SELECT * FROM users " +
+                            "JOIN userinfo USING (idusers) " +
+                            "JOIN descriptions USING (idusers) " +
+                            "JOIN logininfo USING (idusers) " +
+                            "JOIN useshashtags USING (idusers) " +
+                            "JOIN hashtags USING (idhashtags) " +
+                            "WHERE idusers != ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
+
+                    return unpackResultSet(rs, "adminView");
+                }
             }
         } catch (SQLException ex) {
-                throw new DefaultException(ex.getMessage());
+            throw new DefaultException(ex.getMessage());
         }
         throw new DefaultException("Unable to pack identify segment");
+    }
+
+    private void userList(ArrayList<User> users, ResultSet favoritesRS) throws SQLException {
+        while (favoritesRS.next()) {
+            User user = new User(
+                    favoritesRS.getInt("idusers"),
+                    favoritesRS.getString("role"),
+                    favoritesRS.getString("phone"),
+                    favoritesRS.getString("firstName"),
+                    favoritesRS.getString("lastName"),
+                    favoritesRS.getString("gender"),
+                    favoritesRS.getString("birthDate"),
+                    favoritesRS.getString("aboutme"),
+                    favoritesRS.getString("tag")
+            );
+            users.add(user);
+        }
     }
 
     private ArrayList<User> unpackResultSet(ResultSet rs, String segment) throws SQLException, DefaultException {
         ArrayList<User> users = new ArrayList<>();
 
-        if (segment.equals("userView")) {
-            while (rs.next()) {
-                User user = new User(
-                        rs.getInt("idusers"),
-                        rs.getString("role"),
-                        rs.getString("phone"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("gender"),
-                        rs.getString("birthDate"),
-                        rs.getString("aboutme"),
-                        rs.getString("tag")
-                );
-                users.add(user);
-            }
-            return users;
-        }
-        else if (segment.equals("favoritesView")) {
-            // Makes a list based off all favorites idforeignuser = idusers
-            while (rs.next()) {
+        switch (segment) {
+            case "userView":
+                userList(users, rs);
+                return users;
+            case "favoritesView":
+                // Makes a list based off all favorites idforeignuser = idusers
+                while (rs.next()) {
 
-            }
-        }
-        else if (segment.equals("adminView")) {
-            while (rs.next()) {
-                User user = new User(
-                        rs.getInt("idusers"),
-                        rs.getString("email"),
-                        rs.getString("pword"),
-                        rs.getString("role"),
-                        rs.getString("phone"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("gender"),
-                        rs.getString("birthDate"),
-                        "N/A",
-                        rs.getString("aboutme"),
-                        rs.getString("tag")
-                );
-                users.add(user);
-            }
-            return users;
-        }
-        else {
-            throw new DefaultException("No segment chosen");
+                }
+                break;
+            case "adminView":
+                while (rs.next()) {
+                    User user = new User(
+                            rs.getInt("idusers"),
+                            rs.getString("email"),
+                            rs.getString("pword"),
+                            rs.getString("role"),
+                            rs.getString("phone"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            rs.getString("gender"),
+                            rs.getString("birthDate"),
+                            "N/A",
+                            rs.getString("aboutme"),
+                            rs.getString("tag")
+                    );
+                    users.add(user);
+                }
+                return users;
+            default:
+                throw new DefaultException("No segment chosen");
         }
         return null;
     }
@@ -292,7 +285,7 @@ public class UserMapper {
                 String SQLurl = "SELECT idusers, description from users join pictures using (idusers) where idusers = ?";
                 PreparedStatement psDefaultPicture = con.prepareStatement(SQLurl);
                 psDefaultPicture.setInt(1, id);
-                ResultSet rsUserPictures= ps.executeQuery();
+                ResultSet rsUserPictures = ps.executeQuery();
 
                 rsUserPictures.next(); // skips to 2nd row as first row holds labels.
                 if (rsUserPictures.next()) {
@@ -313,7 +306,7 @@ public class UserMapper {
             } else {
                 throw new DefaultException("Could not validate user");
             }
-        }  catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
         }
     }
@@ -385,9 +378,6 @@ public class UserMapper {
             // mangler ændring af tags
 
 
-
-
-
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
         }
@@ -407,6 +397,34 @@ public class UserMapper {
                 }
             }
             return tags;
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    /*UD FRA AT ALLE CHILD TABLES ER SAT TIL "ON DELETE: CASCADE" */
+    public void removeUser(String removeUserId) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "DELETE FROM users WHERE idusers=?;";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, removeUserId);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+
+    public void removeFavorite(String removeUserId) throws DefaultException{
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "DELETE favorites FROM favorites JOIN users WHERE favorites.idforeignuser=?;";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, removeUserId);
+            ps.executeUpdate();
+
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
         }

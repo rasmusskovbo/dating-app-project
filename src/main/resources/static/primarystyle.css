@@ -46,6 +46,7 @@ header h1{
     width: 8vw;
     margin: auto;
     border:0.2vw solid white;
+    background-color: white;
     border-radius: 50%;
 }
 
@@ -127,7 +128,7 @@ img{
 
 
 
-.table-content thead, .table-content tfoot {
+.table-content thead {
     width: auto;
     height: 3vw;
     font-size: 1.5vw;
@@ -166,12 +167,17 @@ img{
     border-radius: 50%;
 }
 
+td {
+    word-break: break-word;
+}
+
 .user-picture{
     height: 8vw;
     width: 8vw;
     border-radius: 50%;
     margin: auto;
     border:0.2vw solid white;
+    background-color: white;
 }
 
 .user-describtion{

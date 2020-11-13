@@ -27,4 +27,8 @@ public interface DataFacade {
 
     public ArrayList<String> getTags() throws DefaultException;
 
+    public void removeUser(String removeUserId) throws DefaultException;
+
+    public void removeFavorite(String removeUserId) throws DefaultException;
+
 }
