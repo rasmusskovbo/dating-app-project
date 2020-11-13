@@ -36,10 +36,6 @@ public class DataFacadeImpl implements DataFacade {
         userMapper.uploadPicture(multipartFile);
     }
 
-    public Blob getPicture(int id) throws SQLException, IOException {
-        return userMapper.getPicture(id);
-    }
-
     public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
         return userMapper.getUsers(searchTag, id, segment);
     }

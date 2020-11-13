@@ -5,7 +5,6 @@ import com.example.DatingAppProject.domain.User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.transform.Result;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 // Snakker med databasen, ift user queries
 public class UserMapper {
     public void createUser(User user) throws DefaultException {
+        Connection con = DBManager.getConnection();
         try {
             
             //Check if phone number is already in database/user already exist
@@ -122,7 +122,7 @@ public class UserMapper {
         }
     }
 
-    // Segment
+    // Segmented
     public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
         try {
             Connection con = DBManager.getConnection();
@@ -414,7 +414,6 @@ public class UserMapper {
         }
     }
 
-    /*UD FRA AT ALLE CHILD TABLES ER SAT TIL "ON DELETE: CASCADE" */
     public void removeUser(String removeUserId) throws DefaultException {
         try {
             Connection con = DBManager.getConnection();
@@ -427,7 +426,6 @@ public class UserMapper {
             throw new DefaultException(ex.getMessage());
         }
     }
-
 
     public void removeFavorite(String removeUserId) throws DefaultException{
         try {
@@ -442,6 +440,7 @@ public class UserMapper {
         }
     }
 
+    // TODO Mangler desværre en retrieve picture
     public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         InputStream inputStream = multipartFile.getInputStream();
@@ -454,20 +453,5 @@ public class UserMapper {
         ps.executeQuery(); //exeucute update
     }
 
-    // Virker ikke
-    public Blob getPicture(int id) throws SQLException, IOException {
-        Connection con = DBManager.getConnection();
-        MultipartFile multipartFile = null;
-        Blob blob = null;
-
-        String SQL = "SELECT * FROM pictures WHERE idpictures = ?";
-        PreparedStatement ps = con.prepareStatement(SQL);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            blob = rs.getBlob("data");
-        }
-        return blob;
-    }
 
 }

@@ -3,13 +3,10 @@ package com.example.DatingAppProject.domain;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class LoginController {
         // facade to datasource layer
@@ -59,17 +56,9 @@ public class LoginController {
         return model;
     }
 
-    // Works
     public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
         facade.uploadPicture(multipartFile);
     }
-
-    // Does not work
-    public Blob getPicture() throws SQLException, IOException {
-        return facade.getPicture(3);
-    }
-
-
 
     public ArrayList<String> getTags() throws DefaultException{
         return facade.getTags();

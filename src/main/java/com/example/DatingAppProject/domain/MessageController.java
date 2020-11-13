@@ -13,7 +13,8 @@ public class MessageController {
 
 
     public ArrayList<User> getConversations(int id) throws DefaultException {
-        return facade.getConversations(id);
+       // return facade.getConversations(id);
+        return null;
     }
 
     public Model packageUser(User user, Model model) throws DefaultException {
@@ -21,12 +22,10 @@ public class MessageController {
         model.addAttribute("lastName", user.getLastName());
         return model;
     }
+
     /*
     public Model packageMessage(Message message, Model model) throws DefaultException {
         model.addAttribute("message", message.getMessage();
         return model;
-    }
-
-
-     */
+    }*/
 }

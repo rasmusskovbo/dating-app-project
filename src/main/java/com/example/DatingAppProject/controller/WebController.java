@@ -7,19 +7,13 @@ import com.example.DatingAppProject.data.DataFacadeImpl;
 import com.example.DatingAppProject.domain.DefaultException;
 import com.example.DatingAppProject.domain.LoginController;
 import com.example.DatingAppProject.domain.User;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 @Controller
 public class WebController {
@@ -216,18 +210,6 @@ public class WebController {
         loginController.removeUser(removeUserId);
 
         return "redirect:/admin";
-    }
-
-    @PostMapping("/testUpload")
-    public String getPicture(@RequestParam("file") MultipartFile multipartFile) throws SQLException, IOException {
-        loginController.uploadPicture(multipartFile);
-        return "welcome";
-    }
-
-    @GetMapping("/testshow")
-    public String showPicture(Model model) throws IOException, SQLException {
-        Blob blob = loginController.getPicture();
-        return "testshow";
     }
 
     private void setSessionInfo(WebRequest request, User user) {

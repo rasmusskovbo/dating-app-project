@@ -23,8 +23,6 @@ public interface DataFacade {
 
     public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException;
 
-    public Blob getPicture(int id) throws SQLException, IOException;
-
     public ArrayList<String> getTags() throws DefaultException;
 
     public void removeUser(String removeUserId) throws DefaultException;
