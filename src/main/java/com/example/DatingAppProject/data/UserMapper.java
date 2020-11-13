@@ -14,72 +14,84 @@ import java.util.ArrayList;
 public class UserMapper {
     public void createUser(User user) throws DefaultException {
         try {
-            Connection con = DBManager.getConnection();
+            
+            //Check if phone number is already in database/user already exist
+            String phoneCheckSQL = "SELECT COUNT(*) idusers FROM userinfo WHERE phone=?";
+            PreparedStatement psPhoneCheck = con.prepareStatement(phoneCheckSQL);
+            psPhoneCheck.setString(1, user.getPhone());
+            ResultSet rs = psPhoneCheck.executeQuery();
 
-            // Insert into users table
-            String SQL = "INSERT INTO users (email, role) VALUES (?, ?)";
-            PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getRole());
-            ps.executeUpdate();
-            ResultSet ids = ps.getGeneratedKeys();
-            ids.next();
-            int id = ids.getInt(1);
-            user.setId(id);
+            if (rs.next()) {
+                int userexists = rs.getInt("idusers");
 
-            // Insert into password table
-            String loginInfoSQL = "INSERT INTO logininfo (idusers, pword) VALUES (?, ?)";
-            PreparedStatement psLogininfo = con.prepareStatement(loginInfoSQL);
-            psLogininfo.setInt(1, user.getId());
-            psLogininfo.setString(2, user.getPassword());
-            psLogininfo.executeUpdate();
+                if (userexists == 0) {
+                    // Insert into users table
+                    String SQL = "INSERT INTO users (email, role) VALUES (?, ?)";
+                    PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, user.getEmail());
+                    ps.setString(2, user.getRole());
+                    ps.executeUpdate();
+                    ResultSet ids = ps.getGeneratedKeys();
+                    ids.next();
+                    int id = ids.getInt(1);
+                    user.setId(id);
 
-            // Insert into userinfo table
-            String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstName, lastName, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement psUserinfo = con.prepareStatement(userInfoSQL);
-            psUserinfo.setInt(1, user.getId());
-            psUserinfo.setString(2, user.getPhone());
-            psUserinfo.setString(3, user.getFirstName());
-            psUserinfo.setString(4, user.getLastName());
-            psUserinfo.setString(5, user.getBirthDate());
-            psUserinfo.setString(6, user.getGender());
-            psUserinfo.executeUpdate();
+                    // Insert into password table
+                    String loginInfoSQL = "INSERT INTO logininfo (idusers, pword) VALUES (?, ?)";
+                    PreparedStatement psLogininfo = con.prepareStatement(loginInfoSQL);
+                    psLogininfo.setInt(1, user.getId());
+                    psLogininfo.setString(2, user.getPassword());
+                    psLogininfo.executeUpdate();
 
-            //Insert into description table
-            String describSQL = "INSERT INTO descriptions (idusers, aboutme) VALUES (?, ?)";
-            PreparedStatement psDescrib = con.prepareStatement(describSQL);
-            psDescrib.setInt(1, user.getId());
-            psDescrib.setString(2, user.getAboutme());
-            psDescrib.executeUpdate();
+                    // Insert into userinfo table
+                    String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstName, lastName, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
+                    PreparedStatement psUserinfo = con.prepareStatement(userInfoSQL);
+                    psUserinfo.setInt(1, user.getId());
+                    psUserinfo.setString(2, user.getPhone());
+                    psUserinfo.setString(3, user.getFirstName());
+                    psUserinfo.setString(4, user.getLastName());
+                    psUserinfo.setString(5, user.getBirthDate());
+                    psUserinfo.setString(6, user.getGender());
+                    psUserinfo.executeUpdate();
 
-            //Check if hashtag exists in the system:
-            String tagSQL = "SELECT * FROM hashtags;";
-            PreparedStatement psTag = con.prepareStatement(tagSQL);
-            ResultSet rsHashtags = psTag.executeQuery();
-            boolean hasHashtag = false;
-            int hashtagID = 0;
-            while (rsHashtags.next()) {
-                if (rsHashtags.getString("tag").equals(user.getTag())) {
-                    hasHashtag = true;
-                    hashtagID = rsHashtags.getInt("idhashtags");
+                    //Insert into description table
+                    String describSQL = "INSERT INTO descriptions (idusers, aboutme) VALUES (?, ?)";
+                    PreparedStatement psDescrib = con.prepareStatement(describSQL);
+                    psDescrib.setInt(1, user.getId());
+                    psDescrib.setString(2, user.getAboutme());
+                    psDescrib.executeUpdate();
+
+                    //Check if hashtag exists in the system:
+                    String tagSQL = "SELECT * FROM hashtags;";
+                    PreparedStatement psTag = con.prepareStatement(tagSQL);
+                    ResultSet rsHashtags = psTag.executeQuery();
+                    boolean hasHashtag = false;
+                    int hashtagID = 0;
+                    while (rsHashtags.next()) {
+                        if (rsHashtags.getString("tag").equals(user.getTag())) {
+                            hasHashtag = true;
+                            hashtagID = rsHashtags.getInt("idhashtags");
+                        }
+                    }
+                    String insertTagSQL = "";
+                    if (!hasHashtag) { // If hashtag isnt present, create hashtag
+                        insertTagSQL = "INSERT INTO hashtags (tag) VALUE (?)";
+                        PreparedStatement psInsertTag = con.prepareStatement(insertTagSQL, Statement.RETURN_GENERATED_KEYS);
+                        psInsertTag.setString(1, user.getTag());
+                        psInsertTag.executeUpdate();
+                        ResultSet tagID = psInsertTag.getGeneratedKeys();
+                        tagID.next();
+                        hashtagID = tagID.getInt(1);
+                    }            // establish connection
+                    insertTagSQL = "INSERT INTO useshashtags (idusers, idhashtags) VALUE (?, ?)";
+                    PreparedStatement psAppendTag = con.prepareStatement(insertTagSQL);
+                    psAppendTag.setInt(1, id);
+                    psAppendTag.setInt(2, hashtagID);
+                    psAppendTag.executeUpdate();
+                } else {
+                    throw new DefaultException("A profile already exists with this phonenumber");
                 }
             }
-            String insertTagSQL = "";
-            if (!hasHashtag) { // If hashtag isnt present, create hashtag
-                insertTagSQL = "INSERT INTO hashtags (tag) VALUE (?)";
-                PreparedStatement psInsertTag = con.prepareStatement(insertTagSQL, Statement.RETURN_GENERATED_KEYS);
-                psInsertTag.setString(1, user.getTag());
-                psInsertTag.executeUpdate();
-                ResultSet tagID = psInsertTag.getGeneratedKeys();
-                tagID.next();
-                hashtagID = tagID.getInt(1);
-            }            // establish connection
-            insertTagSQL = "INSERT INTO useshashtags (idusers, idhashtags) VALUE (?, ?)";
-            PreparedStatement psAppendTag = con.prepareStatement(insertTagSQL);
-            psAppendTag.setInt(1, id);
-            psAppendTag.setInt(2, hashtagID);
-            psAppendTag.executeUpdate();
-
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage()); // TODO Fejlmeddelelse skal returneres til site via model og thymeleaf
         }
