@@ -14,90 +14,19 @@
     </div>
 
     <div class=" conversation-list">
-        <div class="conversation active">
-            <img src="images/rose.jpg" alt="Profile name"/>
-            <div class="title-text">
-                <h2 th:text="${getUser.firstName}"></h2>
-                <h2 th:text="${getUser.lastName}"></h2>
-            </div>
-            <div class="created-date">
-                Apr 16
-            </div>
-            <div class="conversation-message">
-                This is a message
-            </div>
-        </div>
-        <div class="conversation">
-            <img src="images/rose.jpg" alt="Profile name"/>
-            <div class="title-text">
-                Profile Name
-            </div>
-            <div class="created-date">
-                Apr 16
-            </div>
-            <div class="conversation-message">
-                This is a message
-            </div>
-        </div>
-        <div class="conversation">
-            <img src="images/rose.jpg" alt="Profile name"/>
-            <div class="title-text">
-                Profile Name
-            </div>
-            <div class="created-date">
-                Apr 16
-            </div>
 
-            <div class="conversation-message">
-                yes.. its fine..
-            </div>
-        </div>
-        <div class="conversation">
+        <div class="conversation" th:each="user : ${userlist}">
+            <input type="hidden" name="conversation_id" th:value="${conversation.id}">
             <img src="images/rose.jpg" alt="Profile name"/>
             <div class="title-text">
-               Hi long time..
+                <h2 th:text="${user.firstName}"></h2>
+                <h2 th:text="${user.lastName}"></h2>
             </div>
             <div class="created-date">
                 Apr 16
             </div>
             <div class="conversation-message">
                 This is a message
-            </div>
-        </div>
-        <div class="conversation">
-            <img src="images/rose.jpg" alt="Profile name"/>
-            <div class="title-text">
-                Katrine Hansen
-            </div>
-            <div class="created-date">
-                Apr 16
-            </div>
-            <div class="conversation-message">
-                see you..
-            </div>
-        </div>
-        <div class="conversation">
-            <img src="images/rose.jpg" alt="Profile name"/>
-            <div class="title-text">
-              kasper
-            </div>
-            <div class="created-date">
-                Apr 16
-            </div>
-            <div class="conversation-message">
-                This is a message
-            </div>
-        </div>
-        <div class="conversation">
-            <img src="images/rose.jpg" alt="Profile name"/>
-            <div class="title-text">
-                Trine jakobsen
-            </div>
-            <div class="created-date">
-                Apr 16
-            </div>
-            <div class="conversation-message">
-                ok .. thats fine.
             </div>
         </div>
     </div>
@@ -118,7 +47,7 @@
              <div class="message-time">Apr 16</div>
            </div>
         </div>
-        <div class="message-row other-message">
+        <div class="message-row other-message" >
             <div class="message-content">
                <img src="images/rose.jpg" alt="Profile name"/>
                <div class="message-text">jeg skriver lige en masse tekst for at
