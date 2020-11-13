@@ -19,6 +19,7 @@
         <form name="login" action="/loginAction" method="POST">
             <div class="flex-container">
 
+                <!-- input email -->
                 <div class="input-fullwidth">
                     <h2><label for="email">E-mail</label></h2>
                     <input type="text" id="email" name="email" placeholder="Your e-mail address...." value="" required>
@@ -26,6 +27,7 @@
 
                 <div class="non-content-area"></div>
 
+                <!-- input password -->
                 <div class="input-fullwidth">
                     <h2><label for="password">Password</label></h2>
                     <input type="password" id="password" name="password" placeholder="Your password...." value="" required>
@@ -35,9 +37,7 @@
                     <input type="submit" class="button" value="Submit">
                 </div>
 
-                <div class="input-fullwidth">
-                    <a href="/"><p>Forgot password?</p></a>
-                </div>
+                <!-- redirect to createProfile -->
                 <div class="input-fullwidth">
                     <a href="/createProfile"><p>Not a member? Sign up now!</p></a>
                 </div>

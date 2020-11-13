@@ -3,15 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
-    <link href="primarystyle.css" rel="stylesheet">
-    <link href="inputstyle.css" rel="stylesheet">
-    <script crossorigin="anonymous" src="https://kit.fontawesome.com/00d69adb96.js"></script>
+    <title>Favorites</title>
+    <link rel="stylesheet" href="primarystyle.css">
+    <link rel="stylesheet" href="inputstyle.css">
+    <script src="https://kit.fontawesome.com/00d69adb96.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-
-<!-- top content header -->
 <header>
     <h1>Dating.com</h1>
 </header>
@@ -20,7 +18,7 @@
     <!-- users profile pic and name-->
     <div class="my-profile">
         <div class="my-picture">
-            <img height="100%" src="https://freesvg.org/img/abstract-user-flat-4.png" width="100%">
+            <img src="https://freesvg.org/img/abstract-user-flat-4.png" width="100%" height="100%">
         </div>
         <h1 th:text="${firstName}"></h1>
         <h1 th:text="${lastName}"></h1>
@@ -40,37 +38,26 @@
 <!-- main content middle-->
 <div class="main-content">
     <div class="table-content">
-
-        <!-- table list of users-->
         <table>
-            <!-- table header -->
             <thead>
             <tr>
-                <!-- empty space above pictures -->
                 <th style="width: 8vw"></th>
                 <th colspan="2" style="width: 10vw">
                     <h1>name</h1>
                 </th>
-                <!-- headline -->
-                <th style="width: 8vw">
-                    <h1>birthday</h1>
+                <th style="width: 6vw">
+                    <h1>age</h1>
                 </th>
-                <!-- headline -->
                 <th style="width: 6vw">
                     <h1>likes</h1>
                 </th>
-                <!-- headline -->
                 <th>
                     <h1>about me</h1>
                 </th>
-                <!-- empty space above buttons -->
-                <th colspan="2" style="width: 3vw"></th>
+                <th style="width: 3vw" colspan="2"></th>
             </tr>
             </thead>
-
-            <!-- table body -->
             <tbody>
-            <!-- display info for each user in userlist-->
             <tr th:each="user : ${userlist}">
                 <td class="user-picture">
                     <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="User Profile Picture" width="100%" height="100%">
@@ -91,63 +78,59 @@
                     </div>
                 </td>
                 <td colspan="2">
-                    <!-- add user as favorite -->
-                    <form action="/addFavorite" method="post" name="addFavorite">
-                        <input id="favorite" name="favorite" th:value="${user.id}" type="hidden">
-                        <button class="button" type="submit"><i class="fas fa-heart"></i></button>
+                    <form method="POST" action="/removeFavorite">
+                        <input type="hidden" id="favorite" name="favorite" th:value="${user.id}">
+                        <button type="submit" class="button"><i class="fas fa-heart-broken"></i></button>
                     </form>
                     <button class="button"><i class="fas fa-comments"></i></button>
                 </td>
             </tr>
             </tbody>
-
         </table>
     </div>
 </div>
 
+
 <!-- edit profile modal window-->
-<div class="overlay" id="popup">
+<div id="popup" class="overlay">
     <div class="popup">
         <h1>Edit profile</h1>
-        <!-- close modal -->
         <a class="close" href="#">&times;</a>
-
-        <!-- modal content -->
         <div class="popup-content">
-            <form action="/editProfile" method="POST" name="editProfile">
+            <form name="editProfile" action="/editProfile" method="POST">
                 <div class="flex-container">
                     <div class="input-halfwidth">
                         <h2><label for="firstName">First Name</label></h2>
-                        <input id="firstName" name="firstName" readonly th:value="${firstName}" type="text">
+                        <input type="text" id="firstName" name="firstName" th:value="${firstName}" readonly>
                     </div>
 
                     <!-- last name input -->
                     <div class="input-halfwidth">
                         <h2><label for="lastName">Last name</label></h2>
-                        <input id="lastName" name="lastName" readonly th:value="${lastName}" type="text">
+                        <input type="text" id="lastName" name="lastName" th:value="${lastName}" readonly>
                     </div>
 
                     <!-- email input -->
                     <div class="input-fullwidth">
                         <h2><label for="email">E-mail</label></h2>
-                        <input id="email" name="email" th:value="${email}" type="text">
+                        <input type="text" id="email" name="email" th:value="${email}">
                     </div>
 
                     <div class="input-fullwidth">
                         <h2><label for="phone">Phone Number </label></h2>
-                        <input class="no-arrow" id="phone" name="phone" th:value="${phone}" type="number">
+                        <input type="number" id="phone" name="phone" class="no-arrow" th:value="${phone}">
                     </div>
 
                     <!-- choose gender -->
                     <div class="input-fullwidth">
                         <h2><label for="gender">Gender</label></h2>
-                        <input id="gender" name="gender" readonly th:value="${gender}" type="text">
+                        <input type="text" id="gender" name="gender" th:value="${gender}" readonly>
                     </div>
 
                     <!-- choose date of birth-->
                     <div class="input-fullwidth">
                         <h2><label for="birthDate">Birthday</label></h2>
-                        <input id="birthDate" name="birthDate" readonly th:value="${birthDate}" type="date">
+                        <input type="date" id="birthDate" name="birthDate" th:value="${birthDate}" readonly>
                     </div>
 
                     <!-- user description/about me -->
@@ -174,18 +157,17 @@
                     <!-- password input -->
                     <div class="input-halfwidth">
                         <h2><label for="password1">New Password</label></h2>
-                        <input id="password1" name="password1" type="password">
+                        <input type="password" id="password1" name="password1">
                     </div>
                     <!-- repeat password-->
                     <div class="input-halfwidth">
                         <h2><label for="password2">Retype Password</label></h2>
-                        <input id="password2" name="password2" type="password">
+                        <input type="password" id="password2" name="password2">
                     </div>
 
                     <!-- create profile button-->
                     <div class="input-fullwidth">
-                        <input class="button" onclick="return confirm('Submit information?')" type="submit"
-                               value="save change">
+                        <input type="submit" class="button" onclick="return confirm('Submit information?')" value="save change">
                     </div>
 
                 </div>
@@ -193,32 +175,15 @@
         </div>
     </div>
 </div>
-</div>
 
 
 <!-- search content right side-->
-<div class="right-content">
-    <!-- search header-->
-    <div class="search-header">
-        <h1><i class="fas fa-search"></i>search</h1>
-    </div>
-
-    <!-- search drop down option-->
-    <div class="search-box">
-        <h1>Likes</h1>
-        <form action="/searchUsers" method="POST" name="search">
-            <select id="searchTag" name="searchTag">
-                <option th:each="tag : ${tags}" th:value="${tag}"><p th:text="${tag}"></p></option>
-            </select>
-            <input class="button" type="submit" value="submit">
-        </form>
-    </div>
-</div>
-</div>
+<div class="right-content"></div>
 
 <!-- footer content-->
 <div class="footer">
     <p> WWW.DATING.COM • LYGTEN 37, 2400 KØBENHAVN NV• E-MAIL: INFO@DATING.COM • TLF: +45 46 46 07 00 </p>
 </div>
+
 </body>
 </html>

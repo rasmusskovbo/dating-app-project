@@ -54,7 +54,8 @@ public class User {
     }
 
     // Overloaded constructor for user lists
-    public User(String role, String phone, String firstName, String lastName, String gender, String birthDate, String aboutme, String tag) {
+    public User(int id, String role, String phone, String firstName, String lastName, String gender, String birthDate, String aboutme, String tag) {
+        this.id = id;
         this.role = role;
         this.phone = phone;
         this.firstName = firstName;

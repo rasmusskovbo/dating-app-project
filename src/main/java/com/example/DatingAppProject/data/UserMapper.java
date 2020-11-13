@@ -5,81 +5,93 @@ import com.example.DatingAppProject.domain.User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.transform.Result;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
 // Snakker med databasen, ift user queries
 public class UserMapper {
-
     public void createUser(User user) throws DefaultException {
         try {
-            Connection con = DBManager.getConnection();
+            
+            //Check if phone number is already in database/user already exist
+            String phoneCheckSQL = "SELECT COUNT(*) idusers FROM userinfo WHERE phone=?";
+            PreparedStatement psPhoneCheck = con.prepareStatement(phoneCheckSQL);
+            psPhoneCheck.setString(1, user.getPhone());
+            ResultSet rs = psPhoneCheck.executeQuery();
 
-            // Insert into users table
-            String SQL = "INSERT INTO users (email, role) VALUES (?, ?)";
-            PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getRole());
-            ps.executeUpdate();
-            ResultSet ids = ps.getGeneratedKeys();
-            ids.next();
-            int id = ids.getInt(1);
-            user.setId(id);
+            if (rs.next()) {
+                int userexists = rs.getInt("idusers");
 
-            // Insert into password table
-            String loginInfoSQL = "INSERT INTO logininfo (idusers, pword) VALUES (?, ?)";
-            PreparedStatement psLogininfo = con.prepareStatement(loginInfoSQL);
-            psLogininfo.setInt(1, user.getId());
-            psLogininfo.setString(2, user.getPassword());
-            psLogininfo.executeUpdate();
+                if (userexists == 0) {
+                    // Insert into users table
+                    String SQL = "INSERT INTO users (email, role) VALUES (?, ?)";
+                    PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, user.getEmail());
+                    ps.setString(2, user.getRole());
+                    ps.executeUpdate();
+                    ResultSet ids = ps.getGeneratedKeys();
+                    ids.next();
+                    int id = ids.getInt(1);
+                    user.setId(id);
 
-            // Insert into userinfo table
-            String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstName, lastName, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement psUserinfo = con.prepareStatement(userInfoSQL);
-            psUserinfo.setInt(1, user.getId());
-            psUserinfo.setString(2, user.getPhone());
-            psUserinfo.setString(3, user.getFirstName());
-            psUserinfo.setString(4, user.getLastName());
-            psUserinfo.setString(5, user.getBirthDate());
-            psUserinfo.setString(6, user.getGender());
-            psUserinfo.executeUpdate();
+                    // Insert into password table
+                    String loginInfoSQL = "INSERT INTO logininfo (idusers, pword) VALUES (?, ?)";
+                    PreparedStatement psLogininfo = con.prepareStatement(loginInfoSQL);
+                    psLogininfo.setInt(1, user.getId());
+                    psLogininfo.setString(2, user.getPassword());
+                    psLogininfo.executeUpdate();
 
-            //Insert into description table
-            String describSQL = "INSERT INTO descriptions (idusers, aboutme) VALUES (?, ?)";
-            PreparedStatement psDescrib = con.prepareStatement(describSQL);
-            psDescrib.setInt(1, user.getId());
-            psDescrib.setString(2, user.getAboutme());
-            psDescrib.executeUpdate();
+                    // Insert into userinfo table
+                    String userInfoSQL = "INSERT INTO userinfo (idusers, phone, firstName, lastName, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?)";
+                    PreparedStatement psUserinfo = con.prepareStatement(userInfoSQL);
+                    psUserinfo.setInt(1, user.getId());
+                    psUserinfo.setString(2, user.getPhone());
+                    psUserinfo.setString(3, user.getFirstName());
+                    psUserinfo.setString(4, user.getLastName());
+                    psUserinfo.setString(5, user.getBirthDate());
+                    psUserinfo.setString(6, user.getGender());
+                    psUserinfo.executeUpdate();
 
-            //Check if hashtag exists in the system:
-            String tagSQL = "SELECT * FROM hashtags;";
-            PreparedStatement psTag = con.prepareStatement(tagSQL);
-            ResultSet rsHashtags = psTag.executeQuery();
-            boolean hasHashtag = false;
-            int hashtagID = 0;
-            while (rsHashtags.next()) {
-                if (rsHashtags.getString("tag").equals(user.getTag())) {
-                    hasHashtag = true;
-                    hashtagID = rsHashtags.getInt("idhashtags");
+                    //Insert into description table
+                    String describSQL = "INSERT INTO descriptions (idusers, aboutme) VALUES (?, ?)";
+                    PreparedStatement psDescrib = con.prepareStatement(describSQL);
+                    psDescrib.setInt(1, user.getId());
+                    psDescrib.setString(2, user.getAboutme());
+                    psDescrib.executeUpdate();
+
+                    //Check if hashtag exists in the system:
+                    String tagSQL = "SELECT * FROM hashtags;";
+                    PreparedStatement psTag = con.prepareStatement(tagSQL);
+                    ResultSet rsHashtags = psTag.executeQuery();
+                    boolean hasHashtag = false;
+                    int hashtagID = 0;
+                    while (rsHashtags.next()) {
+                        if (rsHashtags.getString("tag").equals(user.getTag())) {
+                            hasHashtag = true;
+                            hashtagID = rsHashtags.getInt("idhashtags");
+                        }
+                    }
+                    String insertTagSQL = "";
+                    if (!hasHashtag) { // If hashtag isnt present, create hashtag
+                        insertTagSQL = "INSERT INTO hashtags (tag) VALUE (?)";
+                        PreparedStatement psInsertTag = con.prepareStatement(insertTagSQL, Statement.RETURN_GENERATED_KEYS);
+                        psInsertTag.setString(1, user.getTag());
+                        psInsertTag.executeUpdate();
+                        ResultSet tagID = psInsertTag.getGeneratedKeys();
+                        tagID.next();
+                        hashtagID = tagID.getInt(1);
+                    }            // establish connection
+                    insertTagSQL = "INSERT INTO useshashtags (idusers, idhashtags) VALUE (?, ?)";
+                    PreparedStatement psAppendTag = con.prepareStatement(insertTagSQL);
+                    psAppendTag.setInt(1, id);
+                    psAppendTag.setInt(2, hashtagID);
+                    psAppendTag.executeUpdate();
+                } else {
+                    throw new DefaultException("A profile already exists with this phonenumber");
                 }
             }
-            String insertTagSQL = "";
-            if (!hasHashtag) { // If hashtag isnt present, create hashtag
-                insertTagSQL = "INSERT INTO hashtags (tag) VALUE (?)";
-                PreparedStatement psInsertTag = con.prepareStatement(insertTagSQL, Statement.RETURN_GENERATED_KEYS);
-                psInsertTag.setString(1, user.getTag());
-                psInsertTag.executeUpdate();
-                ResultSet tagID = psInsertTag.getGeneratedKeys();
-                tagID.next();
-                hashtagID = tagID.getInt(1);
-            }            // establish connection
-            insertTagSQL = "INSERT INTO useshashtags (idusers, idhashtags) VALUE (?, ?)";
-            PreparedStatement psAppendTag = con.prepareStatement(insertTagSQL);
-            psAppendTag.setInt(1, id);
-            psAppendTag.setInt(2, hashtagID);
-            psAppendTag.executeUpdate();
-
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage()); // TODO Fejlmeddelelse skal returneres til site via model og thymeleaf
         }
@@ -112,114 +124,146 @@ public class UserMapper {
 
     // Segment
     public ArrayList<User> getUsers(String searchTag, int id, String segment) throws DefaultException {
-        if (segment.equals("searchTag")) {
-            try {
-                Connection con = DBManager.getConnection();
+        try {
+            Connection con = DBManager.getConnection();
 
-                String SQL = "SELECT * FROM users " +
-                        "JOIN userinfo USING (idusers) " +
-                        "JOIN logininfo USING (idusers) " +
-                        "JOIN descriptions USING (idusers) " +
-                        "JOIN useshashtags USING (idusers) " +
-                        "JOIN hashtags USING (idhashtags) " +
-                        "WHERE tag = ? AND idusers != ?;";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.setString(1, searchTag);
-                ps.setInt(2, id);
-                ResultSet rs = ps.executeQuery();
+            switch (segment) {
+                case "searchTag": {
 
-                return unpackResultSet(rs, "userView");
-            }   catch (SQLException ex) {
-                throw new DefaultException(ex.getMessage());
+
+                    String SQL = "SELECT * FROM users " +
+                            "JOIN userinfo USING (idusers) " +
+                            "JOIN logininfo USING (idusers) " +
+                            "JOIN descriptions USING (idusers) " +
+                            "JOIN useshashtags USING (idusers) " +
+                            "JOIN hashtags USING (idhashtags) " +
+                            "WHERE tag = ? AND idusers != ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setString(1, searchTag);
+                    ps.setInt(2, id);
+                    ResultSet rs = ps.executeQuery();
+
+                    return unpackResultSet(rs, "userView");
+
+                }
+                case "favorites": {
+                    // TODO Implement error function if user has not favorites
+                    // Check if user has favorites first
+                    String SQL = "SELECT * FROM favorites " +
+                            "WHERE idusers = ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
+
+                    ArrayList<User> users = new ArrayList<>();
+                    while (rs.next()) {
+                        int foreignUser = rs.getInt("idforeignuser");
+
+                        String favoritesSQL = "select * from users " +
+                                "join userinfo using (idusers) " +
+                                "join logininfo using (idusers) " +
+                                "join descriptions using (idusers) " +
+                                "join useshashtags using (idusers) " +
+                                "join hashtags using (idhashtags) " +
+                                "where idusers = ?;";
+                        PreparedStatement favoritesPS = con.prepareStatement(favoritesSQL);
+                        favoritesPS.setInt(1, foreignUser);
+                        ResultSet favoritesRS = favoritesPS.executeQuery();
+                        userList(users, favoritesRS);
+                    }
+                    return users;
+
+                }
+                case "profile": {
+
+                    String SQL = "SELECT * FROM users " +
+                            "JOIN userinfo USING (idusers) " +
+                            "JOIN descriptions USING (idusers) " +
+                            "JOIN useshashtags USING (idusers) " +
+                            "JOIN hashtags USING (idhashtags) " +
+                            "WHERE idusers != ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
+
+                    return unpackResultSet(rs, "userView");
+
+                }
+                case "admin": {
+
+                    String SQL = "SELECT * FROM users " +
+                            "JOIN userinfo USING (idusers) " +
+                            "JOIN descriptions USING (idusers) " +
+                            "JOIN logininfo USING (idusers) " +
+                            "JOIN useshashtags USING (idusers) " +
+                            "JOIN hashtags USING (idhashtags) " +
+                            "WHERE idusers != ?;";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
+
+                    return unpackResultSet(rs, "adminView");
+                }
             }
-        } else if (segment.equals("profile")) {
-            try {
-                Connection con = DBManager.getConnection();
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+        throw new DefaultException("Unable to pack identify segment");
+    }
 
-                String SQL = "SELECT * FROM users " +
-                        "JOIN userinfo USING (idusers) " +
-                        "JOIN descriptions USING (idusers) " +
-                        "JOIN useshashtags USING (idusers) " +
-                        "JOIN hashtags USING (idhashtags) " +
-                        "WHERE idusers != ?;";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.setInt(1, id);
-                ResultSet rs = ps.executeQuery();
-
-                return unpackResultSet(rs, "userView");
-
-            }   catch (SQLException ex) {
-                throw new DefaultException(ex.getMessage());
-            }
-        } else if (segment.equals("admin")) {
-            try {
-                Connection con = DBManager.getConnection();
-
-                String SQL = "SELECT * FROM users " +
-                        "JOIN userinfo USING (idusers) " +
-                        "JOIN descriptions USING (idusers) " +
-                        "JOIN logininfo USING (idusers) " +
-                        "JOIN useshashtags USING (idusers) " +
-                        "JOIN hashtags USING (idhashtags) " +
-                        "JOIN pictures USING (idusers) " +
-                        "WHERE idusers != ?;";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.setInt(1, id);
-                ResultSet rs = ps.executeQuery();
-
-                return unpackResultSet(rs, "adminView");
-
-            } catch (SQLException e) {
-                throw new DefaultException(e.getMessage());
-            }
-        } else {
-            throw new DefaultException("No segment chosen");
+    private void userList(ArrayList<User> users, ResultSet favoritesRS) throws SQLException {
+        while (favoritesRS.next()) {
+            User user = new User(
+                    favoritesRS.getInt("idusers"),
+                    favoritesRS.getString("role"),
+                    favoritesRS.getString("phone"),
+                    favoritesRS.getString("firstName"),
+                    favoritesRS.getString("lastName"),
+                    favoritesRS.getString("gender"),
+                    favoritesRS.getString("birthDate"),
+                    favoritesRS.getString("aboutme"),
+                    favoritesRS.getString("tag")
+            );
+            users.add(user);
         }
     }
 
     private ArrayList<User> unpackResultSet(ResultSet rs, String segment) throws SQLException, DefaultException {
         ArrayList<User> users = new ArrayList<>();
-        if (segment.equals("userView")) {
 
-            while (rs.next()) {
-                int idUserDB = rs.getInt("idusers");
-                User user = new User(
-                        rs.getString("role"),
-                        rs.getString("phone"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("gender"),
-                        rs.getString("birthDate"),
-                        rs.getString("aboutme"),
-                        rs.getString("tag")
-                );
-                users.add(user);
-            }
-            return users;
-        } else if (segment.equals("adminView")) {
+        switch (segment) {
+            case "userView":
+                userList(users, rs);
+                return users;
+            case "favoritesView":
+                // Makes a list based off all favorites idforeignuser = idusers
+                while (rs.next()) {
 
-            while (rs.next()) {
-                int idUserDB = rs.getInt("idusers");
-                User user = new User(
-                        rs.getInt("idusers"),
-                        rs.getString("email"),
-                        rs.getString("pword"),
-                        rs.getString("role"),
-                        rs.getString("phone"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("gender"),
-                        rs.getString("birthDate"),
-                        rs.getString("profilePictureURL"),
-                        rs.getString("aboutme"),
-                        rs.getString("tag")
-                );
-                users.add(user);
-            }
-            return users;
-        } else {
-            throw new DefaultException("No segment chosen");
+                }
+                break;
+            case "adminView":
+                while (rs.next()) {
+                    User user = new User(
+                            rs.getInt("idusers"),
+                            rs.getString("email"),
+                            rs.getString("pword"),
+                            rs.getString("role"),
+                            rs.getString("phone"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            rs.getString("gender"),
+                            rs.getString("birthDate"),
+                            "N/A",
+                            rs.getString("aboutme"),
+                            rs.getString("tag")
+                    );
+                    users.add(user);
+                }
+                return users;
+            default:
+                throw new DefaultException("No segment chosen");
         }
+        return null;
     }
 
     public User getProfile(int id) throws DefaultException {
@@ -253,7 +297,7 @@ public class UserMapper {
                 String SQLurl = "SELECT idusers, description from users join pictures using (idusers) where idusers = ?";
                 PreparedStatement psDefaultPicture = con.prepareStatement(SQLurl);
                 psDefaultPicture.setInt(1, id);
-                ResultSet rsUserPictures= ps.executeQuery();
+                ResultSet rsUserPictures = ps.executeQuery();
 
                 rsUserPictures.next(); // skips to 2nd row as first row holds labels.
                 if (rsUserPictures.next()) {
@@ -274,8 +318,24 @@ public class UserMapper {
             } else {
                 throw new DefaultException("Could not validate user");
             }
-        }  catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    // TODO Check if user already added this user to favorites. IF then dont add.
+    public void addFavorite(int id, int favorite) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+
+            String SQL = "INSERT INTO favorites (idusers, idforeignuser) VALUES (?, ?);";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setInt(1, id);
+            ps.setInt(2, favorite);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DefaultException(e.getMessage());
         }
     }
 
@@ -330,9 +390,6 @@ public class UserMapper {
             // mangler ændring af tags
 
 
-
-
-
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
         }
@@ -352,6 +409,34 @@ public class UserMapper {
                 }
             }
             return tags;
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+    /*UD FRA AT ALLE CHILD TABLES ER SAT TIL "ON DELETE: CASCADE" */
+    public void removeUser(String removeUserId) throws DefaultException {
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "DELETE FROM users WHERE idusers=?;";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, removeUserId);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new DefaultException(ex.getMessage());
+        }
+    }
+
+
+    public void removeFavorite(String removeUserId) throws DefaultException{
+        try {
+            Connection con = DBManager.getConnection();
+            String SQL = "DELETE favorites FROM favorites JOIN users WHERE favorites.idforeignuser=?;";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, removeUserId);
+            ps.executeUpdate();
+
         } catch (SQLException ex) {
             throw new DefaultException(ex.getMessage());
         }
@@ -385,19 +470,4 @@ public class UserMapper {
         return blob;
     }
 
-
-    // test
-    private User getUser(ResultSet rs) throws SQLException {
-        User user = new User(
-                rs.getString("email"),
-                rs.getString("pword"), //bør måske ikke være med her
-                rs.getString("role"),
-                rs.getString("phone"),
-                rs.getString("firstName"),
-                rs.getString("lastName"),
-                rs.getString("gender"),
-                rs.getString("birthDate")
-        );
-        return user;
-    }
 }

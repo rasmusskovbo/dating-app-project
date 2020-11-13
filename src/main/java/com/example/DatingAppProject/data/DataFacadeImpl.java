@@ -28,6 +28,10 @@ public class DataFacadeImpl implements DataFacade {
         return userMapper.getProfile(id);
     }
 
+    public void addFavorite(int id, int favorite) throws DefaultException {
+        userMapper.addFavorite(id, favorite);
+    }
+
     public void uploadPicture(MultipartFile multipartFile) throws SQLException, IOException {
         userMapper.uploadPicture(multipartFile);
     }
@@ -46,6 +50,14 @@ public class DataFacadeImpl implements DataFacade {
 
     public void editProfile(User user) throws DefaultException {
         userMapper.editProfile(user);
+    }
+
+    public void removeUser(String removeUserId) throws DefaultException{
+        userMapper.removeUser(removeUserId);
+    }
+
+    public void removeFavorite(String removeUserId) throws DefaultException {
+        userMapper.removeFavorite(removeUserId);
     }
 
 
